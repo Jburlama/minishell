@@ -23,4 +23,9 @@ int main(void)
 void	get_line()
 {
 	free(readline(GREEN "Minishell: " RESET));
+	if (ft_memcmp(rl_line_buffer, "exit\0", 5) == 0)
+	{
+		free(rl_line_buffer);
+		exit(0);
+	}
 }

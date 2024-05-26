@@ -20,8 +20,8 @@ LIBFT = libft/libft.a
 all: ${NAME}
 
 ${NAME}: ${OBJS} ${LIBFT}
-	${CC} ${CFLAGS} ${LINK} ${OBJS} -o $@
-	echo "${GREEN} ${NAME} >> done ${RESET}"
+	${CC} ${CFLAGS} ${LINK} ${OBJS} ${LIBFT} -o $@
+	echo "${GREEN} >> ${NAME} done ${RESET}"
 
 ${OBJS_DIR}:
 	mkdir $@
