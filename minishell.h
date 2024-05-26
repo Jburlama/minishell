@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/26 18:35:46 by Jburlama          #+#    #+#             */
+/*   Updated: 2024/05/26 18:54:13 by Jburlama         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHEll_H
 # define MINISHEll_H
 
@@ -11,11 +23,14 @@
 # define RESET 		"\x1b[0m"
 
 # include "libft/libft.h"
+# include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include <readline/readline.h>
 # include <readline/history.h>
+# include <readline/readline.h>
 
+// get_line.c
 void	get_line();
+bool is_white_space(char c);
 
 #endif
