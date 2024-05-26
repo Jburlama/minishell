@@ -3,4 +3,4 @@
 obj
 *.o
 */*.o
-minshell
+minishell
