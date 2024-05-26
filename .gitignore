@@ -1,5 +1,6 @@
 *.swp
 */*.swp
+obj
 *.o
 */*.o
 minshell
