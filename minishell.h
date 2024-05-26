@@ -6,12 +6,12 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 18:35:46 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/05/26 19:30:46 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/05/26 20:55:08 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHEll_H
-# define MINISHEll_H
+#ifndef MINISHELL_H
+# define MINISHELL_H
 
 # define RED 		"\x1b[31m"
 # define YELLOW 	"\x1b[33m"
@@ -30,10 +30,12 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 
+
+// signals.c
 void	handle_signal(void);
 
 // get_line.c
-void	get_line();
-bool is_white_space(char c);
+void	get_line(void);
+bool	is_white_space(char c);
 
 #endif

@@ -10,12 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../minishell.h"
+#include "../minishell.h"
 
-void	get_line()
+void	get_line(void)
 {
-	int	i;
-	char *line;
+	int		i;
+	char	*line;
 
 	line = readline(GREEN "Minishell: " RESET);
 	if (!line)
@@ -40,7 +40,7 @@ void	get_line()
 	add_history(rl_line_buffer);
 }
 
-bool is_white_space(char c)
+bool	is_white_space(char c)
 {
 	if (c <= 13 || c == 32)
 		return (true);
