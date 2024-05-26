@@ -10,6 +10,7 @@
 # define MAGENTA	"\033[1;35m"
 # define RESET 		"\x1b[0m"
 
+# include "libft/libft.h"
 # include <stdio.h>
 # include <stdlib.h>
 # include <readline/readline.h>

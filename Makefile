@@ -15,12 +15,13 @@ RM = rm -f
 OBJS_DIR = ./objs/
 SRC_DIR = ./srcs/
 OBJS = ${addprefix ${OBJS_DIR}, ${CFILES:.c=.o}}
+LIBFT = libft/libft.a
 
 all: ${NAME}
 
-${NAME}: ${OBJS}
+${NAME}: ${OBJS} ${LIBFT}
 	${CC} ${CFLAGS} ${LINK} ${OBJS} -o $@
-	echo "${GREEN} ${NAME} done ${RESET}"
+	echo "${GREEN} ${NAME} >> done ${RESET}"
 
 ${OBJS_DIR}:
 	mkdir $@
@@ -29,14 +30,21 @@ ${OBJS}: | ${OBJS_DIR}
 
 ${OBJS_DIR}%.o: ${SRC_DIR}%.c
 	${CC} ${CFLAGS} -c $^ -o $@
-	echo "${GREY} compiling $^ ${RESET}"
+	echo "${GREY} >> compiling $^ ${RESET}"
+
+${LIBFT}: libft
+	@make -C libft
 
 clean:
 	rm -rf ${OBJS}
 	rm -rf ${OBJS_DIR}
+	echo "${ORANGE} >> cleaning ${RESET}"
+	make clean -C libft
 
 fclean: clean
 	rm -rf ${NAME}
+	echo "${ORANGE} >> fcleaning ${RESET}"
+	@make fclean -C libft
 
 re: fclean ${NAME}
 
