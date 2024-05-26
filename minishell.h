@@ -6,7 +6,7 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 18:35:46 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/05/26 18:54:13 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/05/26 19:30:46 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,14 @@
 # define RESET 		"\x1b[0m"
 
 # include "libft/libft.h"
+# include <signal.h>
 # include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <readline/history.h>
 # include <readline/readline.h>
+
+void	handle_signal(void);
 
 // get_line.c
 void	get_line();
