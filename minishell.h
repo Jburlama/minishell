@@ -30,9 +30,9 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 
-
 // signals.c
 void	handle_signal(void);
+void	signal_handler(int sig);
 
 // get_line.c
 void	get_line(void);
