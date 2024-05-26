@@ -14,5 +14,13 @@
 
 int main(void)
 {
-	return (0);
+	while (42)
+	{
+		get_line();
+	}
+}
+
+void	get_line()
+{
+	free(readline(GREEN "Minishell: " RESET));
 }
