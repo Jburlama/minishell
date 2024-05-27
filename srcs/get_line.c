@@ -14,7 +14,6 @@
 
 void	get_line(void)
 {
-	int		i;
 	char	*line;
 
 	line = readline(GREEN "Minishell: " RESET);
@@ -29,20 +28,5 @@ void	get_line(void)
 		free(rl_line_buffer);
 		exit(0);
 	}
-	i = -1;
-	while (rl_line_buffer[++i])
-	{
-		if (!is_white_space(rl_line_buffer[i]))
-			break ;
-	}
-	if (!rl_line_buffer[i])
-		return ;
 	add_history(rl_line_buffer);
-}
-
-bool	is_white_space(char c)
-{
-	if (c <= 13 || c == 32)
-		return (true);
-	return (false);
 }
