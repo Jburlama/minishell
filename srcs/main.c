@@ -19,4 +19,5 @@ int	main(void)
 	{
 		get_line();
 	}
+	rl_clear_history();
 }

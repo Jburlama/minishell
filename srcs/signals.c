@@ -17,6 +17,8 @@ void	handle_signal(void)
 	struct sigaction	sig_ign;
 	struct sigaction	sig;
 
+	ft_memset(&sig, 0, sizeof(sig_ign));
+	ft_memset(&sig_ign, 0, sizeof(sig));
 	sig_ign.sa_handler = SIG_IGN;
 	sig.sa_handler = signal_handler;
 	sigaction(SIGTERM, &sig_ign, NULL);
