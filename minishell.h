@@ -6,7 +6,7 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 18:35:46 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/05/29 22:01:09 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/05/29 22:17:17 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ enum e_type
 	SPECIAL,
 	WORD,
 	ARG,
+	QUOTES,
 };
 
 typedef	struct s_token
@@ -50,18 +51,21 @@ typedef	struct s_data
 	t_token *tail;
 } t_data;
 
+void	add_token_quotes(t_data *data, int *i, enum e_type type);
+
 // tokens_list_words.c
 void	add_token_special(t_data *data, int *i, enum e_type type);
 void	add_token_word(t_data *data, int *i, enum e_type type);
+void	append_token_word(t_data *data, int *i, enum e_type type);
 void	create_token_word(t_data *data, int *i, enum e_type type);
 void	append_token_arg(t_data *data, int *i, enum e_type type);
 
 // tokenize.c
 void	tokenize(t_data *data);
 void	add_token(t_data *data, int *i, enum e_type type);
-void	append_token_word(t_data *data, int *i, enum e_type type);
 void	clear_list(t_token	**head);
 bool	is_special(char c);
+bool	is_quote(char c);
 
 // signals.c
 void	handle_signal(void);
