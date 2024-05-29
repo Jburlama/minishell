@@ -6,7 +6,7 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 21:32:49 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/05/29 21:53:32 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/05/29 22:04:31 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,7 @@ void	create_token_word(t_data *data, int *i, enum e_type type)
 		exit (1);
 	j = 0;
 	while (ft_isalpha(rl_line_buffer[*i]))
-	{
-		data->head->content[j] = rl_line_buffer[*i];
-		j++;
-		(*i)++;
-	}
+		data->head->content[j++] = rl_line_buffer[(*i)++];
 	data->head->type = type;
 	data->tail = data->head;
 	(*i)--;
@@ -65,11 +61,7 @@ void	append_token_word(t_data *data, int *i, enum e_type type)
 		exit(1);
 	j = 0;
 	while (ft_isalpha(rl_line_buffer[*i]))
-	{
-		data->tail->content[j] = rl_line_buffer[*i];
-		j++;
-		(*i)++;
-	}
+		data->tail->content[j++] = rl_line_buffer[(*i)++];
 	data->tail->type = type;
 	(*i)--;
 }
@@ -95,11 +87,7 @@ void	append_token_arg(t_data *data, int *i, enum e_type type)
 		exit(1);
 	j = 0;
 	while (rl_line_buffer[*i] && !is_special(rl_line_buffer[*i]))
-	{
-		data->tail->content[j] = rl_line_buffer[*i];
-		j++;
-		(*i)++;
-	}
+		data->tail->content[j++] = rl_line_buffer[(*i)++];
 	data->tail->type = type;
 	(*i)--;
 }
