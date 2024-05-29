@@ -6,7 +6,7 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 18:35:46 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/05/26 20:55:08 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/05/29 19:52:26 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,29 @@
 # include <stdlib.h>
 # include <readline/history.h>
 # include <readline/readline.h>
+
+enum e_type
+{
+	SPECIAL,
+};
+
+typedef	struct s_token
+{
+	char 			*content;
+	struct s_token 	*next;
+	enum e_type		type;
+} t_token;
+
+typedef	struct s_data
+{
+	t_token *head;
+	t_token *tail;
+} t_data;
+
+void	tokenize(t_data *data);
+void	add_token(t_data *data, int *i, enum e_type type);
+void	clear_list(t_token	**head);
+bool	is_special(char c);
 
 // signals.c
 void	handle_signal(void);
