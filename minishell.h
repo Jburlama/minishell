@@ -6,7 +6,7 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 18:35:46 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/05/29 19:52:26 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/05/29 20:56:50 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 enum e_type
 {
 	SPECIAL,
+	WORD,
 };
 
 typedef	struct s_token
@@ -48,8 +49,13 @@ typedef	struct s_data
 	t_token *tail;
 } t_data;
 
+// tokenize.c
 void	tokenize(t_data *data);
 void	add_token(t_data *data, int *i, enum e_type type);
+void	add_token_special(t_data *data, int *i, enum e_type type);
+void	add_token_word(t_data *data, int *i, enum e_type type);
+void	create_token_word(t_data *data, int *i, enum e_type type);
+void	append_token_word(t_data *data, int *i, enum e_type type);
 void	clear_list(t_token	**head);
 bool	is_special(char c);
 
