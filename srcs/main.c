@@ -14,7 +14,7 @@
 
 int	main(void)
 {
-	t_data data;
+	t_data	data;
 
 	handle_signal();
 	ft_memset(&data, 0, sizeof(data));
@@ -22,8 +22,6 @@ int	main(void)
 	{
 		get_line();
 		tokenize(&data);
-		for (t_token *temp = data.head; temp; temp = temp->next)
-			printf("%s, type: %i\n", temp->content, temp->type);
 		clear_list(&data.head);
 	}
 	free(rl_line_buffer);

@@ -31,10 +31,10 @@ void	get_line(void)
 	add_history(rl_line_buffer);
 }
 
-bool is_white_space(char c)
+bool	is_white_space(char c)
 {
 	if (c <= 13 || c == 32)
 		return (true);
-	else 
+	else
 		return (false);
 }

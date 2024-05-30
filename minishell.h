@@ -38,23 +38,25 @@ enum e_type
 	QUOTES,
 };
 
-typedef	struct s_token
+typedef struct s_token
 {
-	char 			*content;
-	struct s_token 	*next;
+	char			*content;
+	struct s_token	*next;
 	enum e_type		type;
-} t_token;
+}	t_token;
 
-typedef	struct s_data
+typedef struct s_data
 {
-	t_token *head;
-	t_token *tail;
-} t_data;
+	t_token	*head;
+	t_token	*tail;
+}	t_data;
 
 // token_list_quotes.c
 void	add_token_quotes(t_data *data, int *i, enum e_type type);
 void	create_token_quotes(t_data *data, int *i, enum e_type type, char q);
 void	append_token_quotes(t_data *data, int *i, enum e_type type, char q);
+
+// token_list_quotes2.c
 void	new_promp_for_quotes(t_data *data, char q, int len);
 void	tokenize_continue(t_data *data, char q, int *i);
 void	promp_quotes(char q);
