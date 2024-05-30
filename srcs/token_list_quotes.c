@@ -6,7 +6,7 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:11:20 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/05/30 20:48:43 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/05/30 21:01:00 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,23 @@ void	create_token_quotes(t_data *data, int *i, enum e_type type, char q)
 	j = 0;
 	while (rl_line_buffer[*i] && rl_line_buffer[*i] != q)
 		data->head->content[j++] = rl_line_buffer[(*i)++];
-	data->tail = data->head;
 	data->head->type = type;
+	if (create_token_quotes2(data, i, q, len) == 1)
+		return ;
+}
+
+int	create_token_quotes2(t_data *data, int *i, char q, int len)
+{
+	data->tail = data->head;
+	if (rl_line_buffer[*i] == q)
+	{
+		(*i)++;
+		return (1);
+	}
 	if (rl_line_buffer[(*i)] != q)
 		new_promp_for_quotes(data, q, len);
 	(*i) += len;
+	return (0);
 }
 
 void	append_token_quotes(t_data *data, int *i, enum e_type type, char q)

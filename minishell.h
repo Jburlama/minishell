@@ -6,7 +6,7 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 18:35:46 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/05/29 22:17:17 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/05/30 21:00:28 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ typedef struct s_data
 // token_list_quotes.c
 void	add_token_quotes(t_data *data, int *i, enum e_type type);
 void	create_token_quotes(t_data *data, int *i, enum e_type type, char q);
+int		create_token_quotes2(t_data *data, int *i, char q, int len);
 void	append_token_quotes(t_data *data, int *i, enum e_type type, char q);
 
 // token_list_quotes2.c
