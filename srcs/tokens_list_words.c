@@ -6,7 +6,7 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 21:32:49 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/05/30 20:36:53 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/05/30 21:29:44 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	append_token_word(t_data *data, int *i, enum e_type type)
 
 	j = *i;
 	len = 0;
-	while (ft_isalpha(rl_line_buffer[j++]))
+	while (ft_isalpha(rl_line_buffer[j++]) || ft_isalnum(rl_line_buffer[j++]))
 		len++;
 	data->tail->next = ft_calloc(sizeof(t_token), 1);
 	if (!data->tail->next)
@@ -60,7 +60,7 @@ void	append_token_word(t_data *data, int *i, enum e_type type)
 	if (data->tail->content == NULL)
 		exit(1);
 	j = 0;
-	while (ft_isalpha(rl_line_buffer[*i]))
+	while (ft_isalpha(rl_line_buffer[*i]) || ft_isalnum(rl_line_buffer[*i]))
 		data->tail->content[j++] = rl_line_buffer[(*i)++];
 	data->tail->type = type;
 	(*i)--;
@@ -73,7 +73,8 @@ void	append_token_arg(t_data *data, int *i, enum e_type type)
 
 	j = *i;
 	len = 0;
-	while (rl_line_buffer[j] && !is_special(rl_line_buffer[j]))
+	while (rl_line_buffer[j] && !is_special(rl_line_buffer[j])
+		&& !is_quote(rl_line_buffer[j]))
 	{
 		len++;
 		j++;
@@ -86,7 +87,8 @@ void	append_token_arg(t_data *data, int *i, enum e_type type)
 	if (data->tail->content == NULL)
 		exit(1);
 	j = 0;
-	while (rl_line_buffer[*i] && !is_special(rl_line_buffer[*i]))
+	while (rl_line_buffer[*i] && !is_special(rl_line_buffer[*i])
+		&& !is_quote(rl_line_buffer[*i]))
 		data->tail->content[j++] = rl_line_buffer[(*i)++];
 	data->tail->type = type;
 	(*i)--;
