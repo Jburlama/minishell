@@ -51,9 +51,13 @@ typedef	struct s_data
 	t_token *tail;
 } t_data;
 
+// token_list_quotes.c
 void	add_token_quotes(t_data *data, int *i, enum e_type type);
 void	create_token_quotes(t_data *data, int *i, enum e_type type, char q);
 void	append_token_quotes(t_data *data, int *i, enum e_type type, char q);
+void	new_promp_for_quotes(t_data *data, char q, int len);
+void	tokenize_continue(t_data *data, char q, int *i);
+void	promp_quotes(char q);
 
 // tokens_list_words.c
 void	add_token_special(t_data *data, int *i, enum e_type type);
