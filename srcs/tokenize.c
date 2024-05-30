@@ -25,7 +25,8 @@ void	tokenize(t_data *data)
 			add_token(data, &i, SPECIAL);
 		else if (ft_isalpha(rl_line_buffer[i]))
 		{
-			if (data->head && data->tail->type == WORD)
+			if (data->head 
+			&& (data->tail->type == WORD || data->tail->type == QUOTES))
 				add_token(data, &i, ARG);
 			else
 				add_token(data, &i, WORD);
@@ -93,7 +94,7 @@ bool	is_special(char c)
 	char	*special;
 	int		i;
 
-	special = "|<>;";
+	special = "|<>";
 	i = 0;
 	while (special[i])
 	{
@@ -106,7 +107,7 @@ bool	is_special(char c)
 
 bool	is_quote(char c)
 {
-	if (c == 33 || c == 44)
+	if (c == 34 || c == 39)
 		return (true);
 	else
 		return (false);
