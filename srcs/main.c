@@ -6,7 +6,7 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 17:32:03 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/05/29 20:42:17 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/05/30 20:47:23 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ int	main(void)
 	{
 		get_line();
 		tokenize(&data);
+		for (t_token *ptr = data.head; ptr; ptr = ptr->next)
+			printf("content: %s | type %i\n", ptr->content, ptr->type);
 		clear_list(&data.head);
 	}
 	free(rl_line_buffer);

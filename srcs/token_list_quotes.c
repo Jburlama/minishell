@@ -6,7 +6,7 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:11:20 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/05/30 20:31:59 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/05/30 20:48:43 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,5 +75,4 @@ void	append_token_quotes(t_data *data, int *i, enum e_type type, char q)
 	data->tail->type = type;
 	if (rl_line_buffer[(*i)] != q)
 		new_promp_for_quotes(data, q, len);
-	(*i) += len;
 }
