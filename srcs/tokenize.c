@@ -6,7 +6,7 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 19:02:06 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/05/30 21:15:41 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/05/31 16:18:49 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	tokenize(t_data *data)
 			add_token(data, &i, QUOTES);
 		else if (is_special(rl_line_buffer[i]))
 			add_token(data, &i, SPECIAL);
-		else if (ft_isalpha(rl_line_buffer[i]))
+		else if (ft_isalpha(rl_line_buffer[i]) || ft_isalnum(rl_line_buffer[i]))
 		{
 			if (data->head
 				&& (data->tail->type == WORD || data->tail->type == QUOTES))
