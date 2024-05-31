@@ -27,8 +27,11 @@ void	create_token_word(t_data *data, int *i, enum e_type type)
 
 	j = *i;
 	len = 0;
-	while (ft_isalpha(rl_line_buffer[j++]))
+	while (ft_isalpha(rl_line_buffer[j]) || ft_isalnum(rl_line_buffer[j]))
+	{
+		j++;
 		len++;
+	}
 	data->head = ft_calloc(sizeof(t_token), 1);
 	if (!data->head)
 		panic("calloc faild!\n", data);
@@ -36,7 +39,7 @@ void	create_token_word(t_data *data, int *i, enum e_type type)
 	if (!data->head->content)
 		panic("calloc faild!\n", data);
 	j = 0;
-	while (ft_isalpha(rl_line_buffer[*i]))
+	while (ft_isalpha(rl_line_buffer[*i]) || ft_isalnum(rl_line_buffer[*i]))
 		data->head->content[j++] = rl_line_buffer[(*i)++];
 	data->head->type = type;
 	data->tail = data->head;
@@ -50,8 +53,11 @@ void	append_token_word(t_data *data, int *i, enum e_type type)
 
 	j = *i;
 	len = 0;
-	while (ft_isalpha(rl_line_buffer[j++]) || ft_isalnum(rl_line_buffer[j++]))
+	while (ft_isalpha(rl_line_buffer[j]) || ft_isalnum(rl_line_buffer[j]))
+	{
+		j++;
 		len++;
+	}
 	data->tail->next = ft_calloc(sizeof(t_token), 1);
 	if (!data->tail->next)
 		panic("calloc faild!\n", data);
