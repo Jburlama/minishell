@@ -23,7 +23,7 @@ void	tokenize(t_data *data)
 			add_token(data, &i, QUOTES);
 		else if (is_special(rl_line_buffer[i]))
 			add_token(data, &i, SPECIAL);
-		else if (ft_isalpha(rl_line_buffer[i]) || ft_isalnum(rl_line_buffer[i]))
+		else if (ft_isprint(rl_line_buffer[i]) && rl_line_buffer[i] != 32)
 		{
 			if (data->head
 				&& (data->tail->type == WORD || data->tail->type == QUOTES))
