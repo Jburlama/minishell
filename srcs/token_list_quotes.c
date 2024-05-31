@@ -35,10 +35,10 @@ void	create_token_quotes(t_data *data, int *i, enum e_type type, char q)
 	}
 	data->head = ft_calloc(sizeof(t_token), 1);
 	if (!data->head)
-		exit(1);
+		panic("calloc faild!\n", data);
 	data->head->content = ft_calloc(sizeof(char), len + 1);
 	if (!data->head->content)
-		exit (1);
+		panic("calloc faild!\n", data);
 	j = 0;
 	while (rl_line_buffer[*i] && rl_line_buffer[*i] != q)
 		data->head->content[j++] = rl_line_buffer[(*i)++];
@@ -80,7 +80,7 @@ void	append_token_quotes(t_data *data, int *i, enum e_type type, char q)
 	data->tail = data->tail->next;
 	data->tail->content = ft_calloc(sizeof(char), len + 1);
 	if (data->tail->content == NULL)
-		exit(1);
+		panic("calloc faild!\n", data);
 	j = 0;
 	while (rl_line_buffer[*i] && rl_line_buffer[*i] != q)
 		data->tail->content[j++] = rl_line_buffer[(*i)++];

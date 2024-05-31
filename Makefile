@@ -10,7 +10,7 @@ NAME = minishell
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 LINK = -lreadline
-CFILES = main.c get_line.c signals.c \
+CFILES = main.c get_line.c signals.c panic.c\
 		 tokenize.c tokens_list_words.c token_list_quotes.c token_list_quotes2.c
 RM = rm -f
 OBJS_DIR = ./objs/

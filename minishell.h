@@ -22,11 +22,14 @@
 # define MAGENTA	"\033[1;35m"
 # define RESET 		"\x1b[0m"
 
+# include <errno.h>
 # include "libft/libft.h"
 # include <signal.h>
 # include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <sys/types.h>
+# include <sys/wait.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 
@@ -50,6 +53,8 @@ typedef struct s_data
 	t_token	*head;
 	t_token	*tail;
 }	t_data;
+
+void	panic(char *msg, t_data *data);
 
 // token_list_quotes.c
 void	add_token_quotes(t_data *data, int *i, enum e_type type);

@@ -28,7 +28,7 @@ void	new_promp_for_quotes(t_data *data, char q, int len)
 	}
 	new_content = ft_calloc(sizeof(char), new_len + 1);
 	if (!new_content)
-		exit (1);
+		panic("calloc faild!\n", data);
 	ft_memcpy(new_content, data->tail->content, len);
 	free(data->tail->content);
 	data->tail->content = new_content;
@@ -64,8 +64,17 @@ void	tokenize_continue(t_data *data, char q, int *i)
 
 void	promp_quotes(char q)
 {
+	char	*line;
+
+	line = NULL;
 	if (q == 34)
-		readline(YELLOW"dquote>"RESET);
+		line = readline(YELLOW"dquote>"RESET);
 	else if (q == 39)
-		readline(YELLOW"quote>"RESET);
+		line = readline(YELLOW"quote>"RESET);
+	if (line == NULL)
+	{
+		printf("exit\n");
+		exit(0);
+	}
+	free(line);
 }
