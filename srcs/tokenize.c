@@ -17,7 +17,7 @@ void	tokenize(t_data *data)
 	int	i;
 
 	i = 0;
-	while (rl_line_buffer[i])
+	while (rl_line_buffer[i] && rl_line_buffer[i] != '#')
 	{
 		if (is_quote(rl_line_buffer[i]))
 			add_token(data, &i, QUOTES);
