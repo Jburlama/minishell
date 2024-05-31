@@ -55,10 +55,10 @@ void	tokenize_continue(t_data *data, char q, int *i)
 	else if (ft_isalpha(rl_line_buffer[*i]))
 	{
 		if (data->head
-			&& (data->tail->type == WORD || data->tail->type == QUOTES))
+			&& (data->tail->type == CMD || data->tail->type == QUOTES))
 			add_token(data, i, ARG);
 		else
-			add_token(data, i, WORD);
+			add_token(data, i, CMD);
 	}
 }
 

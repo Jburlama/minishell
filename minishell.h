@@ -36,9 +36,12 @@
 enum e_type
 {
 	SPECIAL,
-	WORD,
+	CMD,
 	ARG,
 	QUOTES,
+	IO,
+	I,
+	O,
 };
 
 typedef struct s_token

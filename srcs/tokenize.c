@@ -26,10 +26,14 @@ void	tokenize(t_data *data)
 		else if (ft_isprint(rl_line_buffer[i]) && rl_line_buffer[i] != 32)
 		{
 			if (data->head
-				&& (data->tail->type == WORD || data->tail->type == QUOTES))
+				&& (data->tail->type == CMD || data->tail->type == QUOTES
+					|| data->tail->type == I || data->tail->type == O))
 				add_token(data, &i, ARG);
+			else if (data->head
+				&& (*data->tail->content == '<' || *data->tail->content == '>'))
+				add_token(data, &i, IO);
 			else
-				add_token(data, &i, WORD);
+				add_token(data, &i, CMD);
 		}
 		i++;
 	}
@@ -39,12 +43,19 @@ void	add_token(t_data *data, int *i, enum e_type type)
 {
 	if (type == SPECIAL)
 		add_token_special(data, i, type);
-	else if (type == WORD)
+	else if (type == CMD)
 		add_token_word(data, i, type);
 	else if (type == ARG)
 		append_token_arg(data, i, type);
 	else if (type == QUOTES)
 		add_token_quotes(data, i, type);
+	else if (type == IO)
+	{
+		if (*data->tail->content == '<')
+			add_token_word(data, i, I);
+		else if (*data->tail->content == '>')
+			add_token_word(data, i, O);
+	}
 }
 
 void	clear_list(t_token	**head)
