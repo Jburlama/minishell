@@ -19,22 +19,22 @@ void	tokenize(t_data *data)
 	i = 0;
 	while (rl_line_buffer[i] && rl_line_buffer[i] != '#')
 	{
-		if (is_quote(rl_line_buffer[i]))
-			add_token(data, &i, QUOTES);
+		if (rl_line_buffer[i] == 34)
+			add_token(data, &i, DQUOTES);
+		else if (rl_line_buffer[i] == 39)
+			add_token(data, &i, SQUOTES);
 		else if (is_special(rl_line_buffer[i]))
 			add_token(data, &i, SPECIAL);
 		else if (ft_isprint(rl_line_buffer[i]) && rl_line_buffer[i] != 32)
 		{
 			if (data->head
-				&& (data->tail->type == CMD || data->tail->type == QUOTES
-					|| data->tail->type == I || data->tail->type == O))
-				add_token(data, &i, ARG);
-			else if (data->head
 				&& (*data->tail->content == '<' || *data->tail->content == '>'))
 				add_token(data, &i, IO);
 			else
-				add_token(data, &i, CMD);
+				add_token(data, &i, WORD);
 		}
+		else if (data->head && is_white_space(rl_line_buffer[i]))
+			add_token(data, &i, WHITE_SPACE);
 		i++;
 	}
 }
@@ -43,11 +43,9 @@ void	add_token(t_data *data, int *i, enum e_type type)
 {
 	if (type == SPECIAL)
 		add_token_special(data, i, type);
-	else if (type == CMD)
+	else if (type == WORD)
 		add_token_word(data, i, type);
-	else if (type == ARG)
-		append_token_arg(data, i, type);
-	else if (type == QUOTES)
+	else if (type == DQUOTES || type == SQUOTES)
 		add_token_quotes(data, i, type);
 	else if (type == IO)
 	{
@@ -56,6 +54,8 @@ void	add_token(t_data *data, int *i, enum e_type type)
 		else if (*data->tail->content == '>')
 			add_token_word(data, i, O);
 	}
+	else if (type == WHITE_SPACE)
+		add_token_white_space(data, i, type);
 }
 
 void	clear_list(t_token	**head)
