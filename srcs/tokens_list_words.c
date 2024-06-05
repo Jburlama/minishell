@@ -106,7 +106,7 @@ void	add_token_white_space(t_data *data, int *i, enum e_type type)
 
 	j = *i;
 	len = 0;
-	while (is_white_space(rl_line_buffer[j]))
+	while (rl_line_buffer[j] != '\0' && is_white_space(rl_line_buffer[j]))
 	{
 		j++;
 		len++;
@@ -119,7 +119,7 @@ void	add_token_white_space(t_data *data, int *i, enum e_type type)
 	if (data->tail->content == NULL)
 		panic("calloc faild!\n", data);
 	j = 0;
-	while (is_white_space(rl_line_buffer[*i]))
+	while (rl_line_buffer[*i] != '\0' && is_white_space(rl_line_buffer[*i]))
 		data->tail->content[j++] = rl_line_buffer[(*i)++];
 	data->tail->type = type;
 	(*i)--;
