@@ -72,34 +72,6 @@ void	append_token_word(t_data *data, int *i, enum e_type type)
 	(*i)--;
 }
 
-void	append_token_arg(t_data *data, int *i, enum e_type type)
-{
-	int	j;
-	int	len;
-
-	j = *i;
-	len = 0;
-	while (rl_line_buffer[j] && !is_special(rl_line_buffer[j])
-		&& !is_quote(rl_line_buffer[j]))
-	{
-		len++;
-		j++;
-	}
-	data->tail->next = ft_calloc(sizeof(t_token), 1);
-	if (!data->tail->next)
-		panic("calloc faild!\n", data);
-	data->tail = data->tail->next;
-	data->tail->content = ft_calloc(sizeof(char), len + 1);
-	if (data->tail->content == NULL)
-		panic("calloc faild!\n", data);
-	j = 0;
-	while (rl_line_buffer[*i] && !is_special(rl_line_buffer[*i])
-		&& !is_quote(rl_line_buffer[*i]))
-		data->tail->content[j++] = rl_line_buffer[(*i)++];
-	data->tail->type = type;
-	(*i)--;
-}
-
 void	add_token_special(t_data *data, int *i, enum e_type type)
 {
 	if (!data->head)
@@ -125,4 +97,30 @@ void	add_token_special(t_data *data, int *i, enum e_type type)
 		panic("calloc faild!\n", data);
 	*data->tail->content = rl_line_buffer[*i];
 	data->tail->type = type;
+}
+
+void	add_token_white_space(t_data *data, int *i, enum e_type type)
+{
+	int	j;
+	int	len;
+
+	j = *i;
+	len = 0;
+	while (is_white_space(rl_line_buffer[j]))
+	{
+		j++;
+		len++;
+	}
+	data->tail->next = ft_calloc(sizeof(t_token), 1);
+	if (!data->tail->next)
+		panic("calloc faild!\n", data);
+	data->tail = data->tail->next;
+	data->tail->content = ft_calloc(sizeof(char), len + 1);
+	if (data->tail->content == NULL)
+		panic("calloc faild!\n", data);
+	j = 0;
+	while (is_white_space(rl_line_buffer[*i]))
+		data->tail->content[j++] = rl_line_buffer[(*i)++];
+	data->tail->type = type;
+	(*i)--;
 }

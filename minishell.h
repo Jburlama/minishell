@@ -22,8 +22,8 @@
 # define MAGENTA	"\033[1;35m"
 # define RESET 		"\x1b[0m"
 
-# include <errno.h>
 # include "libft/libft.h"
+# include <errno.h>
 # include <signal.h>
 # include <stdbool.h>
 # include <stdio.h>
@@ -35,10 +35,11 @@
 
 enum e_type
 {
+	WHITE_SPACE,
+	WORD,
 	SPECIAL,
-	CMD,
-	ARG,
-	QUOTES,
+	DQUOTES,
+	SQUOTES,
 	IO,
 	I,
 	O,
@@ -57,8 +58,6 @@ typedef struct s_data
 	t_token	*tail;
 }	t_data;
 
-void	panic(char *msg, t_data *data);
-
 // token_list_quotes.c
 void	add_token_quotes(t_data *data, int *i, enum e_type type);
 void	create_token_quotes(t_data *data, int *i, enum e_type type, char q);
@@ -75,7 +74,7 @@ void	add_token_special(t_data *data, int *i, enum e_type type);
 void	add_token_word(t_data *data, int *i, enum e_type type);
 void	append_token_word(t_data *data, int *i, enum e_type type);
 void	create_token_word(t_data *data, int *i, enum e_type type);
-void	append_token_arg(t_data *data, int *i, enum e_type type);
+void	add_token_white_space(t_data *data, int *i, enum e_type type);
 
 // tokenize.c
 void	tokenize(t_data *data);
@@ -91,5 +90,8 @@ void	signal_handler(int sig);
 // get_line.c
 void	get_line(void);
 bool	is_white_space(char c);
+
+// panic.c
+void	panic(char *msg, t_data *data);
 
 #endif
