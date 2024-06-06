@@ -46,20 +46,22 @@ void	tokenize_continue(t_data *data, char q, int *i)
 		(*i)++;
 	if (!rl_line_buffer[*i])
 		return ;
-	while (is_white_space(rl_line_buffer[*i]))
-		(*i)++;
-	if (is_quote(rl_line_buffer[(*i)]))
-		add_token(data, i, QUOTES);
+	if (rl_line_buffer[*i] == 34)
+		add_token(data, i, DQUOTES);
+	else if (rl_line_buffer[*i] == 39)
+		add_token(data, i, SQUOTES);
 	else if (is_special(rl_line_buffer[*i]))
 		add_token(data, i, SPECIAL);
-	else if (ft_isalpha(rl_line_buffer[*i]))
+	else if (ft_isprint(rl_line_buffer[*i]) && rl_line_buffer[*i] != 32)
 	{
 		if (data->head
-			&& (data->tail->type == CMD || data->tail->type == QUOTES))
-			add_token(data, i, ARG);
+			&& (*data->tail->content == '<' || *data->tail->content == '>'))
+			add_token(data, i, IO);
 		else
-			add_token(data, i, CMD);
+			add_token(data, i, WORD);
 	}
+	else if (data->head && is_white_space(rl_line_buffer[*i]))
+		add_token(data, i, WHITE_SPACE);
 }
 
 void	promp_quotes(char q)
