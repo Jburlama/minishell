@@ -6,7 +6,7 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 18:35:46 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/05/30 21:00:28 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/06/09 20:31:20 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,9 @@ enum e_type
 	IO,
 	I,
 	O,
+	EXEC,
+	REDIR,
+	PIPE,
 };
 
 typedef struct s_token
@@ -52,11 +55,31 @@ typedef struct s_token
 	struct s_token	*next;
 }	t_token;
 
+typedef struct s_exec
+{
+	enum e_type		type;
+	char			*args;
+}	t_exec;
+
+typedef struct s_redir
+{
+	enum e_type		type;
+	enum e_type		file_type;
+	char			*file;
+	void			*down;
+}	t_redir;
+
 typedef struct s_data
 {
 	t_token	*head;
 	t_token	*tail;
+	void	*root;
 }	t_data;
+
+// create_tree.c
+void	create_tree(t_data *data);
+void	*parse_exec(t_token **tokens);
+void	*parse_redir(void *root, t_token **tokens);
 
 // token_list_quotes.c
 void	add_token_quotes(t_data *data, int *i, enum e_type type);
