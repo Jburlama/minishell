@@ -26,26 +26,19 @@ void	*parse_exec(t_token **tokens)
 {
 	t_exec	*exec;
 	void	*root;
-	char	*str;
 
 	exec = ft_calloc(sizeof(*exec), 1);
 	if (exec == NULL)
 		return (NULL);
 	exec->type = EXEC;
 	root = exec;
-	while ((*tokens) && (*tokens)->type != PIPE)
+	while ((*tokens))
 	{
 		root = parse_redir(root, tokens);
-		if (!exec->args)
-			str = ft_strjoin("", (*tokens)->content);
-		else
-		{
-			str = ft_strjoin(exec->args, (*tokens)->content);
-			free(exec->args);
-		}
-		if (str == NULL)
+		if (!(*tokens))
+			break ;
+		if (t_exec_fill(&exec, *tokens) == NULL)
 			return (NULL);
-		exec->args = str;
 		(*tokens) = (*tokens)->next;
 	}
 	return (root);
@@ -53,24 +46,51 @@ void	*parse_exec(t_token **tokens)
 
 void	*parse_redir(void *root, t_token **tokens)
 {
+	void	*ret;
+
+	ret = root;
+	while ((*tokens) && ((*tokens)->type == SPECIAL))
+	{
+		(*tokens) = (*tokens)->next;
+		if (*tokens)
+			ret = construct_redir(ret, tokens);
+		if (ret == NULL)
+			return (NULL);
+	}
+	return (ret);
+}
+
+void	*construct_redir(void	*subnode, t_token **tokens)
+{
 	t_redir	*ret;
 
-	if ((*tokens) && (*tokens)->type != SPECIAL)
-		return (root);
-	ret = ft_calloc(sizeof(t_redir), 1);
+	ret = ft_calloc(sizeof(*ret), 1);
 	if (ret == NULL)
 		return (NULL);
 	ret->type = REDIR;
 	ret->file_type = (*tokens)->type;
-	(*tokens) = (*tokens)->next;
-	while ((*tokens) && (*tokens)->type == WHITE_SPACE)
-		(*tokens) = (*tokens)->next;
 	ret->file = ft_strdup((*tokens)->content);
 	if (ret->file == NULL)
 		return (NULL);
-	ret->down = root;
-	if (!(*tokens)->next)
-		return (ret);
+	ret->down = subnode;
 	(*tokens) = (*tokens)->next;
-	return (parse_redir(ret, tokens));
+	return (ret);
 }
+
+t_exec	*t_exec_fill(t_exec **exec, t_token *token)
+{
+	char	*str;
+
+	if (!(*exec)->args)
+		str = ft_strdup(token->content);
+	else
+	{
+		str = ft_strjoin((*exec)->args, token->content);
+		free((*exec)->args);
+	}
+	(*exec)->args = str;
+	if ((*exec)->args == NULL)
+		return (NULL);
+	return (*exec);
+}
+

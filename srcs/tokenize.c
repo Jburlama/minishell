@@ -33,7 +33,7 @@ void	tokenize(t_data *data)
 			else
 				add_token(data, &i, WORD);
 		}
-		else if (data->head && is_white_space(rl_line_buffer[i]))
+		else if (rl_line_buffer[i] && is_white_space(rl_line_buffer[i]))
 			add_token(data, &i, WHITE_SPACE);
 		i++;
 	}
@@ -42,7 +42,16 @@ void	tokenize(t_data *data)
 void	add_token(t_data *data, int *i, enum e_type type)
 {
 	if (type == SPECIAL)
+	{
 		add_token_special(data, i, type);
+		if (rl_line_buffer[(*i) + 1]
+			&& is_white_space(rl_line_buffer[(*i) + 1]))
+		{
+			while (rl_line_buffer[(*i) + 1]
+				&& is_white_space(rl_line_buffer[(*i) + 1]))
+				(*i)++;
+		}
+	}
 	else if (type == WORD)
 		add_token_word(data, i, type);
 	else if (type == DQUOTES || type == SQUOTES)

@@ -55,12 +55,6 @@ typedef struct s_token
 	struct s_token	*next;
 }	t_token;
 
-typedef struct s_exec
-{
-	enum e_type		type;
-	char			*args;
-}	t_exec;
-
 typedef struct s_redir
 {
 	enum e_type		type;
@@ -69,6 +63,13 @@ typedef struct s_redir
 	void			*down;
 }	t_redir;
 
+typedef struct s_exec
+{
+	enum e_type		type;
+	char			*args;
+}	t_exec;
+
+
 typedef struct s_data
 {
 	t_token	*head;
@@ -76,10 +77,14 @@ typedef struct s_data
 	void	*root;
 }	t_data;
 
+void	clear_tree(void	*root);
+
 // create_tree.c
 void	create_tree(t_data *data);
 void	*parse_exec(t_token **tokens);
 void	*parse_redir(void *root, t_token **tokens);
+void	*construct_redir(void	*subnode, t_token **tokens);
+t_exec	*t_exec_fill(t_exec **exec, t_token *token);
 
 // token_list_quotes.c
 void	add_token_quotes(t_data *data, int *i, enum e_type type);
