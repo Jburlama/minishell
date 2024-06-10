@@ -6,7 +6,7 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 18:35:46 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/06/10 20:23:44 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/06/10 20:43:51 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,13 @@ typedef struct s_token
 	struct s_token	*next;
 }	t_token;
 
+typedef struct s_pipe
+{
+	enum e_type		type;
+	void			*left;
+	void			*right;
+}	t_pipe;
+
 typedef struct s_redir
 {
 	enum e_type		type;
@@ -78,6 +85,11 @@ typedef struct s_data
 
 void	clear_tree(void	*root);
 
+// create_tree.c
+void	create_tree(t_data *data);
+void	*parse_pipe(t_token **tokens);
+void	*construct_pipe(void *l, void *r);
+
 // construct.c
 void	*construct_redir(void	*subnode, t_token **tokens);
 t_exec	*t_exec_fill(t_exec **exec, t_token *token);
@@ -85,9 +97,6 @@ t_exec	*t_exec_fill(t_exec **exec, t_token *token);
 // parse_tree.c
 void	*parse_exec(t_token **tokens);
 void	*parse_redir(void *root, t_token **tokens);
-
-// create_tree.c
-void	create_tree(t_data *data);
 
 // token_list_quotes.c
 void	add_token_quotes(t_data *data, int *i, enum e_type type);

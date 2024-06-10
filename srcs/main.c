@@ -6,7 +6,7 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 17:32:03 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/06/10 20:23:40 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/06/10 21:04:20 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ int	main(void)
 		// clear_list(&data.head);
 		// continue ;
 		create_tree(&data);
-		clear_list(&data.head);
 		print_tree(data.root);
 		clear_tree(data.root);
 	}
@@ -40,6 +39,7 @@ void	print_tree(void	*root)
 {
 	t_exec	*exec;
 	t_redir	*redir;
+	t_pipe	*pipe;
 
 	if (!root)
 		return ;
@@ -49,9 +49,19 @@ void	print_tree(void	*root)
 		printf("type: %i | args: %s\n", exec->type, exec->args);
 		return ;
 	}
-	redir = root;
-	printf("type: %i | file_type: %i | file: %s\n", redir->type, redir->file_type, redir->file);
-	print_tree(redir->down);
+	else if (((t_redir *)root)->type == REDIR)
+	{
+		redir = root;
+		printf("type: %i | file_type: %i | file: %s\n", redir->type, redir->file_type, redir->file);
+		print_tree(redir->down);
+	}
+	else if (((t_redir *)root)->type == PIPE)
+	{
+		pipe = root;
+		printf("type: %i\n", pipe->type);
+		print_tree(pipe->left);
+		print_tree(pipe->right);
+	}
 }
 
 void	clear_tree(void	*root)
@@ -66,6 +76,12 @@ void	clear_tree(void	*root)
 	{
 		free(((t_redir *)root)->file);
 		clear_tree(((t_redir *)root)->down);
+		free(root);
+	}
+	else if (((t_pipe *)root)->type == PIPE)
+	{
+		clear_tree(((t_pipe *)root)->left);
+		clear_tree(((t_pipe *)root)->right);
 		free(root);
 	}
 }
