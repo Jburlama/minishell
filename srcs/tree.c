@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../minishell.h"
+#include "../minishell.h"
 
 void	create_tree(t_data *data)
 {
@@ -93,4 +93,3 @@ t_exec	*t_exec_fill(t_exec **exec, t_token *token)
 		return (NULL);
 	return (*exec);
 }
-
