@@ -27,7 +27,8 @@ void	create_token_word(t_data *data, int *i, enum e_type type)
 
 	j = *i;
 	len = 0;
-	while (ft_isprint(rl_line_buffer[j]) && rl_line_buffer[j] != 32)
+	while (ft_isprint(rl_line_buffer[j]) && rl_line_buffer[j] != 32
+		&& !is_special(rl_line_buffer[j]))
 	{
 		j++;
 		len++;
@@ -39,7 +40,8 @@ void	create_token_word(t_data *data, int *i, enum e_type type)
 	if (!data->head->content)
 		panic("calloc faild!\n", data);
 	j = 0;
-	while (ft_isprint(rl_line_buffer[*i]) && rl_line_buffer[*i] != 32)
+	while (ft_isprint(rl_line_buffer[*i]) && rl_line_buffer[*i] != 32
+		&& !is_special(rl_line_buffer[*i]))
 		data->head->content[j++] = rl_line_buffer[(*i)++];
 	data->head->type = type;
 	data->tail = data->head;

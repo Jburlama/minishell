@@ -6,7 +6,11 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 18:35:46 by Jburlama          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/06/08 13:39:04 by vbritto-         ###   ########.fr       */
+=======
+/*   Updated: 2024/06/10 20:43:51 by Jburlama         ###   ########.fr       */
+>>>>>>> 6ffb826c13e6aeec3b51a4c5a33eefe9104241c3
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,21 +47,61 @@ enum e_type
 	IO,
 	I,
 	O,
+	EXEC,
+	REDIR,
+	PIPE,
 };
 
 typedef struct s_token
 {
+	enum e_type		type;
 	char			*content;
 	char			**env;
 	struct s_token	*next;
-	enum e_type		type;
 }	t_token;
+
+typedef struct s_pipe
+{
+	enum e_type		type;
+	void			*left;
+	void			*right;
+}	t_pipe;
+
+typedef struct s_redir
+{
+	enum e_type		type;
+	enum e_type		file_type;
+	char			*file;
+	void			*down;
+}	t_redir;
+
+typedef struct s_exec
+{
+	enum e_type		type;
+	char			*args;
+}	t_exec;
 
 typedef struct s_data
 {
 	t_token	*head;
 	t_token	*tail;
+	void	*root;
 }	t_data;
+
+void	clear_tree(void	*root);
+
+// create_tree.c
+void	create_tree(t_data *data);
+void	*parse_pipe(t_token **tokens);
+void	*construct_pipe(void *l, void *r);
+
+// construct.c
+void	*construct_redir(void	*subnode, t_token **tokens);
+t_exec	*t_exec_fill(t_exec **exec, t_token *token);
+
+// parse_tree.c
+void	*parse_exec(t_token **tokens);
+void	*parse_redir(void *root, t_token **tokens);
 
 // token_list_quotes.c
 void	add_token_quotes(t_data *data, int *i, enum e_type type);

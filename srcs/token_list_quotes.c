@@ -51,10 +51,7 @@ int	create_token_quotes2(t_data *data, int *i, char q, int len)
 {
 	data->tail = data->head;
 	if (rl_line_buffer[*i] == q)
-	{
-		(*i)++;
 		return (1);
-	}
 	if (rl_line_buffer[(*i)] != q)
 		new_promp_for_quotes(data, q, len);
 	(*i) += len;
