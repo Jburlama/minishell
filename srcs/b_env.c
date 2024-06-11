@@ -1,30 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   b_env.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/26 17:32:03 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/06/11 12:45:38 by vbritto-         ###   ########.fr       */
+/*   Created: 2024/06/08 13:19:30 by vbritto-          #+#    #+#             */
+/*   Updated: 2024/06/08 16:25:54 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	main(int argc, char **argv, char **envp)
+void	start_env(char **envp, char **my_env)
 {
-	t_data	data;
+	int	i;
+	int	j;
 
-	handle_signal();
-	ft_memset(&data, 0, sizeof(data));
-	while (42)
+	i = 0;
+	j = 0;
+	while (envp[i] != NULL)
+		i++;
+	my_env = ft_calloc(i, sizeof(char *));
+	if (!my_env)
+		return (NULL);
+	i = 0;
+	while (envp[i] != NULL)
 	{
-		get_line();
-		tokenize(&data);
-		for (t_token *ptr = data.head; ptr; ptr = ptr->next)
-			printf("content: %s | type %i\n", ptr->content, ptr->type);
-		clear_list(&data.head);
+		my_env[j] = ft_calloc(ft_strlen(envp[i]), sizeof(char));
+		if (!my_env[j])
+			return (NULL);
+		ft_strlcpy(my_env[j], envp[i], ft_strlen(envp[i]));
+		i++;
+		j++;
 	}
-	free(rl_line_buffer);
 }
+

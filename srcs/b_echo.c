@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 12:41:35 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/06/05 17:11:06 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/06/08 13:15:39 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@ char	*get_dollar(char *str)
 	char	*dollar;
 	int		i;
 
-	i = 0;
+	i = 1;
 	while(str[i] != " ")
 		i++;
-	dollar = malloc((char*)  i + 1);
+	dollar = ft_calloc(sizeof(char),  (i + 1));
 	if (!dollar)
 		return (NULL);
 	while(i >= 0)
@@ -28,36 +28,32 @@ char	*get_dollar(char *str)
 		*dollar++ = *str++;
 		i--;
 	}
-	*dollar++ = '\0';
 	return (dollar);
 }
 
-void	handle_type3(char *str)
+void	handle_type3(char *str, int type)
 {
 	char	*dollar;
-	int		i;
 
-	i = 0;
-	if(*str == 34)
+	if(type == DQUOTES)
 	{
-		str++;
-		while (*str != '\0' && *str != 34)
+		while (*str != '\0')
 		{
-			if (*str == "$")
+			if (*str == '$')
 				{
 					dollar = expand(get_dollar(str));
 					write(1, &dollar, ft_strlen(dollar));
 					free(dollar); 
-					while (*str != " ")
+					while (*str != ' ')
 						str++;
 				}
 			write(1, &str, 1);
+			str++;
 		}
 	}
-	if(*str == 39)
+	if(type == SQUOTES)
 	{	
-		str++;
-		write(1, &str, (ft_strlen(str) - 1));
+		write(1, &str, (ft_strlen(str)));
 	}
 }
 
@@ -70,9 +66,9 @@ void	handle_type2(char *str)
 	all_args = ft_split(str, " ");
 	while (all_args[i] != NULL)
 	{	
-		if (all_args[i][0] == "$")
+		if (all_args[i][0] == '$')
 			all_args[i] = expand(all_args[i]);
-		arg_final = ft_strjoin(all_args[i], (char *)" ");
+		arg_final = ft_strjoin(all_args[i], (char *)' ');
 		i++;
 	}
 	write (1, &arg_final, ft_strlen(arg_final));
@@ -87,20 +83,20 @@ int	echo(t_token *token)
 	bool	n;
 
 	n = false;
-	i = 0;
-	if (token->content[0] == "-" && token->content[1] == "n")
+	if (token->content[0] == '-' && token->content[1] == 'n')
 	{
-		while (token->content[i] == "n")
+		i = 2;
+		while (token->content[i] == 'n')
 			i++;
-		if (token->content[i] != " ")
+		if (token->content[i] != ' ')
 			n = true;
 	}
 	while (token->content && token->type != SPECIAL)
 	{
-		if (token->type == 2)
+		if (token->type == WORD)
 			handle_type2(*token->content);
-		if (token->type == 3)
-			handle_type3(*token->content);
+		if (token->type == DQUOTES || token->type == SQUOTES)
+			handle_type3(*token->content, token->type);
 	}
 	if (n == false)
 		write(1, '\n', 1);

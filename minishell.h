@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 18:35:46 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/05/30 21:00:28 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/06/08 13:39:04 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ enum e_type
 typedef struct s_token
 {
 	char			*content;
+	char			**env;
 	struct s_token	*next;
 	enum e_type		type;
 }	t_token;
