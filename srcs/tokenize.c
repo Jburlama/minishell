@@ -6,7 +6,7 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 19:02:06 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/06/10 20:57:46 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/06/11 18:47:06 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,64 +44,32 @@ void	add_token(t_data *data, int *i, enum e_type type)
 	if (type == SPECIAL)
 	{
 		add_token_special(data, i, type);
-		if (rl_line_buffer[(*i) + 1]
-			&& is_white_space(rl_line_buffer[(*i) + 1]))
-		{
-			while (rl_line_buffer[(*i) + 1]
-				&& is_white_space(rl_line_buffer[(*i) + 1]))
-				(*i)++;
-		}
+		jump_white_spaces(i);
 	}
 	else if (type == WORD)
 		add_token_word(data, i, type);
 	else if (type == DQUOTES || type == SQUOTES)
 		add_token_quotes(data, i, type);
 	else if (type == IO)
-	{
-		if (*data->tail->content == '<')
-			add_token_word(data, i, I);
-		else if (*data->tail->content == '>')
-			add_token_word(data, i, O);
-	}
+		add_token_io(data, i);
 	else if (type == WHITE_SPACE)
 		add_token_white_space(data, i, type);
 }
 
-void	clear_list(t_token	**head)
+void	add_token_io(t_data *data, int *i)
 {
-	t_token	*temp;
-
-	temp = *head;
-	while (temp)
+	if (*data->tail->content == '<')
 	{
-		*head = (*head)->next;
-		free(temp->content);
-		free(temp);
-		temp = *head;
+		if (ft_strlen(data->tail->content) == 2)
+			add_token_word(data, i, HERE_DOC);
+		else
+			add_token_word(data, i, I);
 	}
-	*head = NULL;
-}
-
-bool	is_special(char c)
-{
-	char	*special;
-	int		i;
-
-	special = "|<>";
-	i = 0;
-	while (special[i])
+	else if (*data->tail->content == '>')
 	{
-		if (c == special[i])
-			return (true);
-		i++;
+		if (ft_strlen(data->tail->content) == 2)
+			add_token_word(data, i, APEND);
+		else
+			add_token_word(data, i, O);
 	}
-	return (false);
-}
-
-bool	is_quote(char c)
-{
-	if (c == 34 || c == 39)
-		return (true);
-	else
-		return (false);
 }
