@@ -14,7 +14,10 @@
 
 void	panic(char *msg, t_data *data)
 {
-	clear_list(&data->head);
+	if (data->head)
+		clear_list(&data->head);
+	if (data->root)
+		clear_tree(&data->root);
 	perror(msg);
 	exit(errno);
 }

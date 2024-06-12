@@ -6,7 +6,7 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 20:20:43 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/06/10 21:03:41 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/06/11 20:47:36 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ void	*parse_exec(t_token **tokens)
 	while ((*tokens) && *(*tokens)->content != '|')
 	{
 		root = parse_redir(root, tokens);
+		if (root == NULL)
+			return (NULL);
 		if (!(*tokens))
 			break ;
 		if (t_exec_fill(&exec, *tokens) == NULL)
@@ -55,10 +57,14 @@ void	*parse_pipe(t_token **tokens)
 	void	*root;
 
 	root = parse_exec(tokens);
+	if (root == NULL)
+		return (NULL);
 	if (*tokens && *(*tokens)->content == '|')
 	{
 		(*tokens) = (*tokens)->next;
 		root = construct_pipe(root, parse_pipe(tokens));
+		if (root == NULL)
+			return (NULL);
 	}
 	return (root);
 }

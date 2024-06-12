@@ -6,7 +6,7 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 17:32:03 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/06/10 21:06:23 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/06/11 19:34:13 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,12 @@ int	main(void)
 	while (42)
 	{
 		get_line();
+
 		tokenize(&data);
-		for (t_token *ptr = data.head; ptr; ptr = ptr->next)
-			printf("content: %s | type %i\n", ptr->content, ptr->type);
-		clear_list(&data.head);
-		continue ;
+		// for (t_token *ptr = data.head; ptr; ptr = ptr->next)
+		// 	printf("content: %s | type %i\n", ptr->content, ptr->type);
+		// clear_list(&data.head);
+		// continue ;
 		create_tree(&data);
 		print_tree(data.root);
 		clear_tree(data.root);
@@ -66,15 +67,19 @@ void	print_tree(void	*root)
 
 void	clear_tree(void	*root)
 {
-	if (((t_exec *)root)->type == EXEC)
+	if (root == NULL)
+		return ;
+	else if (((t_exec *)root)->type == EXEC)
 	{
-		free(((t_exec *)root)->args);
+		if (((t_exec *)root)->args)
+			free(((t_exec *)root)->args);
 		free(root);
 		return ;
 	}
 	else if (((t_redir *)root)->type == REDIR)
 	{
-		free(((t_redir *)root)->file);
+		if (((t_redir *)root)->file)
+			free(((t_redir *)root)->file);
 		clear_tree(((t_redir *)root)->down);
 		free(root);
 	}
