@@ -6,11 +6,51 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 20:22:39 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/06/11 20:47:40 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/06/12 22:11:51 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+t_exec	*construct_exec(void)
+{
+	t_exec	*node;
+
+	node = ft_calloc(sizeof(*node), 1);
+	if (node == NULL)
+		return (NULL);
+	node->args = ft_calloc(sizeof(node->args), 1);
+	if (node->args == NULL)
+		return (NULL);
+	node->type = EXEC;
+	return (node);
+}
+
+char **add_to_args(char **args, char *content)
+{
+	char	**new_args;
+	int		i;
+
+	i = 0;
+	while (args[i])
+		i++;
+	new_args = ft_calloc(sizeof(new_args), i + 2);
+	if (new_args == NULL)
+		return (clear_args(args), clear_args(new_args), NULL);
+	i = 0;
+	while (args[i])
+	{
+		new_args[i] = ft_strdup(args[i]);
+		if (new_args[i] == NULL)
+			return (clear_args(args), clear_args(new_args), NULL);
+		i++;
+	}
+	new_args[i] = ft_strdup(content);
+	if (new_args[i] == NULL)
+		return (clear_args(args), clear_args(new_args), NULL);
+	clear_args(args);
+	return (new_args);
+}
 
 void	*construct_redir(void	*subnode, t_token **tokens)
 {
@@ -27,23 +67,6 @@ void	*construct_redir(void	*subnode, t_token **tokens)
 	ret->down = subnode;
 	(*tokens) = (*tokens)->next;
 	return (ret);
-}
-
-t_exec	*t_exec_fill(t_exec **exec, t_token *token)
-{
-	char	*str;
-
-	if (!(*exec)->args)
-		str = ft_strdup(token->content);
-	else
-	{
-		str = ft_strjoin((*exec)->args, token->content);
-		free((*exec)->args);
-	}
-	(*exec)->args = str;
-	if ((*exec)->args == NULL)
-		return (NULL);
-	return (*exec);
 }
 
 void	*construct_pipe(void *l, void *r)

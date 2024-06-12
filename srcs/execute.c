@@ -1,23 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   panic.c                                            :+:      :+:    :+:   */
+/*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/31 16:08:55 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/06/12 20:56:00 by Jburlama         ###   ########.fr       */
+/*   Created: 2024/06/12 17:54:50 by Jburlama          #+#    #+#             */
+/*   Updated: 2024/06/12 20:24:53 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	panic(char *msg, t_data *data)
+void	execute(t_data *data)
 {
-	if (data->head)
-		clear_list(&data->head);
-	if (data->root)
-		clear_tree(&data->root);
-	perror(msg);
-	exit(errno);
+	rumcmd(data->root);
+}
+
+void	rumcmd(void *root)
+{
+	if (((t_exec *)root)->type == EXEC)
+		rumexec(root);
+}
+
+void	rumexec(t_exec *node)
+{
+	char	*pathname;
+	char	**argv;
+
+	
 }

@@ -6,11 +6,21 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 17:18:02 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/06/11 18:46:44 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/06/12 17:31:33 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+pid_t	save_fork(t_data *data)
+{
+	pid_t	pid;
+
+	pid = fork();
+	if (pid == -1)
+		panic("Error calling fork", data);
+	return (pid);
+}
 
 void	jump_white_spaces(int *i)
 {
@@ -21,21 +31,6 @@ void	jump_white_spaces(int *i)
 			&& is_white_space(rl_line_buffer[(*i) + 1]))
 			(*i)++;
 	}
-}
-
-void	clear_list(t_token	**head)
-{
-	t_token	*temp;
-
-	temp = *head;
-	while (temp)
-	{
-		*head = (*head)->next;
-		free(temp->content);
-		free(temp);
-		temp = *head;
-	}
-	*head = NULL;
 }
 
 bool	is_special(char c)

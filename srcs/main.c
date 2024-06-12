@@ -6,7 +6,7 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 17:32:03 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/06/11 19:34:13 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/06/12 22:14:01 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,30 @@
 
 void	print_tree(void	*root);
 
-int	main(void)
+char	**ev;
+
+int	main(int argc, char *argv[], char *env[])
 {
 	t_data	data;
 
+	// ev = env;
+	(void)argc;
+	(void)argv;
+	(void)env;
 	handle_signal();
 	ft_memset(&data, 0, sizeof(data));
 	while (42)
 	{
 		get_line();
-
 		tokenize(&data);
-		// for (t_token *ptr = data.head; ptr; ptr = ptr->next)
-		// 	printf("content: %s | type %i\n", ptr->content, ptr->type);
-		// clear_list(&data.head);
-		// continue ;
+		for (t_token *ptr = data.head; ptr; ptr = ptr->next)
+			printf("content: %s | type %i\n", ptr->content, ptr->type);
+		clear_list(&data.head);
+		continue ;
 		create_tree(&data);
+		// if (save_fork(&data) == 0)
+		// 	execute(&data);
+		// wait(NULL);
 		print_tree(data.root);
 		clear_tree(data.root);
 	}
@@ -47,7 +55,14 @@ void	print_tree(void	*root)
 	if (((t_exec *)root)->type == EXEC)
 	{
 		exec = root;
-		printf("type: %i | args: %s\n", exec->type, exec->args);
+		printf("type: %i | args: ", exec->type);
+		int i = 0;
+		while (exec->args[i])
+		{
+			printf("%s; ", exec->args[i]);
+			i++;
+		}
+		printf("\n");
 		return ;
 	}
 	else if (((t_redir *)root)->type == REDIR)
@@ -62,31 +77,5 @@ void	print_tree(void	*root)
 		printf("type: %i\n", pipe->type);
 		print_tree(pipe->left);
 		print_tree(pipe->right);
-	}
-}
-
-void	clear_tree(void	*root)
-{
-	if (root == NULL)
-		return ;
-	else if (((t_exec *)root)->type == EXEC)
-	{
-		if (((t_exec *)root)->args)
-			free(((t_exec *)root)->args);
-		free(root);
-		return ;
-	}
-	else if (((t_redir *)root)->type == REDIR)
-	{
-		if (((t_redir *)root)->file)
-			free(((t_redir *)root)->file);
-		clear_tree(((t_redir *)root)->down);
-		free(root);
-	}
-	else if (((t_pipe *)root)->type == PIPE)
-	{
-		clear_tree(((t_pipe *)root)->left);
-		clear_tree(((t_pipe *)root)->right);
-		free(root);
 	}
 }

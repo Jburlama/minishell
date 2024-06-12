@@ -6,7 +6,7 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 20:20:43 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/06/11 20:47:36 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/06/12 22:13:09 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,15 @@
 
 void	*parse_exec(t_token **tokens)
 {
+	int		i;
 	t_exec	*exec;
 	void	*root;
 
-	exec = ft_calloc(sizeof(*exec), 1);
+	exec = construct_exec();
 	if (exec == NULL)
 		return (NULL);
-	exec->type = EXEC;
 	root = exec;
+	i = 0;
 	while ((*tokens) && *(*tokens)->content != '|')
 	{
 		root = parse_redir(root, tokens);
@@ -29,7 +30,8 @@ void	*parse_exec(t_token **tokens)
 			return (NULL);
 		if (!(*tokens))
 			break ;
-		if (t_exec_fill(&exec, *tokens) == NULL)
+		exec->args = add_to_args(exec->args, (*tokens)->content);
+		if (exec->args == NULL)
 			return (NULL);
 		(*tokens) = (*tokens)->next;
 	}

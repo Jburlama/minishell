@@ -6,7 +6,7 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 18:35:46 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/06/11 19:03:43 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/06/12 21:56:04 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ typedef struct s_redir
 typedef struct s_exec
 {
 	enum e_type		type;
-	char			*args;
+	char			**args;
 }	t_exec;
 
 typedef struct s_data
@@ -85,16 +85,19 @@ typedef struct s_data
 	void	*root;
 }	t_data;
 
-void	clear_tree(void	*root);
+void	execute(t_data *data);
+void	rumcmd(void *root);
+void	rumexec(t_exec *node);
 
 // create_tree.c
 void	create_tree(t_data *data);
 void	*parse_pipe(t_token **tokens);
-void	*construct_pipe(void *l, void *r);
 
 // construct.c
+t_exec	*construct_exec(void);
 void	*construct_redir(void	*subnode, t_token **tokens);
-t_exec	*t_exec_fill(t_exec **exec, t_token *token);
+char	**add_to_args(char **args, char *content);
+void	*construct_pipe(void *l, void *r);
 
 // parse_tree.c
 void	*parse_exec(t_token **tokens);
@@ -129,8 +132,8 @@ void	add_token(t_data *data, int *i, enum e_type type);
 void	add_token_io(t_data *data, int *i);
 
 // utils.c
+pid_t	save_fork(t_data *data);
 void	jump_white_spaces(int *i);
-void	clear_list(t_token	**head);
 bool	is_special(char c);
 bool	is_quote(char c);
 
@@ -141,6 +144,11 @@ void	signal_handler(int sig);
 // get_line.c
 void	get_line(void);
 bool	is_white_space(char c);
+
+// clear.c
+void	clear_list(t_token	**head);
+void	clear_tree(void	*root);
+void	clear_args(char **args);
 
 // panic.c
 void	panic(char *msg, t_data *data);
