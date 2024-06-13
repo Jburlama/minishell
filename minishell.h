@@ -83,11 +83,15 @@ typedef struct s_data
 	t_token	*head;
 	t_token	*tail;
 	void	*root;
+	char	**env;
 }	t_data;
 
+// execute.c
 void	execute(t_data *data);
-void	rumcmd(void *root);
-void	rumexec(t_exec *node);
+void	rumcmd(void *root, t_data *data);
+void	rumexec(t_exec *node, t_data *data);
+char	*get_pathname(char	*name, char **env);
+char	**get_paths(char **env);
 
 // create_tree.c
 void	create_tree(t_data *data);
@@ -133,6 +137,7 @@ void	add_token_io(t_data *data, int *i);
 
 // utils.c
 pid_t	save_fork(t_data *data);
+bool	is_all_white(char	*str);
 void	jump_white_spaces(int *i);
 bool	is_special(char c);
 bool	is_quote(char c);

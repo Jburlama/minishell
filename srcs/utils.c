@@ -22,6 +22,20 @@ pid_t	save_fork(t_data *data)
 	return (pid);
 }
 
+bool	is_all_white(char	*str)
+{
+	int	i;
+
+	i = 0;
+	while (str && str[i])
+	{
+		if (is_white_space(str && str[i]))
+			return (true);
+		i++;
+	}
+	return (false);
+}
+
 void	jump_white_spaces(int *i)
 {
 	if (rl_line_buffer[(*i) + 1]

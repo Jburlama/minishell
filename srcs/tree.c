@@ -16,9 +16,14 @@ void	create_tree(t_data *data)
 {
 	t_token	*tokens_ptr;
 
-	tokens_ptr = data->head;
-	data->root = parse_pipe(&tokens_ptr);
-	if (data->root == NULL)
-		panic("error calling parse_exec", data);
+	if (data->head)
+	{
+		tokens_ptr = data->head;
+		data->root = parse_pipe(&tokens_ptr);
+		if (data->root == NULL)
+			panic("error parsinf tree\n", data);
+	}
+	else
+		data->root = NULL;
 	clear_list(&data->head);
 }

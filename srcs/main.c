@@ -14,31 +14,31 @@
 
 void	print_tree(void	*root);
 
-char	**ev;
-
 int	main(int argc, char *argv[], char *env[])
 {
 	t_data	data;
 
-	// ev = env;
 	(void)argc;
 	(void)argv;
-	(void)env;
 	handle_signal();
 	ft_memset(&data, 0, sizeof(data));
+	data.env = env;
 	while (42)
 	{
 		get_line();
 		tokenize(&data);
-		for (t_token *ptr = data.head; ptr; ptr = ptr->next)
-			printf("content: %s | type %i\n", ptr->content, ptr->type);
-		clear_list(&data.head);
-		continue ;
+
+		// for (t_token *ptr = data.head; ptr; ptr = ptr->next)
+		// 	printf("content: %s | type %i\n", ptr->content, ptr->type);
+		// clear_list(&data.head);
+		// continue ;
+
 		create_tree(&data);
-		// if (save_fork(&data) == 0)
-		// 	execute(&data);
-		// wait(NULL);
-		print_tree(data.root);
+		if (save_fork(&data) == 0)
+			execute(&data);
+		wait(NULL);
+
+		// print_tree(data.root);
 		clear_tree(data.root);
 	}
 	free(rl_line_buffer);
@@ -52,7 +52,7 @@ void	print_tree(void	*root)
 
 	if (!root)
 		return ;
-	if (((t_exec *)root)->type == EXEC)
+	else if (((t_exec *)root)->type == EXEC)
 	{
 		exec = root;
 		printf("type: %i | args: ", exec->type);

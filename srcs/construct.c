@@ -26,7 +26,7 @@ t_exec	*construct_exec(void)
 	return (node);
 }
 
-char **add_to_args(char **args, char *content)
+char	**add_to_args(char **args, char *content)
 {
 	char	**new_args;
 	int		i;

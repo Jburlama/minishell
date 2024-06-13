@@ -26,10 +26,13 @@ void	*parse_exec(t_token **tokens)
 	while ((*tokens) && *(*tokens)->content != '|')
 	{
 		root = parse_redir(root, tokens);
-		if (root == NULL)
-			return (NULL);
-		if (!(*tokens))
+		if (!(*tokens) || root == NULL)
 			break ;
+		if ((*tokens)->type == WHITE_SPACE)
+		{
+			(*tokens) = (*tokens)->next;
+			continue ;
+		}
 		exec->args = add_to_args(exec->args, (*tokens)->content);
 		if (exec->args == NULL)
 			return (NULL);
