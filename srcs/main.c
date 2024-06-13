@@ -5,29 +5,37 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/11 15:54:56 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/06/11 15:55:01 by vbritto-         ###   ########.fr       */
+/*   Created: 2024/06/12 16:25:32 by vbritto-          #+#    #+#             */
+/*   Updated: 2024/06/13 15:33:18 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int	status_exit;
 
 void	print_tree(void	*root);
 
 int	main(int argc, char **argv, char **envp)
 {
 	t_data	data;
+	(void)argc;
+	(void)argv;
+	(void)envp;
 
 	handle_signal();
 	ft_memset(&data, 0, sizeof(data));
 	while (42)
 	{
 		get_line();
+		if(check(rl_line_buffer) == 2) 
+			continue;
 		tokenize(&data);
-		// for (t_token *ptr = data.head; ptr; ptr = ptr->next)
-		// 	printf("content: %s | type %i\n", ptr->content, ptr->type);
-		// clear_list(&data.head);
-		// continue ;
+		prepare_token(&data);
+		for (t_token *ptr = data.head; ptr; ptr = ptr->next)
+			printf("content: %s | type %i\n", ptr->content, ptr->type);
+		clear_list(&data.head);
+		continue ;
 		create_tree(&data);
 		print_tree(data.root);
 		clear_tree(data.root);

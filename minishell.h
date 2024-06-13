@@ -5,12 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/26 18:35:46 by Jburlama          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2024/06/08 13:39:04 by vbritto-         ###   ########.fr       */
-=======
-/*   Updated: 2024/06/10 20:43:51 by Jburlama         ###   ########.fr       */
->>>>>>> 6ffb826c13e6aeec3b51a4c5a33eefe9104241c3
+/*   Created: 2024/06/12 16:25:22 by vbritto-          #+#    #+#             */
+/*   Updated: 2024/06/13 15:29:40 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +33,8 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 
+extern int	status_exit;
+
 enum e_type
 {
 	WHITE_SPACE,
@@ -47,6 +45,8 @@ enum e_type
 	IO,
 	I,
 	O,
+	APEND,
+	HERE_DOC,
 	EXEC,
 	REDIR,
 	PIPE,
@@ -56,7 +56,6 @@ typedef struct s_token
 {
 	enum e_type		type;
 	char			*content;
-	char			**env;
 	struct s_token	*next;
 }	t_token;
 
@@ -86,6 +85,7 @@ typedef struct s_data
 	t_token	*head;
 	t_token	*tail;
 	void	*root;
+	char	**env;
 }	t_data;
 
 void	clear_tree(void	*root);
@@ -114,8 +114,13 @@ void	new_promp_for_quotes(t_data *data, char q, int len);
 void	tokenize_continue(t_data *data, char q, int *i);
 void	promp_quotes(char q);
 
-// tokens_list_words.c
+// tokens_list_specil.c
 void	add_token_special(t_data *data, int *i, enum e_type type);
+void	create_token_special(t_data *data, int *i, enum e_type type);
+void	create_token_special2(t_data *data, enum e_type type);
+void	append_token_special(t_data *data, int *i, enum e_type type);
+
+// tokens_list_words.c
 void	add_token_word(t_data *data, int *i, enum e_type type);
 void	append_token_word(t_data *data, int *i, enum e_type type);
 void	create_token_word(t_data *data, int *i, enum e_type type);
@@ -124,6 +129,10 @@ void	add_token_white_space(t_data *data, int *i, enum e_type type);
 // tokenize.c
 void	tokenize(t_data *data);
 void	add_token(t_data *data, int *i, enum e_type type);
+void	add_token_io(t_data *data, int *i);
+
+// utils.c
+void	jump_white_spaces(int *i);
 void	clear_list(t_token	**head);
 bool	is_special(char c);
 bool	is_quote(char c);
@@ -138,5 +147,18 @@ bool	is_white_space(char c);
 
 // panic.c
 void	panic(char *msg, t_data *data);
+
+// check.c
+
+int		check(char *str);
+void	check_redirect(char *str);
+void	check_quotes(char *str);
+void	ft_exit(char *str);
+void	check_heredoc(char *str);
+
+// prepare_token.c
+
+void	prepare_token(t_data *data);
+char	*expand(char *env_name, t_data *data);
 
 #endif
