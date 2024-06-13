@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 13:59:57 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/06/13 18:53:49 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/06/13 19:28:18 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,15 @@ void	prepare_token(t_data *data)
 	char 	*new_content;
 	t_token	*tmp;
 	t_token *keep;
+	int		first_quote;
 
 	tmp = data->head;
-	keep = tmp;
+	first_quote = 0;
+	if (tmp->type == DQUOTES || tmp->type == SQUOTES)
+	{
+		keep = tmp;
+		first_quote = 1;
+	}
 	while (tmp->next)
 	{
 		if ((tmp->type != DQUOTES && tmp->type != SQUOTES) &&
@@ -54,27 +60,37 @@ void	prepare_token(t_data *data)
 		if ((tmp->type == DQUOTES || tmp->type == SQUOTES)
 			&& (tmp->next->type == DQUOTES || tmp->next->type == SQUOTES))
 		{
-			if (ft_tokensize(tmp) == 2)
+			new_content = ft_strjoin(tmp->content, tmp->next->content);
+			if (first_quote == 1)
 			{
-				new_content = ft_strjoin(tmp->content, tmp->next->content);
-				free(tmp->content);
-				tmp->content = new_content;
-				free(tmp->next->content);
-				free(tmp->next);
-				tmp->next = NULL;
+				if (!tmp->next->next)
+				{
+					free(tmp->content);
+					tmp->content = new_content;
+					free(tmp->next->content);
+					free(tmp->next);
+					tmp->next = NULL;
+				}
+				else
+				{
+					free(tmp->content);
+					tmp->content = new_content;
+					tmp->next = tmp->next->next;
+					free(tmp->next->content);
+					free(tmp->next);
+					tmp = tmp->next;
+				}
 			}
 			else
 			{
-				new_content = ft_strjoin(tmp->content, tmp->next->content);
 				free(tmp->next->content);
 				tmp->next->content = new_content;
 				keep->next = tmp->next;
 				free(tmp->content);
 				free(tmp);
 				tmp = keep;
+				tmp = tmp->next;
 			}
 		}
-		else
-			tmp = tmp->next;
 	}
 }
