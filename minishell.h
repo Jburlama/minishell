@@ -89,6 +89,7 @@ typedef struct s_data
 // execute.c
 void	execute(t_data *data);
 void	runcmd(void *root, t_data *data);
+void	read_input(t_redir *root, t_data *data);
 void	runpipe(t_pipe *root, t_data *data);
 
 // rumredir.c

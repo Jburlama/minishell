@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../minishell.h"
+#include <fcntl.h>
 
 void	execute(t_data *data)
 {
@@ -46,18 +47,26 @@ void	runredir(t_redir *root, t_data *data)
 		close(fd);
 	}
 	else if (root->file_type == I)
+		read_input(root, data);
+	runcmd(((t_redir *)root)->down, data);
+}
+
+void	read_input(t_redir *root, t_data *data)
+{
+	int	fd;
+
+	if (access(root->file, F_OK) == 0)
 	{
-		if (access(root->file, F_OK) == 0)
-		{
-			fd = open(root->file, O_RDONLY);
-			dup2(fd, STDIN_FILENO);
-			close(fd);
-		}
-		else
-			perror(root->file);
+		fd = open(root->file, O_RDWR);
+		dup2(fd, STDIN_FILENO);
+		close(fd);
+	}
+	else
+	{
+		perror(root->file);
+		clear_tree(data->root);
 		exit(errno);
 	}
-	runcmd(((t_redir *)root)->down, data);
 }
 
 void	runpipe(t_pipe *root, t_data *data)
