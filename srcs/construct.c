@@ -6,7 +6,7 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 20:22:39 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/06/14 17:27:49 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/06/14 18:39:29 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ char	**add_to_args(char **args, char *content)
 void	*construct_redir(void	*root, t_token **tokens)
 {
 	t_redir	*ptr;
-	t_redir *new;
+	t_redir	*new;
 
 	new = ft_calloc(sizeof(*new), 1);
 	if (new == NULL)

@@ -6,13 +6,13 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 16:04:55 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/06/14 17:42:56 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/06/14 18:22:45 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	rumexec(t_exec *node, t_data *data)
+void	runexec(t_exec *node, t_data *data)
 {
 	char	*pathname;
 
