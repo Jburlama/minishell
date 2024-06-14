@@ -6,7 +6,7 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:54:50 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/06/14 18:38:49 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/06/14 18:41:41 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,28 @@ void	runcmd(void *root, t_data *data)
 		runredir(root, data);
 	else if (((t_pipe *)root)->type == PIPE)
 		runpipe(root, data);
+}
+
+void	runredir(t_redir *root, t_data *data)
+{
+	int		fd;
+
+	if (root->file_type == O)
+	{
+		fd = open(root->file, O_CREAT | O_TRUNC | O_RDWR, S_IRWXU);
+		dup2(fd, STDOUT_FILENO);
+	}
+	else if (root->file_type == APEND)
+	{
+		fd = open(root->file, O_CREAT | O_APPEND | O_RDWR, S_IRWXU);
+		dup2(fd, STDOUT_FILENO);
+	}
+	else if (root->file_type == I)
+	{
+		fd = open(root->file, O_CREAT | O_RDWR, S_IRWXU);
+		dup2(fd, STDIN_FILENO);
+	}
+	runcmd(((t_redir *)root)->down, data);
 }
 
 void	runpipe(t_pipe *root, t_data *data)
