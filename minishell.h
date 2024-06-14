@@ -6,7 +6,7 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 18:35:46 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/06/12 21:56:04 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/06/14 17:19:01 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,14 @@ typedef struct s_data
 	char	**env;
 }	t_data;
 
+// rumredir.c
+void	rumredir(void *root, t_data *data);
+
 // execute.c
 void	execute(t_data *data);
 void	rumcmd(void *root, t_data *data);
+
+// rumexrc.c
 void	rumexec(t_exec *node, t_data *data);
 char	*get_pathname(char	*name, char **env);
 char	**get_paths(char **env);

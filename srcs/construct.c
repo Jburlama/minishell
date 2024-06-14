@@ -6,7 +6,7 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 20:22:39 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/06/12 22:11:51 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/06/14 17:27:49 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,21 +52,32 @@ char	**add_to_args(char **args, char *content)
 	return (new_args);
 }
 
-void	*construct_redir(void	*subnode, t_token **tokens)
+void	*construct_redir(void	*root, t_token **tokens)
 {
-	t_redir	*ret;
+	t_redir	*ptr;
+	t_redir *new;
 
-	ret = ft_calloc(sizeof(*ret), 1);
-	if (ret == NULL)
+	new = ft_calloc(sizeof(*new), 1);
+	if (new == NULL)
 		return (NULL);
-	ret->type = REDIR;
-	ret->file_type = (*tokens)->type;
-	ret->file = ft_strdup((*tokens)->content);
-	if (ret->file == NULL)
+	new->type = REDIR;
+	new->file_type = (*tokens)->type;
+	new->file = ft_strdup((*tokens)->content);
+	if (new->file == NULL)
 		return (NULL);
-	ret->down = subnode;
+	if (((t_exec *)root)->type == EXEC)
+	{
+		new->down = root;
+		(*tokens) = (*tokens)->next;
+		return (new);
+	}
+	ptr = root;
+	while (((t_exec *)ptr->down)->type != EXEC)
+		ptr = ptr->down;
+	new->down = ptr->down;
+	ptr->down = new;
 	(*tokens) = (*tokens)->next;
-	return (ret);
+	return (root);
 }
 
 void	*construct_pipe(void *l, void *r)

@@ -6,7 +6,7 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 21:32:49 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/06/11 17:25:04 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/06/14 17:33:45 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ void	append_token_word(t_data *data, int *i, enum e_type type)
 
 	j = *i;
 	len = 0;
-	while (ft_isprint(rl_line_buffer[j]) && rl_line_buffer[j] != 32)
+	while (ft_isprint(rl_line_buffer[j]) && rl_line_buffer[j] != 32
+		&& !is_special(rl_line_buffer[j]) && !is_quote(rl_line_buffer[j]))
 	{
 		j++;
 		len++;
@@ -68,7 +69,8 @@ void	append_token_word(t_data *data, int *i, enum e_type type)
 	if (data->tail->content == NULL)
 		panic("calloc faild!\n", data);
 	j = 0;
-	while (ft_isprint(rl_line_buffer[*i]) && rl_line_buffer[*i] != 32)
+	while (ft_isprint(rl_line_buffer[*i]) && rl_line_buffer[*i] != 32
+		&& !is_special(rl_line_buffer[*i]) && !is_quote(rl_line_buffer[*i]))
 		data->tail->content[j++] = rl_line_buffer[(*i)++];
 	data->tail->type = type;
 	(*i)--;

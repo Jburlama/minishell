@@ -1,28 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execute.c                                          :+:      :+:    :+:   */
+/*   rumredir.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/12 17:54:50 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/06/14 17:28:10 by Jburlama         ###   ########.fr       */
+/*   Created: 2024/06/14 16:14:16 by Jburlama          #+#    #+#             */
+/*   Updated: 2024/06/14 17:31:45 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	execute(t_data *data)
+void	rumredir(void *root, t_data *data)
 {
-	if (data->root)
-		rumcmd(data->root, data);
-	exit(errno);
-}
+	int		out;
 
-void	rumcmd(void *root, t_data *data)
-{
-	if (((t_exec *)root)->type == EXEC)
-		rumexec(root, data);
-	else if (((t_exec *)root)->type == REDIR)
-		rumredir(root, data);
+	if (((t_redir *)root)->file_type == O)
+	{
+		out = open(((t_redir *)root)->file, O_CREAT | O_TRUNC | O_RDWR, S_IRWXU);
+		dup2(out, STDOUT_FILENO);
+	}
+	rumcmd(((t_redir *)root)->down, data);
 }
