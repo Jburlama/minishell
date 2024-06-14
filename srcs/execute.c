@@ -47,9 +47,15 @@ void	runredir(t_redir *root, t_data *data)
 	}
 	else if (root->file_type == I)
 	{
-		fd = open(root->file, O_CREAT | O_RDWR, S_IRWXU);
-		dup2(fd, STDIN_FILENO);
-		close(fd);
+		if (access(root->file, F_OK) == 0)
+		{
+			fd = open(root->file, O_RDONLY);
+			dup2(fd, STDIN_FILENO);
+			close(fd);
+		}
+		else
+			perror(root->file);
+		exit(errno);
 	}
 	runcmd(((t_redir *)root)->down, data);
 }

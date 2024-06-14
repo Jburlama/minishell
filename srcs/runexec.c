@@ -22,8 +22,8 @@ void	runexec(t_exec *node, t_data *data)
 		execve(pathname, node->args, data->env);
 		free(pathname);
 	}
+	perror(node->args[0]);
 	clear_tree(data->root);
-	perror("");
 	exit(errno);
 }
 
