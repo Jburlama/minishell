@@ -37,16 +37,19 @@ void	runredir(t_redir *root, t_data *data)
 	{
 		fd = open(root->file, O_CREAT | O_TRUNC | O_RDWR, S_IRWXU);
 		dup2(fd, STDOUT_FILENO);
+		close(fd);
 	}
 	else if (root->file_type == APEND)
 	{
 		fd = open(root->file, O_CREAT | O_APPEND | O_RDWR, S_IRWXU);
 		dup2(fd, STDOUT_FILENO);
+		close(fd);
 	}
 	else if (root->file_type == I)
 	{
 		fd = open(root->file, O_CREAT | O_RDWR, S_IRWXU);
 		dup2(fd, STDIN_FILENO);
+		close(fd);
 	}
 	runcmd(((t_redir *)root)->down, data);
 }
@@ -74,4 +77,6 @@ void	runpipe(t_pipe *root, t_data *data)
 	close(fds[0]);
 	wait(NULL);
 	wait(NULL);
+	clear_tree(data->root);
+	exit(errno);
 }

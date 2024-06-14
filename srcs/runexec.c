@@ -24,6 +24,7 @@ void	runexec(t_exec *node, t_data *data)
 	}
 	clear_tree(data->root);
 	perror("");
+	exit(errno);
 }
 
 char	*get_pathname(char	*name, char **env)
