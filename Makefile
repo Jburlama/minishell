@@ -21,11 +21,17 @@ OBJS = ${addprefix ${OBJS_DIR}, ${CFILES:.c=.o}}
 LIBFT = libft/libft.a
 VPATH = ${SRC_DIR}:${SRC_DIR}tree:${SRC_DIR}tokens
 
+COMPILE_COUNT = 0
+NUM_SRCS	= $(words $(CFILES))
+
 all: ${NAME}
 
 ${NAME}: ${OBJS} ${LIBFT}
-	${CC} ${CFLAGS} ${LINK} ${OBJS} ${LIBFT} -o $@
-	echo "${GREEN} >> ${NAME} done ${RESET}"
+	@${CC} ${CFLAGS} ${LINK} ${OBJS} ${LIBFT} -o $@
+	@printf "\r[\033[32m100%%\033[0m] \001\033[1;97m\002- 42-Minishell compiled successfully! \n \001\033[0m\002"
+	@printf "\n\e[1;97;3m	Welcome to 42-Minishell! \n\e[0m"
+	@printf "\n\e[1;97;3m        A project developed by\n        ${BLUE}Vbritto- && Jburlama .\n\e[0m"
+	@printf "\nRun \001\033[1;97m\002./minishell\001\033[0m\002 to start the program.\n"
 
 ${OBJS_DIR}:
 	mkdir $@
@@ -33,8 +39,9 @@ ${OBJS_DIR}:
 ${OBJS}: | ${OBJS_DIR}
 
 ${OBJS_DIR}%.o: %.c
-	${CC} ${CFLAGS} -c $^ -o $@
-	echo "${GREY} >> compiling $^ ${RESET}"
+	@${CC} ${CFLAGS} -c $^ -o $@
+	@$(eval COMPILE_COUNT=$(shell echo $$(($(COMPILE_COUNT)+1))))
+	@printf "\r[\033[32m%3d%%\033[0m] Compiling: $<" $$(($(COMPILE_COUNT) * 100 / $(NUM_SRCS)))
 
 ${LIBFT}: libft
 	@make -C libft
