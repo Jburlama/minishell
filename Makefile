@@ -19,6 +19,7 @@ OBJS_DIR = ./objs/
 SRC_DIR = ./srcs/
 OBJS = ${addprefix ${OBJS_DIR}, ${CFILES:.c=.o}}
 LIBFT = libft/libft.a
+VPATH = ${SRC_DIR}:${SRC_DIR}tree:${SRC_DIR}tokens
 
 all: ${NAME}
 
@@ -31,7 +32,7 @@ ${OBJS_DIR}:
 
 ${OBJS}: | ${OBJS_DIR}
 
-${OBJS_DIR}%.o: ${SRC_DIR}%.c
+${OBJS_DIR}%.o: %.c
 	${CC} ${CFLAGS} -c $^ -o $@
 	echo "${GREY} >> compiling $^ ${RESET}"
 

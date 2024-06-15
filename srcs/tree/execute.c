@@ -10,8 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
-#include <fcntl.h>
+#include "../../minishell.h"
 
 void	execute(t_data *data)
 {
