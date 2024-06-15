@@ -44,18 +44,18 @@ ${OBJS_DIR}%.o: %.c
 	@printf "\r[\033[32m%3d%%\033[0m] Compiling: $<" $$(($(COMPILE_COUNT) * 100 / $(NUM_SRCS)))
 
 ${LIBFT}: libft
-	@make -C libft
+	@make -s -C libft
 
 clean:
 	rm -rf ${OBJS}
 	rm -rf ${OBJS_DIR}
 	echo "${ORANGE} >> cleaning ${RESET}"
-	make clean -C libft
+	make clean -s -C libft
 
 fclean: clean
 	rm -rf ${NAME}
 	echo "${ORANGE} >> fcleaning ${RESET}"
-	@make fclean -C libft
+	@make fclean -s -C libft
 
 re: fclean ${NAME}
 
