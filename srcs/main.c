@@ -5,8 +5,13 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
+<<<<<<< HEAD
 /*   Created: 2024/06/11 15:54:56 by vbritto-          #+#    #+#             */
 /*   Updated: 2024/06/11 15:55:01 by vbritto-         ###   ########.fr       */
+=======
+/*   Created: 2024/05/26 17:32:03 by Jburlama          #+#    #+#             */
+/*   Updated: 2024/06/10 21:06:23 by Jburlama         ###   ########.fr       */
+>>>>>>> e0f579b09901b1705bb22abe4ca70f92019fcfc5
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +29,10 @@ int	main(int argc, char **argv, char **envp)
 	{
 		get_line();
 		tokenize(&data);
-		// for (t_token *ptr = data.head; ptr; ptr = ptr->next)
-		// 	printf("content: %s | type %i\n", ptr->content, ptr->type);
-		// clear_list(&data.head);
-		// continue ;
+		for (t_token *ptr = data.head; ptr; ptr = ptr->next)
+			printf("content: %s | type %i\n", ptr->content, ptr->type);
+		clear_list(&data.head);
+		continue ;
 		create_tree(&data);
 		print_tree(data.root);
 		clear_tree(data.root);

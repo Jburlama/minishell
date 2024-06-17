@@ -6,7 +6,7 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 21:32:49 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/05/30 21:33:16 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/06/11 17:25:04 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,33 +72,6 @@ void	append_token_word(t_data *data, int *i, enum e_type type)
 		data->tail->content[j++] = rl_line_buffer[(*i)++];
 	data->tail->type = type;
 	(*i)--;
-}
-
-void	add_token_special(t_data *data, int *i, enum e_type type)
-{
-	if (!data->head)
-	{
-		data->head = ft_calloc(sizeof(t_token), 1);
-		if (!data->head)
-			panic("calloc faild!\n", data);
-		data->head->content = ft_calloc(sizeof(char), 2);
-		if (!data->head->content)
-			panic("calloc faild!\n", data);
-		*data->head->content = rl_line_buffer[*i];
-		data->head->next = NULL;
-		data->head->type = type;
-		data->tail = data->head;
-		return ;
-	}
-	data->tail->next = ft_calloc(sizeof(t_token), 1);
-	if (data->tail->next == NULL)
-		panic("calloc faild!\n", data);
-	data->tail = data->tail->next;
-	data->tail->content = ft_calloc(sizeof(char), 2);
-	if (data->tail->content == NULL)
-		panic("calloc faild!\n", data);
-	*data->tail->content = rl_line_buffer[*i];
-	data->tail->type = type;
 }
 
 void	add_token_white_space(t_data *data, int *i, enum e_type type)
