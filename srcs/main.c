@@ -5,30 +5,33 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-<<<<<<< HEAD
-/*   Created: 2024/06/11 15:54:56 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/06/11 15:55:01 by vbritto-         ###   ########.fr       */
-=======
-/*   Created: 2024/05/26 17:32:03 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/06/10 21:06:23 by Jburlama         ###   ########.fr       */
->>>>>>> e0f579b09901b1705bb22abe4ca70f92019fcfc5
+/*   Created: 2024/06/17 14:56:19 by vbritto-          #+#    #+#             */
+/*   Updated: 2024/06/17 14:56:44 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int	status_exit;
 
 void	print_tree(void	*root);
 
 int	main(int argc, char **argv, char **envp)
 {
 	t_data	data;
+	(void)argc;
+	(void)argv;
+	(void)envp;
 
 	handle_signal();
 	ft_memset(&data, 0, sizeof(data));
 	while (42)
 	{
 		get_line();
+		if(check(rl_line_buffer) == 2) 
+			continue;
 		tokenize(&data);
+		prepare_token(&data);
 		for (t_token *ptr = data.head; ptr; ptr = ptr->next)
 			printf("content: %s | type %i\n", ptr->content, ptr->type);
 		clear_list(&data.head);
