@@ -6,7 +6,7 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 16:08:55 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/05/31 16:09:05 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/06/12 20:56:00 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,10 @@
 
 void	panic(char *msg, t_data *data)
 {
-	clear_list(&data->head);
+	if (data->head)
+		clear_list(&data->head);
+	if (data->root)
+		clear_tree(&data->root);
 	perror(msg);
 	exit(errno);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/17 14:54:35 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/06/17 14:54:36 by vbritto-         ###   ########.fr       */
+/*   Created: 2024/06/17 15:00:19 by Jburlama          #+#    #+#             */
+/*   Updated: 2024/06/17 15:00:24 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ typedef struct s_redir
 typedef struct s_exec
 {
 	enum e_type		type;
-	char			*args;
+	char			**args;
 }	t_exec;
 
 typedef struct s_data
@@ -89,16 +89,29 @@ typedef struct s_data
 	char	**env;
 }	t_data;
 
-void	clear_tree(void	*root);
+// execute.c
+void	execute(t_data *data);
+void	runcmd(void *root, t_data *data);
+void	read_input(t_redir *root, t_data *data);
+void	runpipe(t_pipe *root, t_data *data);
+
+// rumredir.c
+void	runredir(t_redir *root, t_data *data);
+
+// rumexrc.c
+void	runexec(t_exec *node, t_data *data);
+char	*get_pathname(char	*name, char **env);
+char	**get_paths(char **env);
 
 // create_tree.c
 void	create_tree(t_data *data);
 void	*parse_pipe(t_token **tokens);
-void	*construct_pipe(void *l, void *r);
 
 // construct.c
+t_exec	*construct_exec(void);
 void	*construct_redir(void	*subnode, t_token **tokens);
-t_exec	*t_exec_fill(t_exec **exec, t_token *token);
+char	**add_to_args(char **args, char *content);
+void	*construct_pipe(void *l, void *r);
 
 // parse_tree.c
 void	*parse_exec(t_token **tokens);
@@ -133,8 +146,9 @@ void	add_token(t_data *data, int *i, enum e_type type);
 void	add_token_io(t_data *data, int *i);
 
 // utils.c
+pid_t	save_fork(t_data *data);
+bool	is_all_white(char	*str);
 void	jump_white_spaces(int *i);
-void	clear_list(t_token	**head);
 bool	is_special(char c);
 bool	is_quote(char c);
 
@@ -145,6 +159,11 @@ void	signal_handler(int sig);
 // get_line.c
 void	get_line(void);
 bool	is_white_space(char c);
+
+// clear.c
+void	clear_list(t_token	**head);
+void	clear_tree(void	*root);
+void	clear_args(char **args);
 
 // panic.c
 void	panic(char *msg, t_data *data);

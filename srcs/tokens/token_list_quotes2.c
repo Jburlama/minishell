@@ -6,11 +6,11 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 20:31:35 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/05/30 20:31:51 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/06/14 17:42:14 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
 void	new_promp_for_quotes(t_data *data, char q, int len)
 {

@@ -6,11 +6,11 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 19:02:06 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/06/11 18:47:06 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/06/11 18:48:15 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
 void	tokenize(t_data *data)
 {

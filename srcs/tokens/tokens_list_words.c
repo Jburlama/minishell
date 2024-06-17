@@ -6,11 +6,11 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 21:32:49 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/06/11 17:25:04 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/06/14 17:33:45 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
 void	add_token_word(t_data *data, int *i, enum e_type type)
 {
@@ -28,7 +28,7 @@ void	create_token_word(t_data *data, int *i, enum e_type type)
 	j = *i;
 	len = 0;
 	while (ft_isprint(rl_line_buffer[j]) && rl_line_buffer[j] != 32
-		&& !is_special(rl_line_buffer[j]))
+		&& !is_special(rl_line_buffer[j]) && !is_quote(rl_line_buffer[j]))
 	{
 		j++;
 		len++;
@@ -41,7 +41,7 @@ void	create_token_word(t_data *data, int *i, enum e_type type)
 		panic("calloc faild!\n", data);
 	j = 0;
 	while (ft_isprint(rl_line_buffer[*i]) && rl_line_buffer[*i] != 32
-		&& !is_special(rl_line_buffer[*i]))
+		&& !is_special(rl_line_buffer[*i]) && !is_quote(rl_line_buffer[*i]))
 		data->head->content[j++] = rl_line_buffer[(*i)++];
 	data->head->type = type;
 	data->tail = data->head;
@@ -55,7 +55,8 @@ void	append_token_word(t_data *data, int *i, enum e_type type)
 
 	j = *i;
 	len = 0;
-	while (ft_isprint(rl_line_buffer[j]) && rl_line_buffer[j] != 32)
+	while (ft_isprint(rl_line_buffer[j]) && rl_line_buffer[j] != 32
+		&& !is_special(rl_line_buffer[j]) && !is_quote(rl_line_buffer[j]))
 	{
 		j++;
 		len++;
@@ -68,7 +69,8 @@ void	append_token_word(t_data *data, int *i, enum e_type type)
 	if (data->tail->content == NULL)
 		panic("calloc faild!\n", data);
 	j = 0;
-	while (ft_isprint(rl_line_buffer[*i]) && rl_line_buffer[*i] != 32)
+	while (ft_isprint(rl_line_buffer[*i]) && rl_line_buffer[*i] != 32
+		&& !is_special(rl_line_buffer[*i]) && !is_quote(rl_line_buffer[*i]))
 		data->tail->content[j++] = rl_line_buffer[(*i)++];
 	data->tail->type = type;
 	(*i)--;
@@ -81,11 +83,13 @@ void	add_token_white_space(t_data *data, int *i, enum e_type type)
 
 	j = *i;
 	len = 0;
-	while (is_white_space(rl_line_buffer[j]))
+	while (rl_line_buffer[j] && is_white_space(rl_line_buffer[j]))
 	{
 		j++;
 		len++;
 	}
+	if (!rl_line_buffer[j])
+		return ;
 	data->tail->next = ft_calloc(sizeof(t_token), 1);
 	if (!data->tail->next)
 		panic("calloc faild!\n", data);
@@ -94,7 +98,7 @@ void	add_token_white_space(t_data *data, int *i, enum e_type type)
 	if (data->tail->content == NULL)
 		panic("calloc faild!\n", data);
 	j = 0;
-	while (is_white_space(rl_line_buffer[*i]))
+	while (rl_line_buffer[*i] && is_white_space(rl_line_buffer[*i]))
 		data->tail->content[j++] = rl_line_buffer[(*i)++];
 	data->tail->type = type;
 	(*i)--;

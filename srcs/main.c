@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/17 14:56:19 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/06/17 14:56:44 by vbritto-         ###   ########.fr       */
+/*   Created: 2024/06/17 15:00:35 by Jburlama          #+#    #+#             */
+/*   Updated: 2024/06/17 15:01:19 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,18 @@ int	status_exit;
 
 void	print_tree(void	*root);
 
-int	main(int argc, char **argv, char **envp)
+int	main(int argc, char *argv[], char *env[])
 {
 	t_data	data;
 	(void)argc;
 	(void)argv;
 	(void)envp;
 
+	(void)argc;
+	(void)argv;
 	handle_signal();
 	ft_memset(&data, 0, sizeof(data));
+	data.env = env;
 	while (42)
 	{
 		get_line();
@@ -37,7 +40,11 @@ int	main(int argc, char **argv, char **envp)
 		clear_list(&data.head);
 		continue ;
 		create_tree(&data);
-		print_tree(data.root);
+		if (save_fork(&data) == 0)
+			execute(&data);
+		wait(NULL);
+
+		// print_tree(data.root);
 		clear_tree(data.root);
 	}
 	free(rl_line_buffer);
@@ -51,10 +58,17 @@ void	print_tree(void	*root)
 
 	if (!root)
 		return ;
-	if (((t_exec *)root)->type == EXEC)
+	else if (((t_exec *)root)->type == EXEC)
 	{
 		exec = root;
-		printf("type: %i | args: %s\n", exec->type, exec->args);
+		printf("type: %i | args: ", exec->type);
+		int i = 0;
+		while (exec->args[i])
+		{
+			printf("%s; ", exec->args[i]);
+			i++;
+		}
+		printf("\n");
 		return ;
 	}
 	else if (((t_redir *)root)->type == REDIR)
@@ -69,27 +83,5 @@ void	print_tree(void	*root)
 		printf("type: %i\n", pipe->type);
 		print_tree(pipe->left);
 		print_tree(pipe->right);
-	}
-}
-
-void	clear_tree(void	*root)
-{
-	if (((t_exec *)root)->type == EXEC)
-	{
-		free(((t_exec *)root)->args);
-		free(root);
-		return ;
-	}
-	else if (((t_redir *)root)->type == REDIR)
-	{
-		free(((t_redir *)root)->file);
-		clear_tree(((t_redir *)root)->down);
-		free(root);
-	}
-	else if (((t_pipe *)root)->type == PIPE)
-	{
-		clear_tree(((t_pipe *)root)->left);
-		clear_tree(((t_pipe *)root)->right);
-		free(root);
 	}
 }
