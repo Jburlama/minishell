@@ -30,27 +30,17 @@ void	create_token_special(t_data *data, int *i, enum e_type type)
 	if (!data->head)
 		panic("calloc faild!\n", data);
 	len = 0;
-	if (rl_line_buffer[*i] != '<' && rl_line_buffer[*i] != '>')
-		len++;
-	j = *i;
-	while (rl_line_buffer[j] == '<' || rl_line_buffer[j] == '>')
-	{
-		if (len > 0 && rl_line_buffer[j - 1] != rl_line_buffer[j])
-			break ;
-		len++;
-		j++;
-	}
+	if (rl_line_buffer[*i] == rl_line_buffer[*i + 1]
+		&& rl_line_buffer[*i] != '(' && rl_line_buffer[*i] != ')')
+		len = 2;
+	else
+		len = 1;
 	data->head->content = ft_calloc(sizeof(char), len + 1);
 	if (!data->head->content)
 		panic("calloc faild!\n", data);
 	j = 0;
 	while (j < len)
 		data->head->content[j++] = rl_line_buffer[(*i)++];
-	create_token_special2(data, type);
-}
-
-void	create_token_special2(t_data *data, enum e_type type)
-{
 	data->head->next = NULL;
 	data->head->type = type;
 	data->tail = data->head;
@@ -65,16 +55,11 @@ void	append_token_special(t_data *data, int *i, enum e_type type)
 	if (data->tail->next == NULL)
 		panic("calloc faild!\n", data);
 	len = 0;
-	if (rl_line_buffer[*i] != '<' && rl_line_buffer[*i] != '>')
-		len++;
-	j = *i;
-	while (rl_line_buffer[j] == '<' || rl_line_buffer[j] == '>')
-	{
-		if (len > 0 && rl_line_buffer[j - 1] != rl_line_buffer[j])
-			break ;
-		len++;
-		j++;
-	}
+	if (rl_line_buffer[*i] == rl_line_buffer[*i + 1]
+		&& rl_line_buffer[*i] != '(' && rl_line_buffer[*i] != ')')
+		len = 2;
+	else
+		len = 1;
 	data->tail = data->tail->next;
 	data->tail->content = ft_calloc(sizeof(char), len + 1);
 	if (data->tail->content == NULL)

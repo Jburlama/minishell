@@ -12,7 +12,7 @@
 
 #include "../minishell.h"
 
-void	get_line(void)
+char	*get_line(void)
 {
 	char	*line;
 
@@ -23,13 +23,13 @@ void	get_line(void)
 		printf("exit\n");
 		exit(0);
 	}
-	free(line);
 	if (ft_memcmp(rl_line_buffer, "exit\0", 5) == 0)
 	{
 		free(rl_line_buffer);
 		exit(0);
 	}
 	add_history(rl_line_buffer);
+	return (line);
 }
 
 bool	is_white_space(char c)

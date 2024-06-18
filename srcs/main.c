@@ -19,9 +19,6 @@ void	print_tree(void	*root);
 int	main(int argc, char *argv[], char *env[])
 {
 	t_data	data;
-	(void)argc;
-	(void)argv;
-	(void)envp;
 
 	(void)argc;
 	(void)argv;
@@ -31,14 +28,14 @@ int	main(int argc, char *argv[], char *env[])
 	while (42)
 	{
 		get_line();
-		if(check(rl_line_buffer) == 2) 
-			continue;
+		// if(check(rl_line_buffer) == 2) 
+		// 	continue;
 		tokenize(&data);
-		prepare_token(&data);
-		for (t_token *ptr = data.head; ptr; ptr = ptr->next)
-			printf("content: %s | type %i\n", ptr->content, ptr->type);
-		clear_list(&data.head);
-		continue ;
+		// prepare_token(&data);
+		// for (t_token *ptr = data.head; ptr; ptr = ptr->next)
+		// 	printf("content: %s | type %i\n", ptr->content, ptr->type);
+		// clear_list(&data.head);
+		// continue ;
 		create_tree(&data);
 		if (save_fork(&data) == 0)
 			execute(&data);
@@ -55,6 +52,7 @@ void	print_tree(void	*root)
 	t_exec	*exec;
 	t_redir	*redir;
 	t_pipe	*pipe;
+	t_cond	*cont;
 
 	if (!root)
 		return ;
@@ -83,5 +81,12 @@ void	print_tree(void	*root)
 		printf("type: %i\n", pipe->type);
 		print_tree(pipe->left);
 		print_tree(pipe->right);
+	}
+	else if (((t_cond *)root)->type == OR || ((t_cond *)root)->type == AND)
+	{
+		cont = root;
+		printf("type: %i\n", cont->type);
+		print_tree(cont->left);
+		print_tree(cont->right);
 	}
 }

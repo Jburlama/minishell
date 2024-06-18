@@ -6,10 +6,9 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 15:00:19 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/06/17 15:00:24 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/06/18 20:45:35 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -51,6 +50,8 @@ enum e_type
 	EXEC,
 	REDIR,
 	PIPE,
+	AND,
+	OR,
 };
 
 typedef struct s_token
@@ -59,6 +60,13 @@ typedef struct s_token
 	char			*content;
 	struct s_token	*next;
 }	t_token;
+
+typedef struct s_cond
+{
+	enum e_type		type;
+	void			*left;
+	void			*right;
+}	t_cond;
 
 typedef struct s_pipe
 {
@@ -95,6 +103,10 @@ void	runcmd(void *root, t_data *data);
 void	read_input(t_redir *root, t_data *data);
 void	runpipe(t_pipe *root, t_data *data);
 
+// logical.c
+void	runor(t_cond *root, t_data *data);
+void	runand(t_cond *root, t_data *data);
+
 // rumredir.c
 void	runredir(t_redir *root, t_data *data);
 
@@ -105,17 +117,19 @@ char	**get_paths(char **env);
 
 // create_tree.c
 void	create_tree(t_data *data);
-void	*parse_pipe(t_token **tokens);
+void	*parse_cond(t_token **tokens);
 
 // construct.c
 t_exec	*construct_exec(void);
 void	*construct_redir(void	*subnode, t_token **tokens);
 char	**add_to_args(char **args, char *content);
 void	*construct_pipe(void *l, void *r);
+void	*construct_cond(void *l, void *r, enum e_type type);
 
 // parse_tree.c
 void	*parse_exec(t_token **tokens);
 void	*parse_redir(void *root, t_token **tokens);
+void	*parse_pipe(t_token **tokens);
 
 // token_list_quotes.c
 void	add_token_quotes(t_data *data, int *i, enum e_type type);
@@ -131,7 +145,6 @@ void	promp_quotes(char q);
 // tokens_list_specil.c
 void	add_token_special(t_data *data, int *i, enum e_type type);
 void	create_token_special(t_data *data, int *i, enum e_type type);
-void	create_token_special2(t_data *data, enum e_type type);
 void	append_token_special(t_data *data, int *i, enum e_type type);
 
 // tokens_list_words.c
@@ -157,13 +170,14 @@ void	handle_signal(void);
 void	signal_handler(int sig);
 
 // get_line.c
-void	get_line(void);
+char	*get_line(void);
 bool	is_white_space(char c);
 
 // clear.c
 void	clear_list(t_token	**head);
 void	clear_tree(void	*root);
 void	clear_args(char **args);
+void	clear_gate(void	*root);
 
 // panic.c
 void	panic(char *msg, t_data *data);

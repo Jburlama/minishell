@@ -14,7 +14,6 @@
 
 void	*parse_exec(t_token **tokens)
 {
-	int		i;
 	t_exec	*exec;
 	void	*root;
 
@@ -22,8 +21,8 @@ void	*parse_exec(t_token **tokens)
 	if (exec == NULL)
 		return (NULL);
 	root = exec;
-	i = 0;
-	while ((*tokens) && *(*tokens)->content != '|')
+	while ((*tokens)
+		&& *(*tokens)->content != '|' && *(*tokens)->content != '&')
 	{
 		root = parse_redir(root, tokens);
 		if (!(*tokens) || root == NULL)
@@ -64,7 +63,8 @@ void	*parse_pipe(t_token **tokens)
 	root = parse_exec(tokens);
 	if (root == NULL)
 		return (NULL);
-	if (*tokens && *(*tokens)->content == '|')
+	if (*tokens && *(*tokens)->content == '|'
+		&& ft_strlen((*tokens)->content) == 1)
 	{
 		(*tokens) = (*tokens)->next;
 		root = construct_pipe(root, parse_pipe(tokens));

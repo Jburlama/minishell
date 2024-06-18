@@ -49,11 +49,16 @@ void	clear_tree(void	*root)
 		free(root);
 	}
 	else if (((t_pipe *)root)->type == PIPE)
-	{
-		clear_tree(((t_pipe *)root)->left);
-		clear_tree(((t_pipe *)root)->right);
-		free(root);
-	}
+		clear_gate(root);
+	else if (((t_cond *)root)->type == OR || ((t_cond *)root)->type == AND)
+		clear_gate(root);
+}
+
+void	clear_gate(void	*root)
+{
+	clear_tree(((t_pipe *)root)->left);
+	clear_tree(((t_pipe *)root)->right);
+	free(root);
 }
 
 void	clear_args(char **args)

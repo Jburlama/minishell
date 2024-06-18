@@ -6,7 +6,7 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:54:50 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/06/14 18:41:41 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/06/18 20:44:41 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,10 @@ void	runcmd(void *root, t_data *data)
 		runredir(root, data);
 	else if (((t_pipe *)root)->type == PIPE)
 		runpipe(root, data);
+	else if (((t_cond *)root)->type == OR)
+		runor(root, data);
+	else if (((t_cond *)root)->type == AND)
+		runand(root, data);
 }
 
 void	runredir(t_redir *root, t_data *data)
