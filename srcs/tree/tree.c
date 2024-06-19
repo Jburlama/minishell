@@ -19,7 +19,7 @@ void	create_tree(t_data *data)
 	if (data->head)
 	{
 		tokens_ptr = data->head;
-		data->root = parse_cond(&tokens_ptr);
+		data->root = parse_and(&tokens_ptr);
 		if (data->root == NULL)
 			panic("error parsinf tree\n", data);
 	}

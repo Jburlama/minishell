@@ -55,3 +55,41 @@ void	runand(t_cond *root, t_data *data)
 	clear_tree(data->root);
 	exit(0);
 }
+
+void	*parse_or(t_token **tokens)
+{
+	void		*root;
+	enum e_type	type;
+
+	root = parse_pipe(tokens);
+	if (root == NULL)
+		return (NULL);
+	if (*tokens && *(*tokens)->content == '|')
+	{
+		type = OR;
+		(*tokens) = (*tokens)->next;
+		root = construct_cond(root, parse_or(tokens), type);
+		if (root == NULL)
+			return (NULL);
+	}
+	return (root);
+}
+
+void	*parse_and(t_token **tokens)
+{
+	void		*root;
+	enum e_type	type;
+
+	root = parse_or(tokens);
+	if (root == NULL)
+		return (NULL);
+	if (*tokens && *(*tokens)->content != ')')
+	{
+		type = AND;
+		(*tokens) = (*tokens)->next;
+		root = construct_cond(root, parse_and(tokens), type);
+		if (root == NULL)
+			return (NULL);
+	}
+	return (root);
+}

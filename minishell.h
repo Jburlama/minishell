@@ -117,7 +117,6 @@ char	**get_paths(char **env);
 
 // create_tree.c
 void	create_tree(t_data *data);
-void	*parse_cond(t_token **tokens);
 
 // construct.c
 t_exec	*construct_exec(void);
@@ -130,6 +129,8 @@ void	*construct_cond(void *l, void *r, enum e_type type);
 void	*parse_exec(t_token **tokens);
 void	*parse_block(t_token **tokens);
 void	*parse_redir(void *root, t_token **tokens);
+void	*parse_and(t_token **tokens);
+void	*parse_or(t_token **tokens);
 void	*parse_pipe(t_token **tokens);
 
 // token_list_quotes.c
