@@ -128,6 +128,7 @@ void	*construct_cond(void *l, void *r, enum e_type type);
 
 // parse_tree.c
 void	*parse_exec(t_token **tokens);
+void	*parse_block(t_token **tokens);
 void	*parse_redir(void *root, t_token **tokens);
 void	*parse_pipe(t_token **tokens);
 

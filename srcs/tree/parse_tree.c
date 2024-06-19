@@ -17,15 +17,20 @@ void	*parse_exec(t_token **tokens)
 	t_exec	*exec;
 	void	*root;
 
+	if ((*tokens) && *(*tokens)->content == '(')
+		return (parse_block(tokens));
 	exec = construct_exec();
 	if (exec == NULL)
 		return (NULL);
 	root = exec;
 	while ((*tokens)
-		&& *(*tokens)->content != '|' && *(*tokens)->content != '&')
+		&& *(*tokens)->content != '|' && *(*tokens)->content != '&'
+		&& *(*tokens)->content != ')')
 	{
 		root = parse_redir(root, tokens);
-		if (!(*tokens) || root == NULL)
+		if (!(*tokens) || root == NULL
+			|| *(*tokens)->content == '|' || *(*tokens)->content == '&'
+			|| *(*tokens)->content == ')')
 			break ;
 		if ((*tokens)->type == WHITE_SPACE)
 		{
@@ -40,18 +45,35 @@ void	*parse_exec(t_token **tokens)
 	return (root);
 }
 
+void	*parse_block(t_token **tokens)
+{
+	void	*root;
+
+	(*tokens) = (*tokens)->next;
+	root = parse_cond(tokens);
+	if (root == NULL)
+		return (NULL);
+	(*tokens) = (*tokens)->next;
+	if (*tokens)
+		root = parse_redir(root, tokens);
+	return (root);
+}
+
 void	*parse_redir(void *root, t_token **tokens)
 {
 	void	*ret;
 
 	ret = root;
-	while ((*tokens) && ((*tokens)->type == SPECIAL))
+	while ((*tokens) && ((*tokens)->type == SPECIAL)
+		&& (*(*tokens)->content == '<' || *(*tokens)->content == '>'))
 	{
 		(*tokens) = (*tokens)->next;
 		if (*tokens)
 			ret = construct_redir(ret, tokens);
 		if (ret == NULL)
 			return (NULL);
+		if ((*tokens) && (*tokens)->type == WHITE_SPACE)
+			(*tokens) = (*tokens)->next;
 	}
 	return (ret);
 }
@@ -68,6 +90,28 @@ void	*parse_pipe(t_token **tokens)
 	{
 		(*tokens) = (*tokens)->next;
 		root = construct_pipe(root, parse_pipe(tokens));
+		if (root == NULL)
+			return (NULL);
+	}
+	return (root);
+}
+
+void	*parse_cond(t_token **tokens)
+{
+	void		*root;
+	enum e_type	type;
+
+	root = parse_pipe(tokens);
+	if (root == NULL)
+		return (NULL);
+	if (*tokens && *(*tokens)->content != ')')
+	{
+		if (*(*tokens)->content == '|')
+			type = OR;
+		else
+			type = AND;
+		(*tokens) = (*tokens)->next;
+		root = construct_cond(root, parse_cond(tokens), type);
 		if (root == NULL)
 			return (NULL);
 	}
