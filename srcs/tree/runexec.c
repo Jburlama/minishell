@@ -16,7 +16,10 @@ void	runexec(t_exec *node, t_data *data)
 {
 	char	*pathname;
 
-	pathname = get_pathname(node->args[0], data->env);
+	if (node->args[0])
+		pathname = get_pathname(node->args[0], data->env);
+	else
+		pathname = NULL;
 	if (pathname)
 	{
 		execve(pathname, node->args, data->env);
