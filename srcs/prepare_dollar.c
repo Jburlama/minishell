@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 13:26:55 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/06/21 16:27:35 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/06/21 17:49:44 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,7 @@ int	check_content(t_token *tmp, t_token *keep)
 		if (!tmp->next)
 			keep->next = NULL;
 		else
-			keep->next = tmp->next->next;
-		free(tmp->content);
+			keep->next = tmp->next;
 		free(tmp);
 		return (0);
 	}
@@ -53,21 +52,24 @@ char	*expand(char *content, t_data *data, size_t *until_dollar)
 	char	*name_expanded;
 	char 	*tmp;
 	size_t	i;
+	size_t	j;
 
 	name_expanded = NULL;
 	i = *until_dollar - 1;
 	name_expanded = get_env_name(content, name_expanded, until_dollar, data);
-	if (!name_expanded && content[i - 1] != 39)
+	if (!name_expanded && (content[*until_dollar]) == '\0')
 	{
 		free(content);
 		return (NULL);
 	}
-	tmp = ft_calloc(ft_strlen(content) + ft_strlen(name_expanded) - i, sizeof(char));
+	j = (ft_strlen(content) + ft_strlen(name_expanded) - (*until_dollar - i) + 1);
+	tmp = ft_calloc(j, sizeof(char));
 	if(!tmp)
 		panic("calloc_fail", data);
 	ft_strlcpy(tmp, content, i + 1);
-	ft_strlcpy(tmp + i, name_expanded, ft_strlen(name_expanded) + 1);
-	if ((i + (*until_dollar)) != ft_strlen(content))
+	if (name_expanded)
+		ft_strlcpy(tmp + i, name_expanded, ft_strlen(name_expanded) + 1);
+	if (content[*until_dollar] != '\0')
 		ft_strlcpy(tmp + i + ft_strlen(name_expanded), content + (*until_dollar), ft_strlen(content) + 1 - (*until_dollar));
 	free(content);
 	return (tmp);
@@ -91,11 +93,14 @@ void	prepare_dollar(t_data *data)
 				until_dollar++;
 				tmp->content = expand(tmp->content, data, &until_dollar);
 				if (!check_content(tmp, keep))
+				{
 					tmp = keep;
+					break;
+				}
 			}
 			until_dollar++;
 		}
 		keep = tmp;
 		tmp = tmp->next;
-		}
+	}
 }
