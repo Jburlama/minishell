@@ -13,7 +13,8 @@ LINK = -lreadline
 CFILES = main.c get_line.c signals.c panic.c tokenize.c  \
 		 tokens_list_words.c token_list_quotes.c token_list_quotes2.c \
 		 tokens_list_special.c tree.c parse_tree.c construct.c utils.c \
-		 check.c prepare_token.c clear.c execute.c runexec.c prepare_dollar.c
+		 check.c prepare_token.c clear.c execute.c runexec.c prepare_dollar.c \
+		 logical.c
 RM = rm -f
 OBJS_DIR = ./objs/
 SRC_DIR = ./srcs/

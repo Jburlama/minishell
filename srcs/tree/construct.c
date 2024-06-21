@@ -92,3 +92,16 @@ void	*construct_pipe(void *l, void *r)
 	pipe->right = r;
 	return (pipe);
 }
+
+void	*construct_cond(void *l, void *r, enum e_type type)
+{
+	t_cond	*cond;
+
+	cond = ft_calloc(sizeof(*cond), 1);
+	if (cond == NULL)
+		return (NULL);
+	cond->type = type;
+	cond->left = l;
+	cond->right = r;
+	return (cond);
+}

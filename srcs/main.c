@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 15:00:35 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/06/21 13:53:04 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/06/21 17:57:50 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ void	print_tree(void	*root)
 	t_exec	*exec;
 	t_redir	*redir;
 	t_pipe	*pipe;
+	t_cond	*cont;
 
 	if (!root)
 		return ;
@@ -83,5 +84,12 @@ void	print_tree(void	*root)
 		printf("type: %i\n", pipe->type);
 		print_tree(pipe->left);
 		print_tree(pipe->right);
+	}
+	else if (((t_cond *)root)->type == OR || ((t_cond *)root)->type == AND)
+	{
+		cont = root;
+		printf("type: %i\n", cont->type);
+		print_tree(cont->left);
+		print_tree(cont->right);
 	}
 }

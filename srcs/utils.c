@@ -52,7 +52,7 @@ bool	is_special(char c)
 	char	*special;
 	int		i;
 
-	special = "|<>";
+	special = "|<>()&";
 	i = 0;
 	while (special[i])
 	{

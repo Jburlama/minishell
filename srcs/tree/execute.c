@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/12 17:54:50 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/06/17 17:53:21 by vbritto-         ###   ########.fr       */
+/*   Created: 2024/06/21 17:58:00 by vbritto-          #+#    #+#             */
+/*   Updated: 2024/06/21 17:58:02 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,10 @@ void	runcmd(void *root, t_data *data)
 		runredir(root, data);
 	else if (((t_pipe *)root)->type == PIPE)
 		runpipe(root, data);
+	else if (((t_cond *)root)->type == OR)
+		runor(root, data);
+	else if (((t_cond *)root)->type == AND)
+		runand(root, data);
 }
 
 void	runredir(t_redir *root, t_data *data)
