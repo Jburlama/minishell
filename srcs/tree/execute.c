@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:54:50 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/06/14 18:41:41 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/06/17 17:53:21 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ void	runpipe(t_pipe *root, t_data *data)
 	}
 	close(fds[1]);
 	close(fds[0]);
+	//apos exit usar waitpid
 	wait(NULL);
 	wait(NULL);
 	clear_tree(data->root);

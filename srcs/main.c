@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 15:00:35 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/06/17 15:01:19 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/06/21 13:53:04 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,6 @@ void	print_tree(void	*root);
 int	main(int argc, char *argv[], char *env[])
 {
 	t_data	data;
-	(void)argc;
-	(void)argv;
-	(void)envp;
 
 	(void)argc;
 	(void)argv;
@@ -31,14 +28,17 @@ int	main(int argc, char *argv[], char *env[])
 	while (42)
 	{
 		get_line();
-		if(check(rl_line_buffer) == 2) 
+		if(check(rl_line_buffer) == 2)
+		{	
+			status_exit = 0;
 			continue;
+		}
 		tokenize(&data);
 		prepare_token(&data);
-		for (t_token *ptr = data.head; ptr; ptr = ptr->next)
+		/*for (t_token *ptr = data.head; ptr; ptr = ptr->next)
 			printf("content: %s | type %i\n", ptr->content, ptr->type);
 		clear_list(&data.head);
-		continue ;
+		continue ;*/
 		create_tree(&data);
 		if (save_fork(&data) == 0)
 			execute(&data);

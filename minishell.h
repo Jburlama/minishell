@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 15:00:19 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/06/17 15:00:24 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/06/18 14:40:01 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,18 @@
 
 extern int	status_exit;
 
+enum b_type
+{
+	NO_B,
+	ECHO,
+	CD,
+	PWD,
+	EXPORT,
+	UNSET,
+	ENV,
+	EXIT,
+};
+
 enum e_type
 {
 	WHITE_SPACE,
@@ -56,6 +68,7 @@ enum e_type
 typedef struct s_token
 {
 	enum e_type		type;
+	enum b_type		builtin;
 	char			*content;
 	struct s_token	*next;
 }	t_token;
@@ -179,6 +192,6 @@ void	check_heredoc(char *str);
 // prepare_token.c
 
 void	prepare_token(t_data *data);
-char	*expand(char *env_name, t_data *data);
+void	prepare_dollar(t_data *data);
 
 #endif

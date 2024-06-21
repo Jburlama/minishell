@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 14:56:00 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/06/17 14:56:12 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/06/18 16:55:12 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,36 @@ char	*expand(char *env_name, t_data *data)
 	return (env_name);
 }*/
 
-t_token	*handle_quotes(t_token *tmp, t_token *keep)
+void	prepare_builtins(t_data *data)
+{
+	t_token	*tmp;
+
+	tmp = data->head;
+	while (!tmp)
+	{
+		if (ft_memcmp("echo", tmp->content, ft_strlen(tmp->content)) == 0)
+			tmp->builtin = ECHO;
+		else if (ft_memcmp("cd", tmp->content, ft_strlen(tmp->content)) == 0)
+			tmp->builtin = CD;
+		else if (ft_memcmp("pwd", tmp->content, ft_strlen(tmp->content)) == 0)
+			tmp->builtin = PWD;
+		else if (ft_memcmp("export", tmp->content, ft_strlen(tmp->content)) == 0)
+			tmp->builtin = EXPORT;
+		else if (ft_memcmp("unset", tmp->content, ft_strlen(tmp->content)) == 0)
+			tmp->builtin = UNSET;
+		else if (ft_memcmp("env", tmp->content, ft_strlen(tmp->content)) == 0)
+			tmp->builtin = ENV;
+		else if (ft_memcmp("exit", tmp->content, ft_strlen(tmp->content)) == 0)
+			tmp->builtin = EXIT;
+		else
+			tmp->builtin = NO_B;
+		tmp = tmp->next;
+	}
+}
+
+
+
+t_token	*handle_quotes_aux(t_token *tmp, t_token *keep)
 {
 	char 	*new_content;
 
@@ -67,19 +96,7 @@ void	handle_first_quote(t_token *tmp, t_token *keep, int first_quote)
 		first_quote = 0;
 }
 
-int	ft_tokensize(t_token *lst)
-{
-	int	i;
-
-	i = 0;
-	while (lst != NULL)
-	{
-		i++;
-		lst = lst->next;
-	}
-	return (i);
-}
-void	prepare_token(t_data *data)
+void	handle_quotes(t_data *data)
 {
 	t_token	*tmp;
 	t_token	*keep;
@@ -95,14 +112,24 @@ void	prepare_token(t_data *data)
 		if (tmp->type != DQUOTES && tmp->type != SQUOTES)
 			keep = tmp;
 		if ((tmp->type == DQUOTES || tmp->type == SQUOTES)
-			&& (tmp->next->type == DQUOTES || tmp->next->type == SQUOTES))
+			&& (tmp->next->type != WHITE_SPACE))
 		{
 			if (first_quote == 1)
 				handle_first_quote(tmp, keep, first_quote);
 			else
-				tmp = handle_quotes(tmp, keep);
+				tmp = handle_quotes_aux(tmp, keep);
 		}
 		else
 			tmp = tmp->next;
+	}
+}
+
+void	prepare_token(t_data *data)
+{
+	if (data->head)
+	{
+		prepare_dollar(data);
+		prepare_builtins(data);
+		handle_quotes(data);
 	}
 }
