@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 15:00:35 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/06/21 17:57:50 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/06/22 15:46:07 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,10 @@ int	main(int argc, char *argv[], char *env[])
 		}
 		tokenize(&data);
 		prepare_token(&data);
-		/*for (t_token *ptr = data.head; ptr; ptr = ptr->next)
+		for (t_token *ptr = data.head; ptr; ptr = ptr->next)
 			printf("content: %s | type %i\n", ptr->content, ptr->type);
 		clear_list(&data.head);
-		continue ;*/
+		continue ;
 		create_tree(&data);
 		if (save_fork(&data) == 0)
 			execute(&data);

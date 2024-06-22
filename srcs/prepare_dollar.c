@@ -6,24 +6,36 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 13:26:55 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/06/21 17:49:44 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/06/22 16:26:19 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	check_content(t_token *tmp, t_token *keep)
+void	check_content(t_token **tmp, t_token **keep, t_data *data)
 {
-	if (!tmp->content)
+	if (!(*tmp)->content)
 	{
-		if (!tmp->next)
-			keep->next = NULL;
+		if (*tmp == *keep)
+		{
+			if ((*tmp)->next)
+				data->head = (*tmp)->next;
+			else
+				data->head = NULL;
+			//free(data->head->content);
+			free(*tmp);
+			*tmp = data->head;
+		}
 		else
-			keep->next = tmp->next;
-		free(tmp);
-		return (0);
+		{
+			if (!(*tmp)->next)
+				(*keep)->next = NULL;
+			else
+				(*keep)->next = (*tmp)->next;
+			free(*tmp);
+			*tmp = *keep;
+		}
 	}
-	return (1);
 }
 
 char *get_env_name(char *content, char *name_expanded, size_t *until_dollar, t_data *data)
@@ -34,7 +46,7 @@ char *get_env_name(char *content, char *name_expanded, size_t *until_dollar, t_d
 	env_name = NULL;
 	i = *until_dollar - 1;
 	while ((content[*until_dollar] != '\0') && (content[*until_dollar] != ' ')
-			&& (content[*until_dollar] != 34) && (content[*until_dollar] != 39))
+		&& (content[*until_dollar] != 34) && (content[*until_dollar] != 39))
 	{
 		(*until_dollar)++;
 	}
@@ -52,18 +64,19 @@ char	*expand(char *content, t_data *data, size_t *until_dollar)
 	char	*name_expanded;
 	char 	*tmp;
 	size_t	i;
-	size_t	j;
 
 	name_expanded = NULL;
 	i = *until_dollar - 1;
+	if ((content[i + 1] == '\0') || (content[i + 1] == ' ')
+		|| (content[i + 1] == 34) || (content[i + 1] == 39))
+		return (content);
 	name_expanded = get_env_name(content, name_expanded, until_dollar, data);
 	if (!name_expanded && (content[*until_dollar]) == '\0')
 	{
 		free(content);
 		return (NULL);
 	}
-	j = (ft_strlen(content) + ft_strlen(name_expanded) - (*until_dollar - i) + 1);
-	tmp = ft_calloc(j, sizeof(char));
+	tmp = ft_calloc((ft_strlen(content) + ft_strlen(name_expanded) - (*until_dollar - i) + 1), sizeof(char));
 	if(!tmp)
 		panic("calloc_fail", data);
 	ft_strlcpy(tmp, content, i + 1);
@@ -92,11 +105,8 @@ void	prepare_dollar(t_data *data)
 			{
 				until_dollar++;
 				tmp->content = expand(tmp->content, data, &until_dollar);
-				if (!check_content(tmp, keep))
-				{
-					tmp = keep;
-					break;
-				}
+				check_content(&tmp, &keep, data);
+				until_dollar = 0;
 			}
 			until_dollar++;
 		}
