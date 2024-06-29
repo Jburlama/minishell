@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 19:02:06 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/06/21 19:29:39 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/06/22 16:32:58 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,7 @@ void	add_token(t_data *data, int *i, enum e_type type)
 	else if (type == DQUOTES || type == SQUOTES)
 		add_token_quotes(data, i, type);
 	else if (type == IO)
-	{
-		while (rl_line_buffer[*i + 1] == '|' || is_white_space(rl_line_buffer[*i + 1]))
-			(*i)++;
 		add_token_io(data, i);
-	}
 	else if (type == WHITE_SPACE)
 		add_token_white_space(data, i, type);
 }

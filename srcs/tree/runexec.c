@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   runexec.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 16:04:55 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/06/14 18:22:45 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/06/27 14:05:06 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,9 @@
 void	runexec(t_exec *node, t_data *data)
 {
 	char	*pathname;
-
+	
+	if (node->builtin != NO_B)
+		execute_builtins(node, data);
 	if (node->args[0])
 		pathname = get_pathname(node->args[0], data->env);
 	else
@@ -25,7 +27,8 @@ void	runexec(t_exec *node, t_data *data)
 		execve(pathname, node->args, data->env);
 		free(pathname);
 	}
-	perror(node->args[0]);
+	if (node->args[0])
+		perror(node->args[0]);
 	clear_tree(data->root);
 	exit(errno);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_tree.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 20:20:43 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/06/14 17:19:07 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/06/26 18:22:18 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ void	*parse_exec(t_token **tokens)
 			|| *(*tokens)->content == '&' || *(*tokens)->content == ')')
 			break ;
 		exec->args = add_to_args(exec->args, (*tokens)->content);
+		if (ft_memcmp((*tokens)->content, exec->args[0], ft_strlen(exec->args[0]) + 1) == 0)
+			exec->builtin = (*tokens)->builtin;
 		if (exec->args == NULL)
 			return (NULL);
 		(*tokens) = (*tokens)->next;

@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 17:57:08 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/06/21 17:57:15 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/06/29 13:32:17 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,16 +35,16 @@
 
 extern int	status_exit;
 
-enum b_type
+enum e_blt
 {
 	NO_B,
 	ECHO,
+	EXIT,
 	CD,
 	PWD,
 	EXPORT,
 	UNSET,
 	ENV,
-	EXIT,
 };
 
 enum e_type
@@ -69,7 +69,7 @@ enum e_type
 typedef struct s_token
 {
 	enum e_type		type;
-	enum b_type		builtin;
+	enum e_blt		builtin;
 	char			*content;
 	struct s_token	*next;
 }	t_token;
@@ -100,6 +100,7 @@ typedef struct s_exec
 {
 	enum e_type		type;
 	char			**args;
+	enum e_blt		builtin;
 }	t_exec;
 
 typedef struct s_data
@@ -210,4 +211,20 @@ void	check_heredoc(char *str);
 void	prepare_token(t_data *data);
 void	prepare_dollar(t_data *data);
 
+// start_data.c
+
+void	start_data(t_data *data, char **env);
+char	**start_env(char **my_env, char **envp);
+
+// execute_builtins.c
+
+void	execute_builtins(t_exec *node, t_data *data);
+int		pipe_and_builtin(t_data *data);
+
+// cmd builtins
+
+void	cmd_env(t_data *data);
+void	cmd_export(t_data *data, t_exec *node);
+void	cmd_unset(t_data *data, t_exec *node);
+void	cmd_echo(t_data *data, t_exec *node);
 #endif

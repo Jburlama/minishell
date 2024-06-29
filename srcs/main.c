@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 15:00:35 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/06/22 15:46:07 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/06/28 15:53:01 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@ void	print_tree(void	*root);
 int	main(int argc, char *argv[], char *env[])
 {
 	t_data	data;
-
+	
 	(void)argc;
 	(void)argv;
 	handle_signal();
-	ft_memset(&data, 0, sizeof(data));
-	data.env = env;
+	
+	start_data(&data, env);
 	while (42)
 	{
 		get_line();
@@ -35,18 +35,22 @@ int	main(int argc, char *argv[], char *env[])
 		}
 		tokenize(&data);
 		prepare_token(&data);
-		for (t_token *ptr = data.head; ptr; ptr = ptr->next)
+		/*for (t_token *ptr = data.head; ptr; ptr = ptr->next)
 			printf("content: %s | type %i\n", ptr->content, ptr->type);
 		clear_list(&data.head);
-		continue ;
+		continue ;*/
+		//chdir("srcs");
 		create_tree(&data);
-		if (save_fork(&data) == 0)
-			execute(&data);
-		wait(NULL);
-
+		if (!pipe_and_builtin(&data))
+		{
+			if (save_fork(&data) == 0)
+				execute(&data);
+			wait(NULL);
+		}
 		// print_tree(data.root);
 		clear_tree(data.root);
 	}
+	clear_args(data.env);
 	free(rl_line_buffer);
 }
 

@@ -1,41 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   b_env.c                                            :+:      :+:    :+:   */
+/*   pipe_builtin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/08 13:19:30 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/06/13 15:29:52 by vbritto-         ###   ########.fr       */
+/*   Created: 2024/06/28 13:27:25 by vbritto-          #+#    #+#             */
+/*   Updated: 2024/06/28 15:46:08 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-
-//check leaks
-
-void	start_env(char **envp, char **my_env)
+void	pipe_and_builtin(t_data *data)
 {
-	int	i;
-	int	j;
+    void  *root;
 
-	i = 0;
-	j = 0;
-	while (envp[i] != NULL)
-		i++;
-	my_env = ft_calloc(i, sizeof(char *));
-	if (!my_env)
-		return (NULL);
-	i = 0;
-	while (envp[i] != NULL)
-	{
-		my_env[j] = ft_calloc(ft_strlen(envp[i]), sizeof(char));
-		if (!my_env[j])
-			return (NULL);
-		ft_strlcpy(my_env[j], envp[i], ft_strlen(envp[i]));
-		i++;
-		j++;
-	}
+    root = data->root;
+    if (((t_pipe *)root)->type == PIPE)
+        return ;
+    else
+        execute_builtins(data->root, data);
 }
-

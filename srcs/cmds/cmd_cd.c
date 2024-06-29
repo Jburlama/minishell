@@ -1,25 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   cmd_cd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/03 20:18:37 by jburlama          #+#    #+#             */
-/*   Updated: 2024/06/25 14:54:59 by vbritto-         ###   ########.fr       */
+/*   Created: 2024/06/26 13:27:56 by vbritto-          #+#    #+#             */
+/*   Updated: 2024/06/26 13:37:14 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../../minishell.h"
 
-size_t	ft_strlen(const char *str)
+void	cmd_cd(t_data *data, t_exec *node)
 {
-	size_t	i;
-
-	i = 0;
-	if (!str)
-		return (i);
-	while (str[i] != '\0')
-		i++;
-	return (i);
+	chdir("home/vbritto-");
+	clear_tree(data->root);
+	exit(status_exit);
 }

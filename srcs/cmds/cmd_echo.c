@@ -1,17 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   cmd_echo.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 12:41:35 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/06/08 13:15:39 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/06/27 14:23:43 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
+/*
 char	*get_dollar(char *str)
 {
 	char	*dollar;
@@ -66,40 +67,39 @@ void	handle_type2(char *str)
 	all_args = ft_split(str, " ");
 	while (all_args[i] != NULL)
 	{	
-		if (all_args[i][0] == '$')
-			all_args[i] = expand(all_args[i]);
 		arg_final = ft_strjoin(all_args[i], (char *)' ');
 		i++;
 	}
 	write (1, &arg_final, ft_strlen(arg_final));
 	free(arg_final);
 	//clean(all_args)
-}
+}*/
 
-int	echo(t_token *token)
+void	cmd_echo(t_data *data, t_exec *node)
 {
-	char	**split_arg;
 	int		i;
 	bool	n;
 
+	i = 0;
 	n = false;
-	if (token->content[0] == '-' && token->content[1] == 'n')
+	if (node->args[0][0] == '-' && node->args[0][1] == 'n')
 	{
 		i = 2;
-		while (token->content[i] == 'n')
+		while (node->args[0][i] == 'n')
 			i++;
-		if (token->content[i] != ' ')
+		if (node->args[0][i] != ' ')
 			n = true;
 	}
-	while (token->content && token->type != SPECIAL)
+	i = 1;
+	while (node->args[i])
 	{
-		if (token->type == WORD)
-			handle_type2(*token->content);
-		if (token->type == DQUOTES || token->type == SQUOTES)
-			handle_type3(*token->content, token->type);
+		ft_printf("%s", node->args[i]);
+		if (node->args[i + 1] != NULL)
+			write(1, " ", 1);
+		i++;
 	}
 	if (n == false)
-		write(1, '\n', 1);
+		write(1, "\n", 1);
+	clear_tree(data->root);
+	exit(status_exit);
 }
-
-

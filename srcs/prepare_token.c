@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 14:56:00 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/06/18 16:55:12 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/06/27 15:58:22 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	prepare_builtins(t_data *data)
 	t_token	*tmp;
 
 	tmp = data->head;
-	while (!tmp)
+	while (tmp)
 	{
 		if (ft_memcmp("echo", tmp->content, ft_strlen(tmp->content)) == 0)
 			tmp->builtin = ECHO;
@@ -40,7 +40,8 @@ void	prepare_builtins(t_data *data)
 			tmp->builtin = CD;
 		else if (ft_memcmp("pwd", tmp->content, ft_strlen(tmp->content)) == 0)
 			tmp->builtin = PWD;
-		else if (ft_memcmp("export", tmp->content, ft_strlen(tmp->content)) == 0)
+		else if (ft_memcmp("export", tmp->content,
+				ft_strlen(tmp->content)) == 0)
 			tmp->builtin = EXPORT;
 		else if (ft_memcmp("unset", tmp->content, ft_strlen(tmp->content)) == 0)
 			tmp->builtin = UNSET;
@@ -54,11 +55,9 @@ void	prepare_builtins(t_data *data)
 	}
 }
 
-
-
 t_token	*handle_quotes_aux(t_token *tmp, t_token *keep)
 {
-	char 	*new_content;
+	char	*new_content;
 
 	new_content = ft_strjoin(tmp->content, tmp->next->content);
 	free(tmp->next->content);
@@ -70,8 +69,8 @@ t_token	*handle_quotes_aux(t_token *tmp, t_token *keep)
 }
 
 void	handle_first_quote(t_token *tmp, t_token *keep, int first_quote)
-{	
-	char 	*new_content;
+{
+	char	*new_content;
 
 	new_content = ft_strjoin(tmp->content, tmp->next->content);
 	if (!tmp->next->next)
@@ -129,7 +128,10 @@ void	prepare_token(t_data *data)
 	if (data->head)
 	{
 		prepare_dollar(data);
-		prepare_builtins(data);
-		handle_quotes(data);
+		if (data->head)
+		{
+			prepare_builtins(data);
+			handle_quotes(data);
+		}
 	}
 }
