@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 17:57:08 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/06/29 13:32:17 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/06/29 16:23:16 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 # include <stdlib.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+#include <limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 
@@ -186,7 +187,7 @@ void	handle_signal(void);
 void	signal_handler(int sig);
 
 // get_line.c
-char	*get_line(void);
+char	*get_line(t_data *data);
 bool	is_white_space(char c);
 
 // clear.c
@@ -226,5 +227,8 @@ int		pipe_and_builtin(t_data *data);
 void	cmd_env(t_data *data);
 void	cmd_export(t_data *data, t_exec *node);
 void	cmd_unset(t_data *data, t_exec *node);
-void	cmd_echo(t_data *data, t_exec *node);
+void	cmd_echo(t_exec *node);
+void	cmd_pwd();
+void	cmd_cd(t_data *data, t_exec *node);
+
 #endif

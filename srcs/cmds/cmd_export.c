@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 15:09:39 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/06/28 18:01:59 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/06/29 14:53:24 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ void	cmd_export(t_data *data, t_exec *node)
 	int		i;
 
 	i = 0;
-	if (ft_isdigit(node->args[1][0]))
-		return ;
+	if (!ft_isalpha(node->args[1][0]))
+		ft_printf("%s%s%s\n", RED"minishell: export: `",node->args[1],"' : not a valid identifier"RESET);
 	while (node->args[1][i])
 	{
 		if (node->args[1][i] == '=')

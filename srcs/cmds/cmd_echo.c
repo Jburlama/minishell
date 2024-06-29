@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 12:41:35 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/06/27 14:23:43 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/06/29 16:22:50 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	handle_type2(char *str)
 	//clean(all_args)
 }*/
 
-void	cmd_echo(t_data *data, t_exec *node)
+void	cmd_echo(t_exec *node)
 {
 	int		i;
 	bool	n;
@@ -100,6 +100,4 @@ void	cmd_echo(t_data *data, t_exec *node)
 	}
 	if (n == false)
 		write(1, "\n", 1);
-	clear_tree(data->root);
-	exit(status_exit);
 }

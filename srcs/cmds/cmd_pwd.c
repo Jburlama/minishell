@@ -1,24 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipe_builtin.c                                     :+:      :+:    :+:   */
+/*   cmd_pwd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/28 13:27:25 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/06/28 15:46:08 by vbritto-         ###   ########.fr       */
+/*   Created: 2024/06/29 15:01:44 by vbritto-          #+#    #+#             */
+/*   Updated: 2024/06/29 15:30:04 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
-void	pipe_and_builtin(t_data *data)
+void	cmd_pwd()
 {
-    void  *root;
+	char	*pwd;
 
-    root = data->root;
-    if (((t_pipe *)root)->type == PIPE)
-        return ;
-    else
-        execute_builtins(data->root, data);
+	pwd = getcwd(NULL, 0);
+	if (pwd != NULL)
+		ft_printf("%s\n", pwd);
+	else
+		perror("pwd error");
 }
