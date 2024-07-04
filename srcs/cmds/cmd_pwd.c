@@ -6,13 +6,13 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 15:01:44 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/06/29 15:30:04 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/01 12:50:54 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	cmd_pwd()
+void	cmd_pwd(void)
 {
 	char	*pwd;
 
@@ -21,4 +21,5 @@ void	cmd_pwd()
 		ft_printf("%s\n", pwd);
 	else
 		perror("pwd error");
+	free(pwd);
 }

@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 15:09:39 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/06/29 14:53:24 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/01 13:31:36 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ char	**export(char **old_env, char *arg, int i)
 		return (NULL);
 	ft_strlcpy(new_env[i], arg, ft_strlen(arg) + 1);
 	new_env[i + 1] = NULL;
+	clear_args(old_env);
 	return (new_env);
 }
 
@@ -43,11 +44,12 @@ void	cmd_export(t_data *data, t_exec *node)
 
 	i = 0;
 	if (!ft_isalpha(node->args[1][0]))
-		ft_printf("%s%s%s\n", RED"minishell: export: `",node->args[1],"' : not a valid identifier"RESET);
+		ft_printf ("%s%s%s\n", RED"minishell: export: `",
+			node->args[1], "' : not a valid identifier"RESET);
 	while (node->args[1][i])
 	{
 		if (node->args[1][i] == '=')
-			break;
+			break ;
 		i++;
 	}
 	if (node->args[1][i] == '=')

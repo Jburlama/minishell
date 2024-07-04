@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 17:57:08 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/06/29 16:23:16 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/04 13:54:31 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 #include <limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
+#include <dirent.h>
 
 extern int	status_exit;
 
@@ -211,6 +212,18 @@ void	check_heredoc(char *str);
 
 void	prepare_token(t_data *data);
 void	prepare_dollar(t_data *data);
+void	prepare_wildcards(t_data *data);
+
+// prepare_wildcars.c and aux.c
+
+void	*exp_wildcards(t_token *wild_list, char *wild, t_data *data);
+t_token	*create_wild_node(char *name, char *wild, t_data *data);
+t_token	*create_wild_list(t_token *wild_list, t_token *wild_node);
+void	tokenize_wildcards(t_token *wildcards, t_token *before, t_token *tmp, t_data *data);
+t_token	*ft_lasttoken(t_token *lst);
+bool	check_dot(char *wild, t_token *wild_node);
+
+
 
 // start_data.c
 

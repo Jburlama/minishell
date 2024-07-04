@@ -15,7 +15,7 @@
 int	check_expand(char *content, int i, int type)
 {
 	if ((content[i + 1] == '\0') || (content[i + 1] == ' ')
-	|| (content[i + 1] == 34) || (content[i + 1] == 39))
+		|| (content[i + 1] == 34) || (content[i + 1] == 39))
 	{
 		if (content[0] == '$' && ft_strlen(content) == 1 && type == 1)
 		{
@@ -77,36 +77,37 @@ char	*get_env_name(char *content, char *exp,
 	return (exp);
 }
 
-char	*expand(char *content, t_data *data, size_t *dol, int type)
+// c = content
+// d = dol
+// e = exp
+
+char	*expand(char *c, t_data *data, size_t *d, int type)
 {
-	char	*exp;
-	char	*tmp;
+	char	*e;
+	char	*tp;
 	size_t	i;
 
-	exp = NULL;
-	i = *dol - 1;
-	if(!check_expand(content, i, type))
-		return (content);
-	/*if ((content[i + 1] == '\0') || (content[i + 1] == ' ')
-		|| (content[i + 1] == 34) || (content[i + 1] == 39))
-		return (content);*/
-	exp = get_env_name(content, exp, dol, data);
-	if (!exp && (content[*dol]) == '\0')
+	e = NULL;
+	i = *d - 1;
+	if (!check_expand(c, i, type))
+		return (c);
+	e = get_env_name(c, e, d, data);
+	if (!e && (c[*d]) == '\0')
 	{
-		free(content);
+		free(c);
 		return (NULL);
 	}
-	tmp = ft_calloc((ft_strlen(content) + ft_strlen(exp) - (*dol - i) + 1), sizeof(char));
-	if (!tmp)
+	tp = ft_calloc((ft_strlen(c) + ft_strlen(e) - (*d - i) + 1), sizeof(char));
+	if (!tp)
 		panic("calloc_fail", data);
-	ft_strlcpy(tmp, content, i + 1);
-	if (exp)
-		ft_strlcpy(tmp + i, exp, ft_strlen(exp) + 1);
-	if (content[*dol] != '\0')
-		ft_strlcpy(tmp + i + ft_strlen(exp), content + (*dol), ft_strlen(content) + 1 - (*dol));
-	free(content);
-	*dol = i;
-	return (tmp);
+	ft_strlcpy(tp, c, i + 1);
+	if (e)
+		ft_strlcpy(tp + i, e, ft_strlen(e) + 1);
+	if (c[*d] != '\0')
+		ft_strlcpy(tp + i + ft_strlen(e), c + (*d), ft_strlen(c) + 1 - (*d));
+	free(c);
+	*d = i;
+	return (tp);
 }
 
 void	prepare_dollar(t_data *data)
@@ -125,7 +126,7 @@ void	prepare_dollar(t_data *data)
 			if (tmp->content[dol] == '$' && tmp->type != SQUOTES)
 			{
 				dol++;
-				tmp->content = expand(tmp->content, data, &dol, tmp->type);	
+				tmp->content = expand(tmp->content, data, &dol, tmp->type);
 				if (tmp->content == NULL)
 					dol = -1;
 				if (!check_content(&tmp, &keep, data))

@@ -6,26 +6,11 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 14:56:00 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/06/27 15:58:22 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/02 16:28:35 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-/*
-char	*expand(char *env_name, t_data *data)
-{
-	char	*name_expanded;
-
-	env_name++;
-	name_expanded = getenv(env_name);
-	if (!name_expanded)
-		return (env_name);
-	env_name = ft_calloc(ft_strlen(name_expanded) + 1, sizeof(char));
-	if (!env_name)
-		panic("calloc_fail", &data);
-	ft_strlcpy(env_name, name_expanded, ft_strlen(name_expanded));
-	return (env_name);
-}*/
 
 void	prepare_builtins(t_data *data)
 {
@@ -130,6 +115,7 @@ void	prepare_token(t_data *data)
 		prepare_dollar(data);
 		if (data->head)
 		{
+			prepare_wildcards(data);
 			prepare_builtins(data);
 			handle_quotes(data);
 		}
