@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 17:57:08 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/04 13:54:31 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/04 16:17:18 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -233,7 +233,7 @@ char	**start_env(char **my_env, char **envp);
 // execute_builtins.c
 
 void	execute_builtins(t_exec *node, t_data *data);
-int		pipe_and_builtin(t_data *data);
+int		find_root(void *root, t_data *data);
 
 // cmd builtins
 

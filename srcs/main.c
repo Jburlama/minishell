@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 15:00:35 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/07/02 17:18:16 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/04 17:00:24 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	main(int argc, char *argv[], char *env[])
 		continue ;*/
 		//chdir("srcs");
 		create_tree(&data);
-		if (pipe_and_builtin(&data) == 0)
+		if (find_root(data.root, &data) == 0)
 		{
 			if (save_fork(&data) == 0)
 				execute(&data);
