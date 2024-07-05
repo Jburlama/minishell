@@ -30,8 +30,8 @@ void	signal_handler(int sig)
 {
 	if (sig == SIGINT)
 	{
-		rl_replace_line("", 0);
-		printf("\n");
+		rl_replace_line("", 1);
+		ft_printf("\n");
 		rl_on_new_line();
 		rl_redisplay();
 	}

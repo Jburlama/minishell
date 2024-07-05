@@ -17,15 +17,19 @@ void	runexec(t_exec *node, t_data *data)
 	char	*pathname;
 
 	if (node->args[0])
+	{
 		pathname = get_pathname(node->args[0], data->env);
+		if (pathname == NULL)
+			perror(node->args[0]);
+	}
 	else
 		pathname = NULL;
 	if (pathname)
 	{
 		execve(pathname, node->args, data->env);
 		free(pathname);
+		perror(node->args[0]);
 	}
-	perror(node->args[0]);
 	clear_tree(data->root);
 	exit(errno);
 }

@@ -6,7 +6,7 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 15:00:19 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/06/18 20:45:35 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/07/05 18:25:12 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,13 +102,15 @@ void	execute(t_data *data);
 void	runcmd(void *root, t_data *data);
 void	read_input(t_redir *root, t_data *data);
 void	runpipe(t_pipe *root, t_data *data);
+void	runredir(t_redir *root, t_data *data);
+
+// here_doc.c
+void	here_doc(t_redir *root, t_data *data);
+char	*get_heredoc_file_name(t_data *data);
 
 // logical.c
 void	runor(t_cond *root, t_data *data);
 void	runand(t_cond *root, t_data *data);
-
-// rumredir.c
-void	runredir(t_redir *root, t_data *data);
 
 // rumexrc.c
 void	runexec(t_exec *node, t_data *data);

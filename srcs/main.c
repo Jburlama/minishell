@@ -6,7 +6,7 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 15:00:35 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/06/17 15:01:19 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/07/05 18:24:58 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ int	main(int argc, char *argv[], char *env[])
 		// print_tree(data.root);
 		clear_tree(data.root);
 	}
-	free(rl_line_buffer);
 }
 
 void	print_tree(void	*root)
