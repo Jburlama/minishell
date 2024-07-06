@@ -12,19 +12,13 @@
 
 #include "../../minishell.h"
 
-void	here_doc(t_redir *root, t_data *data)
+void	here_doc(t_redir *root)
 {
 	char	*line;
-	char	*heredoc_file;
 	int		fd;
+	char	*file_name;
 
-	fd = -1;
-	while (fd < 0)
-	{
-		heredoc_file = get_heredoc_file_name(data);
-		fd = open(heredoc_file, O_CREAT | O_APPEND | O_RDWR, 777);
-		free(heredoc_file);
-	}
+	file_name = open_heredoc_for_write(&fd);
 	while (42)
 	{
 		line = readline("herdoc> ");
@@ -32,32 +26,41 @@ void	here_doc(t_redir *root, t_data *data)
 			|| ft_memcmp(line, root->file, ft_strlen(root->file) + 1) == 0)
 		{
 			rl_on_new_line();
-			break ;			
+			break ;
 		}
 		write(fd, line, ft_strlen(line));
+		write(fd, "\n", 1);
 	}
-	dup2(fd, STDIN_FILENO);
 	close(fd);
+	if (access(file_name, F_OK) == 0)
+	{
+		fd = open(file_name, O_RDWR);
+		dup2(fd, STDIN_FILENO);
+		close(fd);
+	}
+	free(file_name);
 }
 
-char	*get_heredoc_file_name(t_data *data)
+char	*open_heredoc_for_write(int *fd)
 {
-	static int	i;
-	char		*path;
-	char		*nbr;
-	char		*heredoc_file;
+	int		n;
+	char	*path;
+	char	*file_name;
+	char	*nbr;
 
+	n = 0;
 	path = "/tmp/here_doc";
-	nbr = ft_itoa(i);
-	if (nbr == NULL)
-		panic("Error ft_itoa\n", data);
-	heredoc_file = ft_strjoin(path, nbr);
-	if (heredoc_file == NULL)
+	file_name = NULL;
+	while (42)
 	{
+		nbr = ft_itoa(n);
+		file_name = ft_strjoin(path, nbr);
+		*fd = open(file_name, O_CREAT | O_TRUNC | O_RDWR, S_IRWXU);
 		free(nbr);
-		panic("Error ft_strjoin\n", data);
+		if (*fd >= 0)
+			break ;
+		free(file_name);
+		n++;
 	}
-	free(nbr);
-	i++;
-	return (heredoc_file);
+	return (file_name);
 }

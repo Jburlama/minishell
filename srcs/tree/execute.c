@@ -14,9 +14,22 @@
 
 void	execute(t_data *data)
 {
-	if (data->root)
-		runcmd(data->root, data);
-	exit(errno);
+	int	pid;
+	int	wstatus;
+
+	update_signals();
+	pid = save_fork(data);
+	wstatus = 0;
+	if (pid == 0)
+	{
+		default_sig();
+		if (data->root)
+			runcmd(data->root, data);
+		exit(errno);
+	}
+	waitpid(pid, &wstatus, 0);
+	if (WIFSIGNALED(wstatus))
+		kill(pid, SIGINT);
 }
 
 void	runcmd(void *root, t_data *data)
@@ -52,7 +65,7 @@ void	runredir(t_redir *root, t_data *data)
 	else if (root->file_type == I)
 		read_input(root, data);
 	else if (root->file_type == HERE_DOC)
-		here_doc(root, data);
+		here_doc(root);
 	runcmd(((t_redir *)root)->down, data);
 }
 
@@ -81,6 +94,7 @@ void	runpipe(t_pipe *root, t_data *data)
 	pipe(fds);
 	if (save_fork(data) == 0)
 	{
+		default_sig();
 		dup2(fds[1], STDOUT_FILENO);
 		close(fds[0]);
 		close(fds[1]);
@@ -88,6 +102,7 @@ void	runpipe(t_pipe *root, t_data *data)
 	}
 	if (save_fork(data) == 0)
 	{
+		default_sig();
 		dup2(fds[0], STDIN_FILENO);
 		close(fds[0]);
 		close(fds[1]);

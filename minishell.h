@@ -105,8 +105,8 @@ void	runpipe(t_pipe *root, t_data *data);
 void	runredir(t_redir *root, t_data *data);
 
 // here_doc.c
-void	here_doc(t_redir *root, t_data *data);
-char	*get_heredoc_file_name(t_data *data);
+void	here_doc(t_redir *root);
+char	*open_heredoc_for_write(int *fd);
 
 // logical.c
 void	runor(t_cond *root, t_data *data);
@@ -172,6 +172,9 @@ bool	is_quote(char c);
 // signals.c
 void	handle_signal(void);
 void	signal_handler(int sig);
+void	update_signals(void);
+void	signal_handler_update(int sig);
+void	default_sig(void);
 
 // get_line.c
 char	*get_line(void);
@@ -187,7 +190,6 @@ void	clear_gate(void	*root);
 void	panic(char *msg, t_data *data);
 
 // check.c
-
 int		check(char *str);
 void	check_redirect(char *str);
 void	check_quotes(char *str);
@@ -195,7 +197,6 @@ void	ft_exit(char *str);
 void	check_heredoc(char *str);
 
 // prepare_token.c
-
 void	prepare_token(t_data *data);
 char	*expand(char *env_name, t_data *data);
 

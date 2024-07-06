@@ -22,11 +22,11 @@ int	main(int argc, char *argv[], char *env[])
 
 	(void)argc;
 	(void)argv;
-	handle_signal();
 	ft_memset(&data, 0, sizeof(data));
 	data.env = env;
 	while (42)
 	{
+		handle_signal();
 		get_line();
 		// if(check(rl_line_buffer) == 2) 
 		// 	continue;
@@ -37,10 +37,7 @@ int	main(int argc, char *argv[], char *env[])
 		// clear_list(&data.head);
 		// continue ;
 		create_tree(&data);
-		if (save_fork(&data) == 0)
-			execute(&data);
-		wait(NULL);
-
+		execute(&data);
 		// print_tree(data.root);
 		clear_tree(data.root);
 	}
@@ -66,7 +63,7 @@ void	print_tree(void	*root)
 			i++;
 		}
 		printf("\n");
-		return ;
+			return ;
 	}
 	else if (((t_redir *)root)->type == REDIR)
 	{
