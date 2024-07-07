@@ -50,6 +50,8 @@ void	signal_handler_update(int sig)
 {
 	if (sig == SIGINT)
 		write(1, "\n", 1);
+	else if (sig == SIGQUIT)
+		write(1, "Quit (core dumped)\n", 19);
 }
 
 void	default_sig(void)
