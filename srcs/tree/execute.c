@@ -28,8 +28,6 @@ void	execute(t_data *data)
 		exit(errno);
 	}
 	waitpid(pid, &wstatus, 0);
-	if (WIFSIGNALED(wstatus))
-		kill(pid, SIGINT);
 }
 
 void	runcmd(void *root, t_data *data)
@@ -110,8 +108,8 @@ void	runpipe(t_pipe *root, t_data *data)
 	}
 	close(fds[1]);
 	close(fds[0]);
-	wait(NULL);
-	wait(NULL);
+	while (waitpid(-1, NULL, 0) > 0)
+		;
 	clear_tree(data->root);
 	exit(errno);
 }
