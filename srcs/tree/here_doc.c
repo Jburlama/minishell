@@ -19,26 +19,18 @@ void	here_doc(t_redir *root)
 	char	*file_name;
 
 	file_name = open_heredoc_for_write(&fd);
+	dup2(STDERR_FILENO, STDIN_FILENO);
 	while (42)
 	{
-		line = readline("herdoc> ");
+		line = readline("heredoc> ");
 		if (!line
 			|| ft_memcmp(line, root->file, ft_strlen(root->file) + 1) == 0)
-		{
-			rl_on_new_line();
 			break ;
-		}
 		write(fd, line, ft_strlen(line));
 		write(fd, "\n", 1);
 	}
 	close(fd);
-	if (access(file_name, F_OK) == 0)
-	{
-		fd = open(file_name, O_RDWR);
-		dup2(fd, STDIN_FILENO);
-		close(fd);
-	}
-	free(file_name);
+	open_heredoc_for_read(file_name, &fd);
 }
 
 char	*open_heredoc_for_write(int *fd)
@@ -63,4 +55,15 @@ char	*open_heredoc_for_write(int *fd)
 		n++;
 	}
 	return (file_name);
+}
+
+void	open_heredoc_for_read(char *file_name, int *fd)
+{
+	if (access(file_name, F_OK) == 0)
+	{
+		*fd = open(file_name, O_RDWR);
+		dup2(*fd, STDIN_FILENO);
+		close(*fd);
+	}
+	free(file_name);
 }

@@ -107,6 +107,7 @@ void	runredir(t_redir *root, t_data *data);
 // here_doc.c
 void	here_doc(t_redir *root);
 char	*open_heredoc_for_write(int *fd);
+void	open_heredoc_for_read(char *file_name, int *fd);
 
 // logical.c
 void	runor(t_cond *root, t_data *data);
