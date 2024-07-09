@@ -12,19 +12,20 @@
 
 #include "../minishell.h"
 
-void	clear_list(t_token	**head)
+void	clear_list(t_data	*data)
 {
 	t_token	*temp;
 
-	temp = *head;
+	temp = data->head;
 	while (temp)
 	{
-		*head = (*head)->next;
+		data->head = data->head->next;
 		free(temp->content);
 		free(temp);
-		temp = *head;
+		temp = data->head;
 	}
-	*head = NULL;
+	data->head = NULL;
+	data->tail = NULL;
 }
 
 void	clear_tree(void	*root)

@@ -34,7 +34,7 @@ void	runcmd(void *root, t_data *data)
 {
 	if (((t_exec *)root)->type == EXEC)
 		runexec(root, data);
-	else if (((t_exec *)root)->type == REDIR)
+	else if (((t_redir *)root)->type == REDIR)
 		runredir(root, data);
 	else if (((t_pipe *)root)->type == PIPE)
 		runpipe(root, data);
@@ -61,9 +61,13 @@ void	runredir(t_redir *root, t_data *data)
 		close(fd);
 	}
 	else if (root->file_type == I)
+	{
 		read_input(root, data);
+	}
 	else if (root->file_type == HERE_DOC)
+	{
 		here_doc(root);
+	}
 	runcmd(((t_redir *)root)->down, data);
 }
 

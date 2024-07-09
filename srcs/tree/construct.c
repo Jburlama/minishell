@@ -62,13 +62,15 @@ void	*construct_redir(void	*root, t_token **tokens)
 		return (NULL);
 	new->type = REDIR;
 	new->file_type = (*tokens)->type;
+	if ((*tokens)->type == DQUOTES || (*tokens)->type == SQUOTES)
+	{
+		new->quote_type = (*tokens)->type;
+		new->file_type = (*tokens)->file;
+	}
 	new->file = ft_strdup((*tokens)->content);
-	if (new->file == NULL)
-		return (NULL);
 	if (((t_exec *)root)->type == EXEC)
 	{
 		new->down = root;
-		(*tokens) = (*tokens)->next;
 		return (new);
 	}
 	ptr = root;
@@ -76,7 +78,6 @@ void	*construct_redir(void	*root, t_token **tokens)
 		ptr = ptr->down;
 	new->down = ptr->down;
 	ptr->down = new;
-	(*tokens) = (*tokens)->next;
 	return (root);
 }
 

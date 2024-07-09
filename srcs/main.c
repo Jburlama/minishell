@@ -26,19 +26,19 @@ int	main(int argc, char *argv[], char *env[])
 	data.env = env;
 	while (42)
 	{
-		handle_signal();
 		get_line();
 		// if(check(rl_line_buffer) == 2) 
 		// 	continue;
 		tokenize(&data);
 		// prepare_token(&data);
 		// for (t_token *ptr = data.head; ptr; ptr = ptr->next)
-		// 	printf("content: %s | type %i\n", ptr->content, ptr->type);
-		// clear_list(&data.head);
+		// 	printf("content: %s | type %i | file %i\n",
+		//   		ptr->content, ptr->type, ptr->file);
+		// clear_list(&data);
 		// continue ;
 		create_tree(&data);
-		execute(&data);
 		// print_tree(data.root);
+		execute(&data);
 		clear_tree(data.root);
 	}
 }
@@ -68,7 +68,8 @@ void	print_tree(void	*root)
 	else if (((t_redir *)root)->type == REDIR)
 	{
 		redir = root;
-		printf("type: %i | file_type: %i | file: %s\n", redir->type, redir->file_type, redir->file);
+		printf("type: %i | file_type: %i | quote_type: %i | file: %s\n",
+		 redir->type, redir->file_type, redir->quote_type, redir->file);
 		print_tree(redir->down);
 	}
 	else if (((t_redir *)root)->type == PIPE)
