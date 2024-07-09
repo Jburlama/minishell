@@ -40,6 +40,29 @@ void	*parse_exec(t_token **tokens)
 	return (root);
 }
 
+void	*parse_redir(void *root, t_token **tokens)
+{
+	void	*ret;
+
+	ret = root;
+	while ((*tokens) && (*tokens)->type == WHITE_SPACE)
+		(*tokens) = (*tokens)->next;
+	while ((*tokens)
+		&& (*(*tokens)->content == '<' || *(*tokens)->content == '>'))
+	{
+		(*tokens) = (*tokens)->next;
+		if (*tokens)
+			ret = construct_redir(ret, tokens);
+		if (ret == NULL)
+			return (NULL);
+		while ((*tokens) && (*tokens)->type == WHITE_SPACE)
+			(*tokens) = (*tokens)->next;
+	}
+	while ((*tokens) && (*tokens)->type == WHITE_SPACE)
+		(*tokens) = (*tokens)->next;
+	return (ret);
+}
+
 void	*parse_block(t_token **tokens)
 {
 	void	*root;
@@ -56,27 +79,6 @@ void	*parse_block(t_token **tokens)
 		root = parse_redir(root, tokens);
 	}
 	return (root);
-}
-
-void	*parse_redir(void *root, t_token **tokens)
-{
-	void	*ret;
-
-	ret = root;
-	while ((*tokens) && (*tokens)->type == WHITE_SPACE)
-		(*tokens) = (*tokens)->next;
-	while ((*tokens)
-		&& (*(*tokens)->content == '<' || *(*tokens)->content == '>'))
-	{
-		(*tokens) = (*tokens)->next;
-		if (*tokens)
-			ret = construct_redir(ret, tokens);
-		if (ret == NULL)
-			return (NULL);
-	}
-	while ((*tokens) && (*tokens)->type == WHITE_SPACE)
-		(*tokens) = (*tokens)->next;
-	return (ret);
 }
 
 void	*parse_pipe(t_token **tokens)

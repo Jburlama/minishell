@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/21 17:57:08 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/06/29 13:32:17 by vbritto-         ###   ########.fr       */
+/*   Created: 2024/07/09 16:14:01 by vbritto-          #+#    #+#             */
+/*   Updated: 2024/07/09 16:14:04 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,13 +116,16 @@ void	execute(t_data *data);
 void	runcmd(void *root, t_data *data);
 void	read_input(t_redir *root, t_data *data);
 void	runpipe(t_pipe *root, t_data *data);
+void	runredir(t_redir *root, t_data *data);
+
+// here_doc.c
+void	here_doc(t_redir *root);
+char	*open_heredoc_for_write(int *fd);
+void	open_heredoc_for_read(char *file_name, int *fd);
 
 // logical.c
 void	runor(t_cond *root, t_data *data);
 void	runand(t_cond *root, t_data *data);
-
-// rumredir.c
-void	runredir(t_redir *root, t_data *data);
 
 // rumexrc.c
 void	runexec(t_exec *node, t_data *data);
@@ -184,6 +187,9 @@ bool	is_quote(char c);
 // signals.c
 void	handle_signal(void);
 void	signal_handler(int sig);
+void	update_signals(void);
+void	signal_handler_update(int sig);
+void	default_sig(void);
 
 // get_line.c
 char	*get_line(void);
@@ -199,7 +205,6 @@ void	clear_gate(void	*root);
 void	panic(char *msg, t_data *data);
 
 // check.c
-
 int		check(char *str);
 void	check_redirect(char *str);
 void	check_quotes(char *str);
@@ -207,7 +212,6 @@ void	ft_exit(char *str);
 void	check_heredoc(char *str);
 
 // prepare_token.c
-
 void	prepare_token(t_data *data);
 void	prepare_dollar(t_data *data);
 

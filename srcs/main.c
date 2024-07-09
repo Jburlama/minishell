@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/17 15:00:35 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/06/28 15:53:01 by vbritto-         ###   ########.fr       */
+/*   Created: 2024/07/09 16:16:20 by vbritto-          #+#    #+#             */
+/*   Updated: 2024/07/09 16:28:50 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,36 +22,38 @@ int	main(int argc, char *argv[], char *env[])
 	
 	(void)argc;
 	(void)argv;
-	handle_signal();
-	
+	handle_signal();	
 	start_data(&data, env);
 	while (42)
 	{
+		handle_signal();
 		get_line();
-		if(check(rl_line_buffer) == 2)
+		/*if(check(rl_line_buffer) == 2)
 		{	
 			status_exit = 0;
 			continue;
-		}
+		}*/
 		tokenize(&data);
-		prepare_token(&data);
+		// prepare_token(&data);
 		/*for (t_token *ptr = data.head; ptr; ptr = ptr->next)
 			printf("content: %s | type %i\n", ptr->content, ptr->type);
 		clear_list(&data.head);
 		continue ;*/
 		//chdir("srcs");
 		create_tree(&data);
-		if (!pipe_and_builtin(&data))
+		execute(&data);
+		/*if (!pipe_and_builtin(&data))
 		{
 			if (save_fork(&data) == 0)
 				execute(&data);
 			wait(NULL);
-		}
+		}*/
 		// print_tree(data.root);
 		clear_tree(data.root);
 	}
 	clear_args(data.env);
 	free(rl_line_buffer);
+
 }
 
 void	print_tree(void	*root)
@@ -74,7 +76,7 @@ void	print_tree(void	*root)
 			i++;
 		}
 		printf("\n");
-		return ;
+			return ;
 	}
 	else if (((t_redir *)root)->type == REDIR)
 	{

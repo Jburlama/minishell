@@ -43,7 +43,8 @@ void	add_token(t_data *data, int *i, enum e_type type)
 {
 	if (type == SPECIAL)
 	{
-		if (*data->tail->content == '>' || *data->tail->content == '<')
+		if (data->tail
+			&& (*data->tail->content == '>' || *data->tail->content == '<'))
 		{
 			jump_white_spaces(i);
 			return ;
