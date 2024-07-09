@@ -6,17 +6,28 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 17:58:00 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/06/21 17:58:02 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/09 15:13:57 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
+/*
 void	execute(t_data *data)
 {
 	if (data->root)
 		runcmd(data->root, data);
 	exit(errno);
+}*/
+
+void	execute(void *root, t_data *data)
+{
+	int	pid;
+
+	pid = save_fork(data);
+	if (pid == 0)
+		runcmd(root, data);
+	wait(NULL);
 }
 
 void	runcmd(void *root, t_data *data)

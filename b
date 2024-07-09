@@ -1,0 +1,10 @@
+a.out
+b
+echo.c
+libft
+Makefile
+minishell
+minishell.h
+objs
+sintaxe.c
+srcs

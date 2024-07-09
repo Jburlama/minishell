@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 17:57:08 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/04 16:17:18 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/09 15:08:45 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,8 @@ typedef struct s_data
 }	t_data;
 
 // execute.c
-void	execute(t_data *data);
+//void	execute(t_data *data);
+void	execute(void *root, t_data *data);
 void	runcmd(void *root, t_data *data);
 void	read_input(t_redir *root, t_data *data);
 void	runpipe(t_pipe *root, t_data *data);
@@ -233,7 +234,7 @@ char	**start_env(char **my_env, char **envp);
 // execute_builtins.c
 
 void	execute_builtins(t_exec *node, t_data *data);
-int		find_root(void *root, t_data *data);
+void	find_root(void *root, t_data *data);
 
 // cmd builtins
 
@@ -245,3 +246,5 @@ void	cmd_pwd();
 void	cmd_cd(t_data *data, t_exec *node);
 
 #endif
+
+
