@@ -6,7 +6,7 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 15:00:19 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/07/05 18:25:12 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/07/10 18:09:17 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,8 +103,11 @@ typedef struct s_data
 void	execute(t_data *data);
 void	runcmd(void *root, t_data *data);
 void	read_input(t_redir *root, t_data *data);
-void	runpipe(t_pipe *root, t_data *data);
 void	runredir(t_redir *root, t_data *data);
+
+// pipe_execute.c
+void	runpipe(t_pipe *root, t_data *data);
+int		runpipe_wait(int *wstatus, t_data *data);
 
 // here_doc.c
 void	here_doc(t_redir *root);

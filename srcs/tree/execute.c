@@ -6,7 +6,7 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:54:50 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/07/05 18:20:13 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/07/10 18:05:36 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,33 +87,4 @@ void	read_input(t_redir *root, t_data *data)
 		clear_tree(data->root);
 		exit(errno);
 	}
-}
-
-void	runpipe(t_pipe *root, t_data *data)
-{
-	int	fds[2];
-
-	pipe(fds);
-	if (save_fork(data) == 0)
-	{
-		default_sig();
-		dup2(fds[1], STDOUT_FILENO);
-		close(fds[0]);
-		close(fds[1]);
-		runcmd(root->left, data);
-	}
-	if (save_fork(data) == 0)
-	{
-		default_sig();
-		dup2(fds[0], STDIN_FILENO);
-		close(fds[0]);
-		close(fds[1]);
-		runcmd(root->right, data);
-	}
-	close(fds[1]);
-	close(fds[0]);
-	while (waitpid(-1, NULL, 0) > 0)
-		;
-	clear_tree(data->root);
-	exit(errno);
 }
