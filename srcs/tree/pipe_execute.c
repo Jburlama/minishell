@@ -6,7 +6,7 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/10 18:05:14 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/07/10 18:10:34 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/07/10 18:12:27 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	runpipe_wait(int *wstatus, t_data *data)
 
 	while (waitpid(-1, wstatus, 0) > 0)
 	{
-       	if (WIFEXITED(*wstatus))
+		if (WIFEXITED(*wstatus))
 			exit_code = WEXITSTATUS(*wstatus);
 	}
 	clear_tree(data->root);
