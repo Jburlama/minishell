@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:14:01 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/09 16:14:04 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/10 17:20:25 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ typedef struct s_token
 {
 	enum e_type		type;
 	enum e_blt		builtin;
+	enum e_type		file;
 	char			*content;
 	struct s_token	*next;
 }	t_token;
@@ -92,6 +93,7 @@ typedef struct s_redir
 {
 	enum e_type		type;
 	enum e_type		file_type;
+	enum e_type		quote_type;
 	char			*file;
 	void			*down;
 }	t_redir;
@@ -132,7 +134,7 @@ void	runexec(t_exec *node, t_data *data);
 char	*get_pathname(char	*name, char **env);
 char	**get_paths(char **env);
 
-// create_tree.c
+// tree.c
 void	create_tree(t_data *data);
 
 // construct.c
@@ -196,7 +198,7 @@ char	*get_line(void);
 bool	is_white_space(char c);
 
 // clear.c
-void	clear_list(t_token	**head);
+void	clear_list(t_data	*data);
 void	clear_tree(void	*root);
 void	clear_args(char **args);
 void	clear_gate(void	*root);

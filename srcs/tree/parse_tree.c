@@ -52,7 +52,10 @@ void	*parse_redir(void *root, t_token **tokens)
 	{
 		(*tokens) = (*tokens)->next;
 		if (*tokens)
+		{
 			ret = construct_redir(ret, tokens);
+			(*tokens) = (*tokens)->next;
+		}
 		if (ret == NULL)
 			return (NULL);
 		while ((*tokens) && (*tokens)->type == WHITE_SPACE)

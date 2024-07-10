@@ -16,6 +16,7 @@ char	*get_line(void)
 {
 	char	*line;
 
+	handle_signal();
 	line = readline(GREEN "Minishell: " RESET);
 	if (!line)
 	{

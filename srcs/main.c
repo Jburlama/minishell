@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:16:20 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/09 16:28:50 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/10 17:21:14 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ int	main(int argc, char *argv[], char *env[])
 	start_data(&data, env);
 	while (42)
 	{
-		handle_signal();
 		get_line();
 		/*if(check(rl_line_buffer) == 2)
 		{	
@@ -49,6 +48,7 @@ int	main(int argc, char *argv[], char *env[])
 			wait(NULL);
 		}*/
 		// print_tree(data.root);
+		execute(&data);
 		clear_tree(data.root);
 	}
 	clear_args(data.env);
@@ -81,7 +81,8 @@ void	print_tree(void	*root)
 	else if (((t_redir *)root)->type == REDIR)
 	{
 		redir = root;
-		printf("type: %i | file_type: %i | file: %s\n", redir->type, redir->file_type, redir->file);
+		printf("type: %i | file_type: %i | quote_type: %i | file: %s\n",
+		 redir->type, redir->file_type, redir->quote_type, redir->file);
 		print_tree(redir->down);
 	}
 	else if (((t_redir *)root)->type == PIPE)
