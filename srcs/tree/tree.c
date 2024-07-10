@@ -21,9 +21,10 @@ void	create_tree(t_data *data)
 		tokens_ptr = data->head;
 		data->root = parse_and(&tokens_ptr);
 		if (data->root == NULL)
-			panic("error parsinf tree\n", data);
+			panic("error parsing tree\n", data);
 	}
 	else
 		data->root = NULL;
 	clear_list(&data->head);
+	data->tail = NULL;
 }

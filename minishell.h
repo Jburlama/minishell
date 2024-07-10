@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/21 17:57:08 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/09 15:08:45 by vbritto-         ###   ########.fr       */
+/*   Created: 2024/07/09 16:38:42 by vbritto-          #+#    #+#             */
+/*   Updated: 2024/07/10 13:19:45 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ typedef struct s_token
 
 typedef struct s_cond
 {
+	bool			is_block;
 	enum e_type		type;
 	void			*left;
 	void			*right;
@@ -85,6 +86,7 @@ typedef struct s_cond
 
 typedef struct s_pipe
 {
+	bool			is_block;
 	enum e_type		type;
 	void			*left;
 	void			*right;
@@ -92,6 +94,7 @@ typedef struct s_pipe
 
 typedef struct s_redir
 {
+	bool			is_block;
 	enum e_type		type;
 	enum e_type		file_type;
 	char			*file;
@@ -100,6 +103,7 @@ typedef struct s_redir
 
 typedef struct s_exec
 {
+	bool			is_block;
 	enum e_type		type;
 	char			**args;
 	enum e_blt		builtin;
@@ -111,6 +115,7 @@ typedef struct s_data
 	t_token	*tail;
 	void	*root;
 	char	**env;
+	bool	builtin_fail;
 }	t_data;
 
 // execute.c
@@ -119,13 +124,16 @@ void	execute(void *root, t_data *data);
 void	runcmd(void *root, t_data *data);
 void	read_input(t_redir *root, t_data *data);
 void	runpipe(t_pipe *root, t_data *data);
+void	runredir(t_redir *root, t_data *data);
+
+// here_doc.c
+void	here_doc(t_redir *root);
+char	*open_heredoc_for_write(int *fd);
+void	open_heredoc_for_read(char *file_name, int *fd);
 
 // logical.c
 void	runor(t_cond *root, t_data *data);
 void	runand(t_cond *root, t_data *data);
-
-// rumredir.c
-void	runredir(t_redir *root, t_data *data);
 
 // rumexrc.c
 void	runexec(t_exec *node, t_data *data);
@@ -187,6 +195,9 @@ bool	is_quote(char c);
 // signals.c
 void	handle_signal(void);
 void	signal_handler(int sig);
+void	update_signals(void);
+void	signal_handler_update(int sig);
+void	default_sig(void);
 
 // get_line.c
 char	*get_line(t_data *data);
@@ -202,7 +213,6 @@ void	clear_gate(void	*root);
 void	panic(char *msg, t_data *data);
 
 // check.c
-
 int		check(char *str);
 void	check_redirect(char *str);
 void	check_quotes(char *str);
@@ -210,7 +220,6 @@ void	ft_exit(char *str);
 void	check_heredoc(char *str);
 
 // prepare_token.c
-
 void	prepare_token(t_data *data);
 void	prepare_dollar(t_data *data);
 void	prepare_wildcards(t_data *data);
@@ -242,7 +251,7 @@ void	cmd_env(t_data *data);
 void	cmd_export(t_data *data, t_exec *node);
 void	cmd_unset(t_data *data, t_exec *node);
 void	cmd_echo(t_exec *node);
-void	cmd_pwd();
+void	cmd_pwd(t_data *data);
 void	cmd_cd(t_data *data, t_exec *node);
 
 #endif

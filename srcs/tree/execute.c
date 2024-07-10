@@ -5,29 +5,29 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/21 17:58:00 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/09 15:13:57 by vbritto-         ###   ########.fr       */
+/*   Created: 2024/07/09 16:40:12 by vbritto-          #+#    #+#             */
+/*   Updated: 2024/07/09 17:21:17 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-/*
-void	execute(t_data *data)
-{
-	if (data->root)
-		runcmd(data->root, data);
-	exit(errno);
-}*/
-
 void	execute(void *root, t_data *data)
 {
 	int	pid;
+	int	wstatus;
 
+	update_signals();
 	pid = save_fork(data);
+	wstatus = 0;
 	if (pid == 0)
-		runcmd(root, data);
-	wait(NULL);
+	{
+		default_sig();
+		if (root)
+			runcmd(root, data);
+		exit(errno);
+	}
+	waitpid(pid, &wstatus, 0);
 }
 
 void	runcmd(void *root, t_data *data)
@@ -62,6 +62,8 @@ void	runredir(t_redir *root, t_data *data)
 	}
 	else if (root->file_type == I)
 		read_input(root, data);
+	else if (root->file_type == HERE_DOC)
+		here_doc(root);
 	runcmd(((t_redir *)root)->down, data);
 }
 
@@ -90,6 +92,7 @@ void	runpipe(t_pipe *root, t_data *data)
 	pipe(fds);
 	if (save_fork(data) == 0)
 	{
+		default_sig();
 		dup2(fds[1], STDOUT_FILENO);
 		close(fds[0]);
 		close(fds[1]);
@@ -97,6 +100,7 @@ void	runpipe(t_pipe *root, t_data *data)
 	}
 	if (save_fork(data) == 0)
 	{
+		default_sig();
 		dup2(fds[0], STDIN_FILENO);
 		close(fds[0]);
 		close(fds[1]);
@@ -104,9 +108,8 @@ void	runpipe(t_pipe *root, t_data *data)
 	}
 	close(fds[1]);
 	close(fds[0]);
-	//apos exit usar waitpid
-	wait(NULL);
-	wait(NULL);
+	while (waitpid(-1, NULL, 0) > 0)
+		;
 	clear_tree(data->root);
 	exit(errno);
 }

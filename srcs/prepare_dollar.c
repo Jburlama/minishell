@@ -14,6 +14,9 @@
 
 int	check_expand(char *content, int i, int type)
 {
+	char	*tmp;
+
+	tmp = NULL;
 	if ((content[i + 1] == '\0') || (content[i + 1] == ' ')
 		|| (content[i + 1] == 34) || (content[i + 1] == 39))
 	{
@@ -22,6 +25,13 @@ int	check_expand(char *content, int i, int type)
 			free(content);
 			content = NULL;
 		}
+		return (0);
+	}
+	if (content[i + 1] > 48 && content[i + 1] <= 57)
+	{	
+		tmp = ft_strdup(content + 2);
+		free(content);
+		(*content) = (*tmp);
 		return (0);
 	}
 	return (1);
@@ -66,6 +76,11 @@ char	*get_env_name(char *content, char *exp,
 	i = *dol - 1;
 	while (ft_isalnum(content[*dol]))
 	{
+		if (content[*dol] == 48)
+		{	
+			(*dol)++;
+			return ("./minishell");
+		}
 		(*dol)++;
 	}
 	env_name = ft_calloc(*dol - i, sizeof(char));

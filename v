@@ -9,3 +9,4 @@ minishell.h
 objs
 sintaxe.c
 srcs
+v

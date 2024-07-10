@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 13:27:56 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/01 12:47:00 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/10 13:19:41 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,10 @@ void	cmd_cd(t_data *data, t_exec *node)
 	else
 	{
 		if (chdir(node->args[1]) != 0)
+		{
 			ft_printf("%s: %s: %s\n", node->args[0], node->args[1],
 				"No such file or directory");
+			data->builtin_fail = true;
+		}
 	}
 }

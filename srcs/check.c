@@ -6,11 +6,27 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 12:46:48 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/06/25 14:33:34 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/10 13:22:14 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+/*
+void	check_parentheses(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] != '\0')
+	{
+		while(str[i] != 34 && str[i] != 39)
+		{
+			if (str[i] == 40)
+ 		}
+
+	}
+
+}*/
 
 void	check_heredoc(char *str)
 {
@@ -92,6 +108,7 @@ int	check(char *str)
 
 	i = 0;
 	check_quotes(str);
+	//check_parentheses(str);
 	if (str[0] == 60 || str[0] == 62)
 		check_redirect(str);
 	while (str[i] != '\0')

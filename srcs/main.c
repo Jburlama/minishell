@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/17 15:00:35 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/07/09 16:07:23 by vbritto-         ###   ########.fr       */
+/*   Created: 2024/07/09 16:38:20 by vbritto-          #+#    #+#             */
+/*   Updated: 2024/07/10 16:32:41 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,10 @@ int	main(int argc, char *argv[], char *env[])
 	
 	(void)argc;
 	(void)argv;
-	handle_signal();
-	
 	start_data(&data, env);
 	while (42)
 	{
+		handle_signal();
 		get_line(&data);
 		if(check(rl_line_buffer) == 2)
 		{	
@@ -39,19 +38,22 @@ int	main(int argc, char *argv[], char *env[])
 			printf("content: %s | type %i\n", ptr->content, ptr->type);
 		clear_list(&data.head);
 		continue ;*/
-		//chdir("srcs");
 		create_tree(&data);
-		print_tree(data.root);
-		find_root(data.root, &data);
+		//print_tree(data.root);
+		//clear_tree(data.root);
+		//continue ;
+		execute(data.root, &data);
+		//find_root(data.root, &data);
 		/*if (find_root(data.root, &data) == 0)
 		{
 			if (save_fork(&data) == 0)
 				execute(&data);
 			wait(NULL);
+
 		}
 		*/
-		clear_tree(data.root);
 	}
+	// print_tree(data.root);
 	clear_args(data.env);
 	free(rl_line_buffer);
 }
@@ -68,6 +70,7 @@ void	print_tree(void	*root)
 	else if (((t_exec *)root)->type == EXEC)
 	{
 		exec = root;
+		printf("is block: %i | ", exec->is_block);
 		printf("type: %i | args: ", exec->type);
 		int i = 0;
 		while (exec->args[i])
@@ -81,21 +84,32 @@ void	print_tree(void	*root)
 	else if (((t_redir *)root)->type == REDIR)
 	{
 		redir = root;
+		printf("is block: %i | ", redir->is_block);
 		printf("type: %i | file_type: %i | file: %s\n", redir->type, redir->file_type, redir->file);
 		print_tree(redir->down);
 	}
 	else if (((t_redir *)root)->type == PIPE)
 	{
 		pipe = root;
+		printf("is block: %i | ", pipe->is_block);
 		printf("type: %i\n", pipe->type);
+		printf("\n");
+		printf("LEFT\n");
 		print_tree(pipe->left);
+		printf("\n");
+		printf("RIGHT\n");
 		print_tree(pipe->right);
 	}
 	else if (((t_cond *)root)->type == OR || ((t_cond *)root)->type == AND)
 	{
 		cont = root;
+		printf("is block: %i | ", cont->is_block);
 		printf("type: %i\n", cont->type);
+		printf("\n");
+		printf("LEFT\n");
 		print_tree(cont->left);
+		printf("\n");
+		printf("RIGHT\n");
 		print_tree(cont->right);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 16:04:55 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/06/27 14:05:06 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/10 16:41:53 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,20 +17,29 @@ void	runexec(t_exec *node, t_data *data)
 	char	*pathname;
 	
 	if (node->builtin != NO_B)
-		execute_builtins(node, data);
-	if (node->args[0])
-		pathname = get_pathname(node->args[0], data->env);
-	else
-		pathname = NULL;
-	if (pathname)
 	{
-		execve(pathname, node->args, data->env);
-		free(pathname);
+		execute_builtins(node, data);
+		exit (0);
 	}
-	if (node->args[0])
-		perror(node->args[0]);
-	clear_tree(data->root);
-	exit(errno);
+	else
+	{
+		if (node->args[0])
+		{
+			pathname = get_pathname(node->args[0], data->env);
+			if (pathname == NULL)
+				perror(node->args[0]);
+		}
+		else
+			pathname = NULL;
+		if (pathname)
+		{
+			execve(pathname, node->args, data->env);
+			free(pathname);
+			perror(node->args[0]);
+		}
+		clear_tree(data->root);
+		exit(errno);
+	}
 }
 
 char	*get_pathname(char	*name, char **env)

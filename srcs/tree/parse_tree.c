@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 20:20:43 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/06/26 18:22:18 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/09 18:25:28 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,24 +40,6 @@ void	*parse_exec(t_token **tokens)
 	return (root);
 }
 
-void	*parse_block(t_token **tokens)
-{
-	void	*root;
-
-	(*tokens) = (*tokens)->next;
-	root = parse_and(tokens);
-	if (root == NULL)
-		return (NULL);
-	(*tokens) = (*tokens)->next;
-	if (*tokens)
-	{
-		while ((*tokens) && (*tokens)->type == WHITE_SPACE)
-			(*tokens) = (*tokens)->next;
-		root = parse_redir(root, tokens);
-	}
-	return (root);
-}
-
 void	*parse_redir(void *root, t_token **tokens)
 {
 	void	*ret;
@@ -73,10 +55,31 @@ void	*parse_redir(void *root, t_token **tokens)
 			ret = construct_redir(ret, tokens);
 		if (ret == NULL)
 			return (NULL);
+		while ((*tokens) && (*tokens)->type == WHITE_SPACE)
+			(*tokens) = (*tokens)->next;
 	}
 	while ((*tokens) && (*tokens)->type == WHITE_SPACE)
 		(*tokens) = (*tokens)->next;
 	return (ret);
+}
+
+void	*parse_block(t_token **tokens)
+{
+	void	*root;
+
+	(*tokens) = (*tokens)->next;
+	root = parse_and(tokens);
+	if (root == NULL)
+		return (NULL);
+	(*tokens) = (*tokens)->next;
+	if (*tokens)
+	{
+		while ((*tokens) && (*tokens)->type == WHITE_SPACE)
+			(*tokens) = (*tokens)->next;
+		root = parse_redir(root, tokens);
+	}
+	((t_exec *)root)->is_block = true;
+	return (root);
 }
 
 void	*parse_pipe(t_token **tokens)
