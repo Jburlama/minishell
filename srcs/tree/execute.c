@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:40:12 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/09 17:21:17 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/10 18:01:47 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,8 @@ void	read_input(t_redir *root, t_data *data)
 void	runpipe(t_pipe *root, t_data *data)
 {
 	int	fds[2];
+	int	wstatus;
+	int	exit_code;
 
 	pipe(fds);
 	if (save_fork(data) == 0)
@@ -108,8 +110,11 @@ void	runpipe(t_pipe *root, t_data *data)
 	}
 	close(fds[1]);
 	close(fds[0]);
-	while (waitpid(-1, NULL, 0) > 0)
-		;
+	while (waitpid(-1, &wstatus, 0) > 0)
+	{
+		if (WIFEXITED(wstatus))
+			exit_code = WEXITSTATUS(wstatus);
+	}
 	clear_tree(data->root);
-	exit(errno);
+	exit(exit_code);
 }

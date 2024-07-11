@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:38:42 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/10 13:19:45 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/11 18:07:58 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,6 +222,7 @@ void	check_heredoc(char *str);
 // prepare_token.c
 void	prepare_token(t_data *data);
 void	prepare_dollar(t_data *data);
+void	second_prepare_dollar(t_data *data);
 void	prepare_wildcards(t_data *data);
 
 // prepare_wildcars.c and aux.c

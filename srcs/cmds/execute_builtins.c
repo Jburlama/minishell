@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 18:49:21 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/10 17:05:05 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/11 12:46:11 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ int	check_root(void *root)
 {
 	if (((t_cond *)root)->type == AND && ((t_cond *)root)->is_block == true)
 		return (1);
+	else if ((((t_exec *)root)->builtin != NO_B) && ((t_cond *)root)->type == OR)
+		return (4);
 	else if ((((t_exec *)root)->builtin != NO_B))
 		return (2);
 	else if (((t_cond *)root)->type == OR)
@@ -72,14 +74,19 @@ void	check_and(void *root, t_data *data)
 		if (WEXITSTATUS(wstatus) == 0)
 			find_root(((t_cond *)root)->right, data);
 	}
-	else if (check_root(((t_cond *)root)->left) == 2)
+	else if ((check_root(((t_cond *)root)->left) == 2))
 	{
 		execute_builtins(((t_cond *)root)->left, data);
 		if (data->builtin_fail == false)
 			find_root(((t_cond *)root)->right, data);
 	}
 	else
-		execute(root, data);
+	{
+		find_root(((t_cond *)root)->left, data);
+		if (check_root(((t_cond *)root)->right) == 2)
+			execute_builtins(((t_cond *)root)->right, data);
+		find_root(((t_cond *)root)->right, data);
+	}
 }
 
 void	check_or(void *root, t_data *data)
@@ -96,17 +103,17 @@ void	check_or(void *root, t_data *data)
 		if (WEXITSTATUS(wstatus) != 0)
 			find_root(((t_cond *)root)->right, data);
 	}
-	else if (check_root(((t_cond *)root)->left) == 2)
+	else if ((check_root(((t_cond *)root)->left) == 2))
 	{
 		execute_builtins(((t_cond *)root)->left, data);
-		if (data->builtin_fail == false)
+		if (data->builtin_fail == true)
 			find_root(((t_cond *)root)->right, data);
 	}
 	else
 	{
-		execute(((t_cond *)root)->left, data);
+		find_root(((t_cond *)root)->left, data);
 		if (check_root(((t_cond *)root)->right) == 2)
-			execute_builtins(((t_cond *)root)->left, data);
+			execute_builtins(((t_cond *)root)->right, data);
 		find_root(((t_cond *)root)->right, data);
 	}
 }
@@ -118,6 +125,7 @@ void	find_root(void *root, t_data *data)
 	{
 			if (((t_pipe *)root)->type == PIPE)
 				execute(root, data);
+				//c_pipe(((t_pipe *)root), data);
 			else if (((t_cond *)root)->type == AND)
 				check_and(((t_cond *)root), data);
 			else if (((t_cond *)root)->type == OR)

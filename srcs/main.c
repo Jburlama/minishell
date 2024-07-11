@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:38:20 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/10 16:32:41 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/10 17:56:49 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ int	main(int argc, char *argv[], char *env[])
 		//print_tree(data.root);
 		//clear_tree(data.root);
 		//continue ;
-		execute(data.root, &data);
-		//find_root(data.root, &data);
+		//execute(data.root, &data);
+		find_root(data.root, &data);
 		/*if (find_root(data.root, &data) == 0)
 		{
 			if (save_fork(&data) == 0)

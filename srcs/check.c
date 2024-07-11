@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 12:46:48 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/10 13:22:14 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/10 18:44:26 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void	check_redirect(char *str)
 	r = 0;
 	while (str[i] != '\0')
 	{
-		if (str[i] > 32 && str[i] <= 127)
+		if (str[i] >= 32 && str[i] <= 127)
 		{
 			if (str[i] == 60)
 				l++;
@@ -131,3 +131,7 @@ int	check(char *str)
 }
 //tratar () erro
 //verificar " " apos >
+
+
+
+// erro demonio -> pwd && (echo 123 | echo 123) ls  && cd ..
