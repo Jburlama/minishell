@@ -17,7 +17,7 @@ void	*parse_exec(t_token **tokens)
 	t_exec	*exec;
 	void	*root;
 
-	if ((*tokens) && *(*tokens)->content == '(')
+	if ((*tokens) && (*tokens)->type == SPECIAL && *(*tokens)->content == '(')
 		return (parse_block(tokens));
 	exec = construct_exec();
 	if (exec == NULL)
