@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/09 16:14:01 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/10 17:20:25 by vbritto-         ###   ########.fr       */
+/*   Created: 2024/07/13 13:47:42 by vbritto-          #+#    #+#             */
+/*   Updated: 2024/07/13 13:47:43 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,8 +117,11 @@ typedef struct s_data
 void	execute(t_data *data);
 void	runcmd(void *root, t_data *data);
 void	read_input(t_redir *root, t_data *data);
-void	runpipe(t_pipe *root, t_data *data);
 void	runredir(t_redir *root, t_data *data);
+
+// pipe_execute.c
+void	runpipe(t_pipe *root, t_data *data);
+int		runpipe_wait(int *wstatus, t_data *data);
 
 // here_doc.c
 void	here_doc(t_redir *root);

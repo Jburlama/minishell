@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/09 16:16:48 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/09 16:25:53 by vbritto-         ###   ########.fr       */
+/*   Created: 2024/07/13 13:49:30 by vbritto-          #+#    #+#             */
+/*   Updated: 2024/07/13 13:49:32 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,33 +87,4 @@ void	read_input(t_redir *root, t_data *data)
 		clear_tree(data->root);
 		exit(errno);
 	}
-}
-
-void	runpipe(t_pipe *root, t_data *data)
-{
-	int	fds[2];
-
-	pipe(fds);
-	if (save_fork(data) == 0)
-	{
-		default_sig();
-		dup2(fds[1], STDOUT_FILENO);
-		close(fds[0]);
-		close(fds[1]);
-		runcmd(root->left, data);
-	}
-	if (save_fork(data) == 0)
-	{
-		default_sig();
-		dup2(fds[0], STDIN_FILENO);
-		close(fds[0]);
-		close(fds[1]);
-		runcmd(root->right, data);
-	}
-	close(fds[1]);
-	close(fds[0]);
-	while (waitpid(-1, NULL, 0) > 0)
-		;
-	clear_tree(data->root);
-	exit(errno);
 }
