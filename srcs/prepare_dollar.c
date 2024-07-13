@@ -11,51 +11,7 @@
 /* ************************************************************************** */
 
 #include "../minishell.h"
-/*
-char	*dollar_number(char *content, size_t *dol)
-{
-	int		i;
-	char	*tmp;
 
-	tmp = NULL;
-	i = (*dol);
-	if (content[(*dol)] == 48)
-	{	
-		if (content[(*dol) + 1] == '\0')
-		{
-			(*dol) = ft_strlen(content);
-			tmp = ft_strdup("./minishell");
-		}
-		else
-		{
-			while ((content[*dol]) != '\0')
-				(*dol)++;
-			tmp = ft_strjoin("./minishell", (content + (i) + 1));
-		}
-	}
-	else if ((content[(*dol) + 1] != '\0')
-				&& (content[(*dol)] > 48 && content[(*dol)] <= 57))
-	{	
-		(*dol) = ft_strlen(content);
-		tmp = ft_strdup(content + i + 1);
-	}
-	return (tmp);
-}
-
-int	check_expand(char *content, int i, int type)
-{
-	if ((content[i + 1] == '\0') || (content[i + 1] == ' ')
-		|| (content[i + 1] == 34) || (content[i + 1] == 39))
-	{
-		if (content[0] == '$' && ft_strlen(content) == 1 && type == 1)
-		{
-			free(content);
-			content = NULL;
-		}
-		return (0);
-	}
-	return (1);
-}*/
 char	*dollar_number(char *content, size_t *dol)
 {
 	int		i;
@@ -71,12 +27,16 @@ char	*dollar_number(char *content, size_t *dol)
 		else
 			tmp = ft_strjoin("./minishell\0", (content + (i) + 1));
 	}
-	else if ((content[i + 1] != '\0')
-				&& (content[i] > 48 && content[i] <= 57))
-	{	
-		(*dol) = ft_strlen(content);
-		tmp = ft_strdup(content + i + 1);
+	else if ((content[i] > 48 && content[i] <= 57))
+	{
+		if (content[i + 1] != '\0')
+		{
+			tmp = ft_strdup(content + i + 1);
+			(*dol) = 0;
+		}
+		(*dol) = -1;
 	}
+	free (content);
 	return (tmp);
 }
 
@@ -223,9 +183,9 @@ void	prepare_dollar(t_data *data)
 	keep = tmp;
 	while (tmp)
 	{
-		while (tmp->content[dol + 1] && tmp->content[dol])
+		dol = 0;
+		while (tmp->content[dol] && tmp->content[dol + 1])
 		{
-			dol = 0;
 			if (((tmp->content[dol] == '$' && tmp->type != SQUOTES))
 				&& (tmp->content[dol + 1] >= 48 && tmp->content[dol + 1] <= 57))
 				{

@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:40:12 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/10 18:01:47 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/13 13:15:59 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	runredir(t_redir *root, t_data *data)
 	else if (root->file_type == I)
 		read_input(root, data);
 	else if (root->file_type == HERE_DOC)
-		here_doc(root);
+		here_doc(root, data);
 	runcmd(((t_redir *)root)->down, data);
 }
 

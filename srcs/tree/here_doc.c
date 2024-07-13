@@ -6,13 +6,42 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 18:18:11 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/07/09 16:34:14 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/13 13:40:05 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	here_doc(t_redir *root)
+char	*expand_here_doc(char *line, t_data *data)
+{
+	size_t	dol;
+	char *tmp;
+
+	dol = 0;
+	while (line[dol] && line[dol + 1])
+	{
+		if ((line[dol] == '$')
+				&& (line[dol + 1] >= 48 && line[dol + 1] <= 57))
+		{
+			dol++;
+			tmp = dollar_number(line, &dol);
+		}
+		dol++;
+	}
+	dol = 0;
+	while (line[dol])
+	{
+		if (line[dol] == '$')
+		{
+			dol++;
+			tmp = expand(line, data, &dol, 1);
+		}
+		dol++;
+	}
+	return (tmp);
+}
+
+void	here_doc(t_redir *root, t_data *data)
 {
 	char	*line;
 	int		fd;
@@ -26,6 +55,8 @@ void	here_doc(t_redir *root)
 		if (!line
 			|| ft_memcmp(line, root->file, ft_strlen(root->file) + 1) == 0)
 			break ;
+		if (root->type != SQUOTES && root->file_type != DQUOTES)
+			line = expand_here_doc(line, data);
 		write(fd, line, ft_strlen(line));
 		write(fd, "\n", 1);
 	}

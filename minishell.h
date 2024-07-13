@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:38:42 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/11 18:07:58 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/13 13:35:54 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ void	runpipe(t_pipe *root, t_data *data);
 void	runredir(t_redir *root, t_data *data);
 
 // here_doc.c
-void	here_doc(t_redir *root);
+void	here_doc(t_redir *root, t_data *data);
 char	*open_heredoc_for_write(int *fd);
 void	open_heredoc_for_read(char *file_name, int *fd);
 
@@ -224,6 +224,17 @@ void	prepare_token(t_data *data);
 void	prepare_dollar(t_data *data);
 void	second_prepare_dollar(t_data *data);
 void	prepare_wildcards(t_data *data);
+
+// prepare_dollar.c
+
+char	*dollar_number(char *content, size_t *dol);
+int		check_expand(char *content, int i, int type);
+int		check_content(t_token **tmp, t_token **keep, t_data *data);
+char	*get_env_name(char *content, char *exp, size_t *dol, t_data *data);
+char	*expand(char *c, t_data *data, size_t *d, int type);
+void	second_prepare_dollar(t_data *data);
+void	prepare_dollar(t_data *data);
+
 
 // prepare_wildcars.c and aux.c
 

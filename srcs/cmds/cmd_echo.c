@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 12:41:35 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/04 13:58:02 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/13 12:58:15 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	cmd_echo(t_exec *node)
 			i++;
 		}
 	}
-	while (node->args[i])
+	while (node->args[i] && node->args[i][0] != '\0')
 	{
 		ft_printf("%s", node->args[i]);
 		if (node->args[i + 1] != NULL)
