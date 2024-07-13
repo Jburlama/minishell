@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/09 16:38:20 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/13 15:58:32 by vbritto-         ###   ########.fr       */
+/*   Created: 2024/07/13 16:53:03 by vbritto-          #+#    #+#             */
+/*   Updated: 2024/07/13 16:54:42 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,9 @@ int	main(int argc, char *argv[], char *env[])
 			if (save_fork(&data) == 0)
 				execute(&data);
 			wait(NULL);
-
-		}
-		*/
-
+		}*/
+		// print_tree(data.root);
+		clear_tree(data.root);
 	}
 	clear_args(data.env);
 	free(rl_line_buffer);
@@ -85,8 +84,8 @@ void	print_tree(void	*root)
 	else if (((t_redir *)root)->type == REDIR)
 	{
 		redir = root;
-		printf("is block: %i | ", redir->is_block);
-		printf("type: %i | file_type: %i | file: %s\n", redir->type, redir->file_type, redir->file);
+		printf("type: %i | file_type: %i | quote_type: %i | file: %s\n",
+		 redir->type, redir->file_type, redir->quote_type, redir->file);
 		print_tree(redir->down);
 	}
 	else if (((t_redir *)root)->type == PIPE)

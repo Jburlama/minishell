@@ -25,6 +25,6 @@ void	create_tree(t_data *data)
 	}
 	else
 		data->root = NULL;
-	clear_list(&data->head);
+	clear_list(data);
 	data->tail = NULL;
 }

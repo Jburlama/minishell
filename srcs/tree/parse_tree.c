@@ -17,7 +17,7 @@ void	*parse_exec(t_token **tokens)
 	t_exec	*exec;
 	void	*root;
 
-	if ((*tokens) && *(*tokens)->content == '(')
+	if ((*tokens) && (*tokens)->type == SPECIAL && *(*tokens)->content == '(')
 		return (parse_block(tokens));
 	exec = construct_exec();
 	if (exec == NULL)
@@ -52,7 +52,10 @@ void	*parse_redir(void *root, t_token **tokens)
 	{
 		(*tokens) = (*tokens)->next;
 		if (*tokens)
+		{
 			ret = construct_redir(ret, tokens);
+			(*tokens) = (*tokens)->next;
+		}
 		if (ret == NULL)
 			return (NULL);
 		while ((*tokens) && (*tokens)->type == WHITE_SPACE)

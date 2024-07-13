@@ -14,10 +14,30 @@
 
 void	add_token_quotes(t_data *data, int *i, enum e_type type)
 {
+	enum e_type	file;
+
+	file = 0;
 	if (!data->head)
 		create_token_quotes(data, i, type, rl_line_buffer[*i]);
 	else
+	{
+		if (*data->tail->content == '<')
+		{
+			if (ft_strlen(data->tail->content) == 2)
+				file = HERE_DOC;
+			else
+				file = I;
+		}
+		else if (*data->tail->content == '>')
+		{
+			if (ft_strlen(data->tail->content) == 2)
+				file = APEND;
+			else
+				file = O;
+		}
 		append_token_quotes(data, i, type, rl_line_buffer[*i]);
+		data->tail->file = file;
+	}
 }
 
 void	create_token_quotes(t_data *data, int *i, enum e_type type, char q)

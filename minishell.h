@@ -5,8 +5,13 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
+<<<<<<< HEAD
 /*   Created: 2024/07/09 16:38:42 by vbritto-          #+#    #+#             */
 /*   Updated: 2024/07/13 15:03:27 by vbritto-         ###   ########.fr       */
+=======
+/*   Created: 2024/07/13 13:47:42 by vbritto-          #+#    #+#             */
+/*   Updated: 2024/07/13 13:47:43 by vbritto-         ###   ########.fr       */
+>>>>>>> main
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +77,7 @@ typedef struct s_token
 {
 	enum e_type		type;
 	enum e_blt		builtin;
+	enum e_type		file;
 	char			*content;
 	struct s_token	*next;
 }	t_token;
@@ -97,6 +103,7 @@ typedef struct s_redir
 	bool			is_block;
 	enum e_type		type;
 	enum e_type		file_type;
+	enum e_type		quote_type;
 	char			*file;
 	void			*down;
 }	t_redir;
@@ -124,8 +131,11 @@ typedef struct s_data
 void	execute(void *root, t_data *data);
 void	runcmd(void *root, t_data *data);
 void	read_input(t_redir *root, t_data *data);
-void	runpipe(t_pipe *root, t_data *data);
 void	runredir(t_redir *root, t_data *data);
+
+// pipe_execute.c
+void	runpipe(t_pipe *root, t_data *data);
+int		runpipe_wait(int *wstatus, t_data *data);
 
 // here_doc.c
 void	here_doc(t_redir *root, t_data *data);
@@ -141,7 +151,7 @@ void	runexec(t_exec *node, t_data *data);
 char	*get_pathname(char	*name, char **env);
 char	**get_paths(char **env);
 
-// create_tree.c
+// tree.c
 void	create_tree(t_data *data);
 
 // construct.c
@@ -205,7 +215,7 @@ char	*get_line(t_data *data);
 bool	is_white_space(char c);
 
 // clear.c
-void	clear_list(t_token	**head);
+void	clear_list(t_data	*data);
 void	clear_tree(void	*root);
 void	clear_args(char **args);
 void	clear_gate(void	*root);

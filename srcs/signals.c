@@ -20,8 +20,8 @@ void	handle_signal(void)
 	ft_memset(&sig, 0, sizeof(sig));
 	ft_memset(&sig_ign, 0, sizeof(sig_ign));
 	sig_ign.sa_handler = SIG_IGN;
-	sig.sa_handler = signal_handler;
 	sigaction(SIGQUIT, &sig_ign, NULL);
+	sig.sa_handler = signal_handler;
 	sigaction(SIGINT, &sig, NULL);
 }
 
