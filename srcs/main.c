@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:38:20 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/13 15:39:20 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/13 15:58:32 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,11 @@ int	main(int argc, char *argv[], char *env[])
 		continue ;*/
 		create_tree(&data);
 		//print_tree(data.root);
-		//clear_tree(data.root);
 		//continue ;
 		//execute(data.root, &data);
-		print_tree(data.root);
+		//print_tree(data.root);
 		find_root(data.root, &data);
+		clear_tree(data.root);
 		/*if (find_root(data.root, &data) == 0)
 		{
 			if (save_fork(&data) == 0)
@@ -53,6 +53,7 @@ int	main(int argc, char *argv[], char *env[])
 
 		}
 		*/
+
 	}
 	clear_args(data.env);
 	free(rl_line_buffer);
