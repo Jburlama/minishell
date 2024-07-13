@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:38:42 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/13 13:35:54 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/13 15:03:27 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,7 @@ typedef struct s_data
 	void	*root;
 	char	**env;
 	bool	builtin_fail;
+	int		error_code;
 }	t_data;
 
 // execute.c
@@ -213,9 +214,9 @@ void	clear_gate(void	*root);
 void	panic(char *msg, t_data *data);
 
 // check.c
-int		check(char *str);
-void	check_redirect(char *str);
-void	check_quotes(char *str);
+int		check(char *str,  t_data *data);
+void	check_redirect(char *str,  t_data *data);
+void	check_quotes(char *str, t_data *data);
 void	ft_exit(char *str);
 void	check_heredoc(char *str);
 

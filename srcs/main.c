@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:38:20 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/10 17:56:49 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/13 15:39:20 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	main(int argc, char *argv[], char *env[])
 	{
 		handle_signal();
 		get_line(&data);
-		if(check(rl_line_buffer) == 2)
+		if(check(rl_line_buffer, &data) == 2)
 		{	
 			status_exit = 0;
 			continue;
@@ -43,6 +43,7 @@ int	main(int argc, char *argv[], char *env[])
 		//clear_tree(data.root);
 		//continue ;
 		//execute(data.root, &data);
+		print_tree(data.root);
 		find_root(data.root, &data);
 		/*if (find_root(data.root, &data) == 0)
 		{
@@ -53,7 +54,6 @@ int	main(int argc, char *argv[], char *env[])
 		}
 		*/
 	}
-	// print_tree(data.root);
 	clear_args(data.env);
 	free(rl_line_buffer);
 }
