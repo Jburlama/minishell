@@ -14,12 +14,15 @@
 
 void	here_doc(t_redir *root)
 {
+	int		fd_out;
 	char	*line;
 	int		fd;
 	char	*file_name;
 
 	file_name = open_heredoc_for_write(&fd);
+	fd_out = dup(STDOUT_FILENO);
 	dup2(STDERR_FILENO, STDIN_FILENO);
+	dup2(STDERR_FILENO, STDOUT_FILENO);
 	while (42)
 	{
 		line = readline("heredoc> ");
@@ -29,6 +32,8 @@ void	here_doc(t_redir *root)
 		write(fd, line, ft_strlen(line));
 		write(fd, "\n", 1);
 	}
+	dup2(fd_out, STDOUT_FILENO);
+	close(fd_out);
 	close(fd);
 	open_heredoc_for_read(file_name, &fd);
 }
