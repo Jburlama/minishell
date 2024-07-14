@@ -28,6 +28,9 @@ void	execute(t_data *data)
 		exit(errno);
 	}
 	waitpid(pid, &wstatus, 0);
+	if (WIFSIGNALED(wstatus))
+		if (WCOREDUMP(wstatus))
+			write(1, "Quit (core dumped)\n", 19);
 }
 
 void	runcmd(void *root, t_data *data)

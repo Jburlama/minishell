@@ -23,6 +23,7 @@ void	here_doc(t_redir *root)
 	fd_out = dup(STDOUT_FILENO);
 	dup2(STDERR_FILENO, STDIN_FILENO);
 	dup2(STDERR_FILENO, STDOUT_FILENO);
+	here_doc_sig();
 	while (42)
 	{
 		line = readline("heredoc> ");
@@ -32,6 +33,7 @@ void	here_doc(t_redir *root)
 		write(fd, line, ft_strlen(line));
 		write(fd, "\n", 1);
 	}
+	default_sig();
 	dup2(fd_out, STDOUT_FILENO);
 	close(fd_out);
 	close(fd);
@@ -71,4 +73,13 @@ void	open_heredoc_for_read(char *file_name, int *fd)
 		close(*fd);
 	}
 	free(file_name);
+}
+
+void	here_doc_sig(void)
+{
+	struct sigaction	sig;
+
+	ft_memset(&sig, 0, sizeof(sig));
+	sig.sa_handler = SIG_IGN;
+	sigaction(SIGQUIT, &sig, NULL);
 }

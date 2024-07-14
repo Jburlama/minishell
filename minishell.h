@@ -113,6 +113,7 @@ int		runpipe_wait(int *wstatus, t_data *data);
 void	here_doc(t_redir *root);
 char	*open_heredoc_for_write(int *fd);
 void	open_heredoc_for_read(char *file_name, int *fd);
+void	here_doc_sig(void);
 
 // logical.c
 void	runor(t_cond *root, t_data *data);
