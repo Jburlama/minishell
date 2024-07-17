@@ -6,7 +6,7 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 17:54:50 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/07/10 18:05:36 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/07/17 15:44:06 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,13 +64,7 @@ void	runredir(t_redir *root, t_data *data)
 		close(fd);
 	}
 	else if (root->file_type == I)
-	{
 		read_input(root, data);
-	}
-	else if (root->file_type == HERE_DOC)
-	{
-		here_doc(root);
-	}
 	runcmd(((t_redir *)root)->down, data);
 }
 

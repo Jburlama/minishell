@@ -6,7 +6,7 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 15:00:19 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/07/10 18:09:17 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/07/17 15:34:59 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,21 +37,21 @@ extern int	status_exit;
 
 enum e_type
 {
-	WHITE_SPACE,
-	WORD,
-	SPECIAL,
-	DQUOTES,
-	SQUOTES,
-	IO,
-	I,
-	O,
-	APEND,
-	HERE_DOC,
-	EXEC,
-	REDIR,
-	PIPE,
-	AND,
-	OR,
+	WHITE_SPACE = 0,
+	WORD = 1,
+	SPECIAL = 2,
+	DQUOTES = 3,
+	SQUOTES = 4,
+	IO = 5,
+	I = 6,
+	O = 7,
+	APEND = 8,
+	HERE_DOC = 9,
+	EXEC = 10,
+	REDIR = 11,
+	PIPE = 12,
+	AND = 13,
+	OR = 14,
 };
 
 typedef struct s_token
@@ -110,10 +110,8 @@ void	runpipe(t_pipe *root, t_data *data);
 int		runpipe_wait(int *wstatus, t_data *data);
 
 // here_doc.c
-void	here_doc(t_redir *root);
+char	*here_doc(t_redir *root, char *eof);
 char	*open_heredoc_for_write(int *fd);
-void	open_heredoc_for_read(char *file_name, int *fd);
-void	here_doc_sig(void);
 
 // logical.c
 void	runor(t_cond *root, t_data *data);
@@ -129,10 +127,13 @@ void	create_tree(t_data *data);
 
 // construct.c
 t_exec	*construct_exec(void);
-void	*construct_redir(void	*subnode, t_token **tokens);
 char	**add_to_args(char **args, char *content);
 void	*construct_pipe(void *l, void *r);
 void	*construct_cond(void *l, void *r, enum e_type type);
+
+// construct_redir.c
+void	*construct_redir(void	*subnode, t_token **tokens);
+t_redir *redir_alloc(t_token **tokens);
 
 // parse_tree.c
 void	*parse_exec(t_token **tokens);

@@ -6,7 +6,7 @@
 /*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 20:22:39 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/06/14 18:40:37 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/07/17 15:31:40 by Jburlama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,35 +50,6 @@ char	**add_to_args(char **args, char *content)
 		return (clear_args(args), clear_args(new_args), NULL);
 	clear_args(args);
 	return (new_args);
-}
-
-void	*construct_redir(void	*root, t_token **tokens)
-{
-	t_redir	*ptr;
-	t_redir	*new;
-
-	new = ft_calloc(sizeof(*new), 1);
-	if (new == NULL)
-		return (NULL);
-	new->type = REDIR;
-	new->file_type = (*tokens)->type;
-	if ((*tokens)->type == DQUOTES || (*tokens)->type == SQUOTES)
-	{
-		new->quote_type = (*tokens)->type;
-		new->file_type = (*tokens)->file;
-	}
-	new->file = ft_strdup((*tokens)->content);
-	if (((t_exec *)root)->type == EXEC)
-	{
-		new->down = root;
-		return (new);
-	}
-	ptr = root;
-	while (((t_exec *)ptr->down)->type != EXEC)
-		ptr = ptr->down;
-	new->down = ptr->down;
-	ptr->down = new;
-	return (root);
 }
 
 void	*construct_pipe(void *l, void *r)
