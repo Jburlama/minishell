@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 16:04:55 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/07/18 17:53:16 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/19 09:56:31 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	runexec(t_exec *node, t_data *data)
 {
 	char	*pathname;
-	
+
 	if (node->builtin != NO_B)
 	{
 		execute_builtins(node, data);

@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 20:31:35 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/07/19 08:49:11 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/19 10:27:32 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	promp_quotes(char q)
 		line = readline(YELLOW"quote>"RESET);
 	if (line == NULL)
 	{
-		ft_printf("exit\n");
+		printf("exit\n");
 		exit(0);
 	}
 	free(line);

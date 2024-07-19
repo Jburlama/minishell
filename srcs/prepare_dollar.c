@@ -12,105 +12,6 @@
 
 #include "../minishell.h"
 
-char	*dollar_number(char *content, char *tmp, size_t *dol)
-{
-	int		i;
-
-	i = (*dol);
-	while (ft_isalnum(content[*dol]))
-		(*dol)++;
-	if (content[i] == 48)
-	{	
-		if (content[i + 1] == '\0')
-			tmp = ft_strdup("./minishell\0");
-		else
-			tmp = ft_strjoin("./minishell\0", (content + (i) + 1));
-	}
-	else if ((content[i] > 48 && content[i] <= 57))
-	{
-		if (content[i + 1] != '\0')
-		{
-			tmp = ft_strdup(content + i + 1);
-			(*dol)--;
-		}
-		else
-			(*dol) = 0;
-	}
-	return (tmp);
-}
-
-char	*expand_number(char *c, t_data *data, size_t *d)
-{
-	char	*e;
-	char	*tp;
-	size_t	i;
-
-	e = NULL;
-	i = *d - 1;
-	e = dollar_number(c, e, d);
-	if (e == NULL)
-	{
-		free(c);
-		return (NULL);
-	}
-	tp = ft_calloc((ft_strlen(c) + ft_strlen(e) - (*d - i) + 1), sizeof(char));
-	if (!tp)
-		panic("calloc_fail", data);
-	ft_strlcpy(tp, c, i + 1);
-	if (e)
-		ft_strlcpy(tp + i, e, ft_strlen(e) + 1);
-	free(c);
-	if (e && e[*d - 1] == '$')
-		*d = -1;	
-	else
-		*d = i;
-	free (e);
-	return (tp);
-}
-
-int	check_expand(char *content, int i, int type)
-{
-	if ((content[i + 1] == '\0') || (content[i + 1] == ' ')
-		|| (content[i + 1] == 34) || (content[i + 1] == 39))
-	{
-		if (content[0] == '$' && ft_strlen(content) == 1 && type == 1)
-		{
-			free(content);
-			content = NULL;
-		}
-		return (0);
-	}
-	return (1);
-}
-
-int	check_content(t_token **tmp, t_token **keep, t_data *data)
-{
-	if (!(*tmp)->content)
-	{
-		if (*tmp == *keep)
-		{
-			if ((*tmp)->next)
-				data->head = (*tmp)->next;
-			else
-			{
-				data->head = NULL;
-				return (0);
-			}
-			free(*tmp);
-			*tmp = data->head;
-		}
-		else
-		{
-			if (!(*tmp)->next)
-				(*keep)->next = NULL;
-			else
-				(*keep)->next = (*tmp)->next;
-			free(*tmp);
-			*tmp = *keep;
-		}
-	}
-	return (1);
-}
 char	*get_my_env(t_data *data, char *env_name)
 {
 	int		i;
@@ -126,7 +27,7 @@ char	*get_my_env(t_data *data, char *env_name)
 		while (data->env[j][i])
 		{
 			if (data->env[j][i] == '=')
-				break;
+				break ;
 			i++;
 		}
 		if (ft_memcmp(data->env[j], env_name, i) == 0)
@@ -158,7 +59,6 @@ char	*get_env_name(char *content, char *exp,
 // c = content
 // d = dol
 // e = exp
-
 
 char	*expand(char *c, t_data *data, size_t *d, int type)
 {
@@ -231,12 +131,12 @@ void	prepare_dollar(t_data *data)
 		{
 			if (((tmp->content[dol] == '$' && tmp->type != SQUOTES))
 				&& (tmp->content[dol + 1] >= 48 && tmp->content[dol + 1] <= 57))
-				{
-					dol++;
-					tmp->content = expand_number(tmp->content, data, &dol);
-					if (!check_content(&tmp, &keep, data))
-						return ;
-				}
+			{
+				dol++;
+				tmp->content = expand_number(tmp->content, data, &dol);
+				if (!check_content(&tmp, &keep, data))
+					return ;
+			}
 			dol++;
 		}
 		keep = tmp;

@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 14:56:00 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/18 16:49:04 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/19 15:29:52 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,12 +109,30 @@ void	handle_quotes(t_data *data)
 			first_quote = 0;
 		if (first_quote == 1)
 			handle_first_quote(tmp, keep, first_quote);
-		else if((tmp->type == DQUOTES || tmp->type == SQUOTES
-			|| tmp->next->type == DQUOTES || tmp->next->type == SQUOTES)
+		else if ((tmp->type == DQUOTES || tmp->type == SQUOTES
+				|| tmp->next->type == DQUOTES || tmp->next->type == SQUOTES)
 			&& (tmp->type != WHITE_SPACE) && (tmp->next->type != WHITE_SPACE))
-				tmp = handle_quotes_aux(tmp, keep);
+			tmp = handle_quotes_aux(tmp, keep);
 		else
 			tmp = tmp->next;
+	}
+}
+
+void 	find_null(t_data *data)
+{
+	t_token	*tmp;
+
+	tmp = data->head;
+	while (tmp)
+	{
+		if (tmp->type == REDIR)
+		{
+			while (tmp->next && tmp->type == WHITE_SPACE)
+				tmp = tmp->next;
+			if (tmp->type == REDIR || tmp->type == WHITE_SPACE)
+				perror(tmp->content);
+		}
+		tmp = tmp->next;
 	}
 }
 
@@ -131,37 +149,3 @@ void	prepare_token(t_data *data)
 		}
 	}
 }
-
-
-/*
-
-void	handle_quotes(t_data *data)
-{
-	t_token	*tmp;
-	t_token	*keep;
-	int		first_quote;
-
-	first_quote = 0;
-	tmp = data->head;
-	keep = tmp;
-	if (tmp->type == DQUOTES || tmp->type == SQUOTES
-			|| tmp->next->type == DQUOTES || tmp->next->type == SQUOTES)
-		first_quote = 1;
-	while (tmp && tmp->next)
-	{
-		if (tmp->type != DQUOTES && tmp->type != SQUOTES)
-			keep = tmp;
-		if (first_quote == 1)
-			handle_first_quote(tmp, keep, first_quote);
-		if ((tmp->type == DQUOTES || tmp->type == SQUOTES)
-			&& (tmp->next->type != WHITE_SPACE))
-		{
-			if (first_quote == 1)
-				handle_first_quote(tmp, keep, first_quote);
-			//else
-				tmp = handle_quotes_aux(tmp, keep);
-		}
-		else
-			tmp = tmp->next;
-	}
-}*/

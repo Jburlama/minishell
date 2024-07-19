@@ -42,7 +42,6 @@ void	update_signals(void)
 
 	ft_memset(&sig, 0, sizeof(sig));
 	sig.sa_handler = signal_handler_update;
-	sigaction(SIGQUIT, &sig, NULL);
 	sigaction(SIGINT, &sig, NULL);
 }
 
@@ -50,8 +49,6 @@ void	signal_handler_update(int sig)
 {
 	if (sig == SIGINT)
 		write(1, "\n", 1);
-	else if (sig == SIGQUIT)
-		write(1, "Quit (core dumped)\n", 19);
 }
 
 void	default_sig(void)

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/13 16:53:03 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/18 18:59:57 by vbritto-         ###   ########.fr       */
+/*   Created: 2024/07/19 09:42:11 by vbritto-          #+#    #+#             */
+/*   Updated: 2024/07/19 14:03:19 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	print_tree(void	*root);
 int	main(int argc, char *argv[], char *env[])
 {
 	t_data	data;
-	
+
 	(void)argc;
 	(void)argv;
 	start_data(&data, env);
@@ -27,17 +27,45 @@ int	main(int argc, char *argv[], char *env[])
 	{
 		handle_signal();
 		get_line(&data);
-		if(check(rl_line_buffer, &data) == 2)
-		{	
+		if (check(rl_line_buffer, &data) != 2)
+		{
+			tokenize(&data);
+			prepare_token(&data);
+			create_tree(&data);
+			find_root(data.root, &data);
+			clear_tree(data.root);
+		}
+		else 
+			data.exit_code = 0;
+	}
+	clear_args(data.env);
+	clear_args(data.export);
+	free(rl_line_buffer);
+}
+
+/*
+int	main(int argc, char *argv[], char *env[])
+{
+	t_data	data;
+
+	(void)argc;
+	(void)argv;
+	start_data(&data, env);
+	while (42)
+	{
+		handle_signal();
+		get_line(&data);
+		if (check(rl_line_buffer, &data) == 2)
+		{
 			status_exit = 0;
-			continue;
+			continue ;
 		}
 		tokenize(&data);
 		prepare_token(&data);
-		/*for (t_token *ptr = data.head; ptr; ptr = ptr->next)
+		for (t_token *ptr = data.head; ptr; ptr = ptr->next)
 			printf("content: %s | type %i\n", ptr->content, ptr->type);
 		clear_list(&data.head);
-		continue ;*/
+		continue ;
 		create_tree(&data);
 		//print_tree(data.root);
 		//continue ;
@@ -45,18 +73,20 @@ int	main(int argc, char *argv[], char *env[])
 		//print_tree(data.root);
 		find_root(data.root, &data);
 		clear_tree(data.root);
-		/*if (find_root(data.root, &data) == 0)
+		if (find_root(data.root, &data) == 0)
 		{
 			if (save_fork(&data) == 0)
 				execute(&data);
 			wait(NULL);
 		// print_tree(data.root);
-		}*/
+		}
 	}
 	clear_args(data.env);
 	clear_args(data.export);
 	free(rl_line_buffer);
-}
+}*/
+
+
 
 void	print_tree(void	*root)
 {

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execute_builtins.c                                 :+:      :+:    :+:   */
+/*   find_root.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 18:49:21 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/19 09:36:59 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/19 10:25:23 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@ void	execute_builtins(t_exec *node, t_data *data)
 		cmd_export(data, node);
 	else if (node->builtin == UNSET)
 		cmd_unset(data, node);
-	else if (node->builtin == ENV)
-		cmd_env(data, node);
 	else if (node->builtin == EXIT)
 		cmd_exit(data, node);
 }
@@ -43,16 +41,6 @@ int	check_root(void *root)
 		return (3);
 	return (0);
 }
-/*
-void	check_pipe(void *rigth, void *left, t_data *data)
-{
-	if (((t_redir *)rigth)->file_type == HERE_DOC
-		&& ((t_redir *)left)->file_type == HERE_DOC)
-	{
-		execute(left, data);
-		execute(rigth, data);
-	}
-}*/
 
 void	check_and(void *root, t_data *data)
 {

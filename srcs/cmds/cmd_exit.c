@@ -6,37 +6,37 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 13:10:57 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/19 09:29:34 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/19 15:03:20 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int	ft_exit_number(char *number, int i)
+int	ft_exit_number(char *number, int *i)
 {
-	while (number[i])
+	while (number[*i])
 	{
-		if (!ft_isdigit(number[i])
+		if (!ft_isdigit(number[*i])
 			|| (ft_atol(number) < INT_MIN || ft_atol(number) > INT_MAX))
 		{
 			ft_printf("minishell: exit: %s: numeric argumnet required\n",
 				number);
 			return (2);
 		}
-		i++;
+		(*i)++;
 	}
-	i = ft_atol(number);
+	(*i) = ft_atol(number);
 	if (number[0] == '-')
 	{
-		while (i < 0)
-			i += 256;
+		while ((*i) < 0)
+			(*i) += 256;
 	}
 	else
 	{
-		while (i > 256)
-			i %= 256;
+		while ((*i) > 256)
+			(*i) %= 256;
 	}
-	return (i);
+	return ((*i));
 }
 
 int	len_args(char **args)
@@ -73,6 +73,7 @@ void	many_args(t_data *data, t_exec *node)
 		}
 		i++;
 	}
+	ft_printf("exit: too many arguments\n");
 }
 
 int	cmd_exit(t_data	*data, t_exec *node)
@@ -83,17 +84,22 @@ int	cmd_exit(t_data	*data, t_exec *node)
 	exit_number = 0;
 	i = len_args(node->args);
 	ft_printf("exit\n");
-	if (i >= 2)
+	if (i > 2)
 	{
 		many_args(data, node);
-		ft_printf("exit: too many arguments\n");
 		return (1);
+	}
+	else if (node->args[1][0] == '\0')
+	{
+		ft_printf("minishell: exit: : numeric argumnet required\n");
+		return (2);
 	}
 	else if (node->args[1])
 	{
+		i = 0;
 		if (node->args[1][0] == '+' || node->args[1][0] == '-')
 			i++;
-		exit_number = ft_exit_number(node->args[1], i);
+		exit_number = ft_exit_number(node->args[1], &i);
 	}
 	free_exit(data);
 	exit(exit_number);

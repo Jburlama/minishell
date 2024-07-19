@@ -6,49 +6,47 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 12:46:48 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/15 18:51:45 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/19 14:05:06 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+int *jump_quotes(char *str, int *parentheses)
+{
+	if ((str[parentheses[0]] == 34 || str[parentheses[0]] == 39))
+	{
+			parentheses[0]++;
+		while (str[parentheses[0]] != '\0')
+		{
+			if ((str[parentheses[0]] == 34 || str[parentheses[0]] == 39))
+				break ;
+			parentheses[0]++;
+		}
+		parentheses[0]--;
+	}
+	if (str[parentheses[0]] == 40)
+		parentheses[1]++;
+	if (str[parentheses[0]] == 41)
+		parentheses[1]--;
+	if (parentheses[1] < 0)
+		return (parentheses);
+	return (parentheses);
+}
+
 void	check_parentheses(char *str, t_data *data)
 {
-	int	i;
-	int	j;
-	int	z;
+	int	*parentheses;
 
-	i = 0;
-	j = 0;
-	z = 0;
-	while (str[i] != '\0')
+	parentheses = ft_calloc(2, sizeof(int));
+	while (str[parentheses[0]] != '\0')
 	{
-		if (str[i] == 34 || str[i] == 39)
-		{
-			while (str[i + 1] != '\0')
-			{
-				if ((str[i + 1] == 34 || str[i + 1] == 39))
-					break ;
-			i++;
-			}
- 		}
-		if (str[i] == 40)
-		{
-			while (str[i] != '\0')
-			{
-				if (str[i] == 40)
-					j++;
-				if (str[i] == 41)
-					z++;
-				i++;
-			}
-			if (str[i] == '\0')
-				break ;
-		}
-		i++;
+		parentheses = jump_quotes(str, parentheses);
+		parentheses[0]++;
 	}
-	if (z != j)
-		data->error_code = 2;
+	if (parentheses[1] != 0)
+		data->exit_code = 2;
+	free (parentheses);
 }
 
 void	check_heredoc(char *str)
@@ -68,7 +66,7 @@ void	check_heredoc(char *str)
 
 void	ft_exit(char *str)
 {
-	ft_printf("%s", RED"minishell: syntax error near unexpected token\n"RESET);
+	printf("%s", RED"minishell: syntax error near unexpected token\n"RESET);
 	check_heredoc(str);
 }
 
@@ -90,10 +88,10 @@ void	check_redirect(char *str, t_data *data)
 			if (str[i] == 62)
 				r++;
 			if (l > 3 || r > 2)
-				data->error_code = 2;
+				data->exit_code = 2;
 		}
 		else
-			data->error_code = 2;
+			data->exit_code = 2;
 		i++;
 	}
 }
@@ -111,16 +109,17 @@ int	check(char *str, t_data *data)
 		if ((str[i] == '<' && str[i + 1] == '|')
 			|| (str[i] == '<' && str[i + 1] == '\0')
 			|| (str[i] == '>' && str[i + 1] == '\0')
-			//|| (str[i] == '>' && str[i + 1] == '|')
+			|| (str[i] == '>' && str[i + 1] == '>' && str[i + 2] == '|')
+			|| (str[i] == '<' && str[i + 1] == '<' && str[i + 2] == '\0')
 			|| (str[i] == '|' && str[i + 1] == '\0')
 			|| (str[i] == '$' && str[i + 1] == '$'))
-			data->error_code = 2;
+			data->exit_code = 2;
 		i++;
 	}
-	if (data->error_code == 2)
+	if (data->exit_code == 2)
 	{
 		ft_exit(str);
-		return (data->error_code);
+		return (data->exit_code);
 	}
 	return (0);
 }

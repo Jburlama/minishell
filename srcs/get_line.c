@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:40:34 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/18 18:50:05 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/19 10:00:18 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,6 @@ char	*get_line(t_data *data)
 		printf("exit\n");
 		exit(0);
 	}
-	/*if (ft_memcmp(rl_line_buffer, "exit\0", 5) == 0)
-	{
-		free(rl_line_buffer);
-		clear_args(data->env);
-		exit(0);
-	}*/
 	add_history(rl_line_buffer);
 	return (line);
 }

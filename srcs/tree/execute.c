@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/13 16:50:13 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/13 16:57:02 by vbritto-         ###   ########.fr       */
+/*   Created: 2024/07/19 09:42:44 by vbritto-          #+#    #+#             */
+/*   Updated: 2024/07/19 10:09:47 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,9 @@ void	execute(void *root, t_data *data)
 		exit(errno);
 	}
 	waitpid(pid, &wstatus, 0);
+	if (WIFSIGNALED(wstatus))
+		if (WCOREDUMP(wstatus))
+			write(1, "Quit (core dumped)\n", 19);
 }
 
 void	runcmd(void *root, t_data *data)
@@ -61,11 +64,7 @@ void	runredir(t_redir *root, t_data *data)
 		close(fd);
 	}
 	else if (root->file_type == I)
-	{
 		read_input(root, data);
-	}
-	else if (root->file_type == HERE_DOC)
-		here_doc(root, data);
 	runcmd(((t_redir *)root)->down, data);
 }
 
@@ -86,3 +85,5 @@ void	read_input(t_redir *root, t_data *data)
 		exit(errno);
 	}
 }
+
+//// VIDE EXECUTE

@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 15:09:39 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/19 09:31:15 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/19 10:13:56 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	check_export(t_exec *node, char *args, int j)
 	return (2);
 }
 
-void	equal_or_plus_change(char *arg, char **old_env, int i, int j)
+void	equal_or_plus_chg(char *arg, char **old_env, int i, int j)
 {
 	char	*tmp;
 
@@ -77,7 +77,7 @@ int	equal_or_plus(char **old_env, char *arg)
 		{
 			if (ft_memcmp(arg, old_env[j], i) == 0)
 			{
-				equal_or_plus_change(arg, old_env, i, j);
+				equal_or_plus_chg(arg, old_env, i, j);
 				return (1);
 			}
 			j++;

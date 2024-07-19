@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 20:20:43 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/07/09 18:25:28 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/19 09:57:04 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ void	*parse_exec(t_token **tokens)
 			|| *(*tokens)->content == '&' || *(*tokens)->content == ')')
 			break ;
 		exec->args = add_to_args(exec->args, (*tokens)->content);
-		if (ft_memcmp((*tokens)->content, exec->args[0], ft_strlen(exec->args[0]) + 1) == 0)
+		if (ft_memcmp((*tokens)->content, exec->args[0],
+				ft_strlen(exec->args[0]) + 1) == 0)
 			exec->builtin = (*tokens)->builtin;
 		if (exec->args == NULL)
 			return (NULL);
