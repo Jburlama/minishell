@@ -6,21 +6,30 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 13:19:30 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/06/28 16:03:09 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/15 14:45:38 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
 //check leaks
-void	cmd_env(t_data *data)
+void	cmd_env(t_data *data, t_exec *node)
 {
 	int	i;
 
 	i = 0;
-	while (data->env[i] != NULL)
+	if (node->args[1] == NULL)
 	{
-		ft_printf("%s\n", data->env[i]);
-		i++;
+		while (data->env[i] != NULL)
+		{
+			ft_printf("%s\n", data->env[i]);
+			i++;
+		}
+	}
+	else
+	{
+		ft_printf("%s: %s: %s\n", node->args[0], node->args[1],
+			"No such file or directory");
+		data->builtin_fail = true;
 	}
 }

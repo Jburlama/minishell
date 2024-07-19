@@ -12,16 +12,15 @@
 
 #include "../minishell.h"
 
-char	*dollar_number(char *content, size_t *dol)
+char	*dollar_number(char *content, char *tmp, size_t *dol)
 {
 	int		i;
-	char	*tmp;
 
-	tmp = NULL;
 	i = (*dol);
+	while (ft_isalnum(content[*dol]))
+		(*dol)++;
 	if (content[i] == 48)
 	{	
-		(*dol) = ft_strlen(content);
 		if (content[i + 1] == '\0')
 			tmp = ft_strdup("./minishell\0");
 		else
@@ -32,12 +31,41 @@ char	*dollar_number(char *content, size_t *dol)
 		if (content[i + 1] != '\0')
 		{
 			tmp = ft_strdup(content + i + 1);
-			(*dol) = 0;
+			(*dol)--;
 		}
-		(*dol) = -1;
+		else
+			(*dol) = 0;
 	}
-	free (content);
 	return (tmp);
+}
+
+char	*expand_number(char *c, t_data *data, size_t *d)
+{
+	char	*e;
+	char	*tp;
+	size_t	i;
+
+	e = NULL;
+	i = *d - 1;
+	e = dollar_number(c, e, d);
+	if (e == NULL)
+	{
+		free(c);
+		return (NULL);
+	}
+	tp = ft_calloc((ft_strlen(c) + ft_strlen(e) - (*d - i) + 1), sizeof(char));
+	if (!tp)
+		panic("calloc_fail", data);
+	ft_strlcpy(tp, c, i + 1);
+	if (e)
+		ft_strlcpy(tp + i, e, ft_strlen(e) + 1);
+	free(c);
+	if (e && e[*d - 1] == '$')
+		*d = -1;	
+	else
+		*d = i;
+	free (e);
+	return (tp);
 }
 
 int	check_expand(char *content, int i, int type)
@@ -83,6 +111,30 @@ int	check_content(t_token **tmp, t_token **keep, t_data *data)
 	}
 	return (1);
 }
+char	*get_my_env(t_data *data, char *env_name)
+{
+	int		i;
+	int		j;
+	char	*exp;
+
+	i = 0;
+	j = 0;
+	exp = NULL;
+	while (data->env[j])
+	{
+		i = 0;
+		while (data->env[j][i])
+		{
+			if (data->env[j][i] == '=')
+				break;
+			i++;
+		}
+		if (ft_memcmp(data->env[j], env_name, i) == 0)
+			exp = ft_strdup(data->env[j] + i + 1);
+		j++;
+	}
+	return (exp);
+}
 
 char	*get_env_name(char *content, char *exp,
 	size_t *dol, t_data *data)
@@ -93,19 +145,12 @@ char	*get_env_name(char *content, char *exp,
 	env_name = NULL;
 	i = *dol - 1;
 	while (ft_isalnum(content[*dol]))
-	{
-		/*if (content[i + 1] >= 48 && content[i + 1] <= 57)
-		{	
-			exp = dollar_number(content, dol);
-			return (exp);
-		}*/
 		(*dol)++;
-	}
 	env_name = ft_calloc(*dol - i, sizeof(char));
 	if (!env_name)
 		panic("calloc_fail", data);
 	ft_strlcpy(env_name, content + i + 1, *dol - i);
-	exp = getenv(env_name);
+	exp = get_my_env(data, env_name);
 	free(env_name);
 	return (exp);
 }
@@ -127,10 +172,7 @@ char	*expand(char *c, t_data *data, size_t *d, int type)
 		return (c);
 	e = get_env_name(c, e, d, data);
 	if (!e && (c[*d]) == '\0')
-	{
-		free(c);
-		return (NULL);
-	}
+		return (free(c), NULL);
 	tp = ft_calloc((ft_strlen(c) + ft_strlen(e) - (*d - i) + 1), sizeof(char));
 	if (!tp)
 		panic("calloc_fail", data);
@@ -140,6 +182,7 @@ char	*expand(char *c, t_data *data, size_t *d, int type)
 	if (c[*d] != '\0')
 		ft_strlcpy(tp + i + ft_strlen(e), c + (*d), ft_strlen(c) + 1 - (*d));
 	free(c);
+	free(e);
 	*d = i;
 	return (tp);
 }
@@ -190,7 +233,7 @@ void	prepare_dollar(t_data *data)
 				&& (tmp->content[dol + 1] >= 48 && tmp->content[dol + 1] <= 57))
 				{
 					dol++;
-					tmp->content = dollar_number(tmp->content, &dol);
+					tmp->content = expand_number(tmp->content, data, &dol);
 					if (!check_content(&tmp, &keep, data))
 						return ;
 				}

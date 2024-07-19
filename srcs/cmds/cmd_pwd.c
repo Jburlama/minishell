@@ -6,23 +6,32 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 15:01:44 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/10 13:21:26 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/19 09:31:45 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	cmd_pwd(t_data *data)
+void	cmd_pwd(t_data *data, t_exec *node)
 {
 	char	*pwd;
 
-	pwd = getcwd(NULL, 0);
-	if (pwd != NULL)
-		ft_printf("%s\n", pwd);
+	if (node->args[1] == NULL)
+	{
+		pwd = getcwd(NULL, 0);
+		if (pwd != NULL)
+			ft_printf("%s\n", pwd);
+		else
+		{
+			data->builtin_fail = true;
+			perror("pwd error");
+		}
+		free(pwd);
+	}
 	else
 	{
-		data->builtin_fail = true;
-		perror("pwd error");
+		write (2, "pwd: ", 5);
+		write (2, node->args[1], ft_strlen(node->args[1]));
+		write (2, " invalid option\n", 16);
 	}
-	free(pwd);
 }

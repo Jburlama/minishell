@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 12:46:48 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/13 15:33:37 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/15 18:51:45 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int	check(char *str, t_data *data)
 	i = 0;
 	check_parentheses(str, data);
 	if (str[0] == 60 || str[0] == 62)
-		check_redirect(str, data);
+		//check_redirect(str, data);
 	while (str[i] != '\0')
 	{
 		if ((str[i] == '<' && str[i + 1] == '|')

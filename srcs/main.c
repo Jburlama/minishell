@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 16:53:03 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/13 16:54:42 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/18 18:59:57 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,11 @@ int	main(int argc, char *argv[], char *env[])
 			if (save_fork(&data) == 0)
 				execute(&data);
 			wait(NULL);
-		}*/
 		// print_tree(data.root);
-		clear_tree(data.root);
+		}*/
 	}
 	clear_args(data.env);
+	clear_args(data.export);
 	free(rl_line_buffer);
 }
 
@@ -113,3 +113,18 @@ void	print_tree(void	*root)
 		print_tree(cont->right);
 	}
 }
+
+
+
+//espace antes de qualquer comando
+// ls > "" ou ls > $1 ou ls >""
+// ls >>| g
+
+
+//env PATH             = env: ‘PATH’: No such file or directory OK
+//cd .                 = nao faz nada               OK
+//unset                = free(): invalid pointer    OK
+//cd (unset HOME)      = cd: HOME not set           OK
+//export			   = decalre -x variaveis
+
+

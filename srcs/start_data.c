@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 16:46:31 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/06/28 12:54:29 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/17 18:58:30 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,4 +42,5 @@ void	start_data(t_data *data, char **envp)
 {
 	ft_memset(data, 0, sizeof(*data));
 	data->env = start_env(data->env, envp);
+	data->export = start_env(data->export, envp);
 }

@@ -5,13 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-<<<<<<< HEAD
-/*   Created: 2024/07/09 16:38:42 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/13 15:03:27 by vbritto-         ###   ########.fr       */
-=======
-/*   Created: 2024/07/13 13:47:42 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/13 13:47:43 by vbritto-         ###   ########.fr       */
->>>>>>> main
+/*   Created: 2024/07/13 17:33:56 by vbritto-          #+#    #+#             */
+/*   Updated: 2024/07/19 08:42:05 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +117,8 @@ typedef struct s_data
 	t_token	*tail;
 	void	*root;
 	char	**env;
+	char	**export;
+	char	*path;
 	bool	builtin_fail;
 	int		error_code;
 }	t_data;
@@ -238,7 +235,8 @@ void	prepare_wildcards(t_data *data);
 
 // prepare_dollar.c
 
-char	*dollar_number(char *content, size_t *dol);
+char	*dollar_number(char *content, char *tmp, size_t *dol);
+char	*expand_number(char *c, t_data *data, size_t *d);
 int		check_expand(char *content, int i, int type);
 int		check_content(t_token **tmp, t_token **keep, t_data *data);
 char	*get_env_name(char *content, char *exp, size_t *dol, t_data *data);
@@ -270,12 +268,13 @@ void	find_root(void *root, t_data *data);
 
 // cmd builtins
 
-void	cmd_env(t_data *data);
+void	cmd_env(t_data *data, t_exec *node);
 void	cmd_export(t_data *data, t_exec *node);
 void	cmd_unset(t_data *data, t_exec *node);
 void	cmd_echo(t_exec *node);
-void	cmd_pwd(t_data *data);
+void	cmd_pwd(t_data *data, t_exec *node);
 void	cmd_cd(t_data *data, t_exec *node);
+int		cmd_exit(t_data	*data, t_exec *node);
 
 #endif
 

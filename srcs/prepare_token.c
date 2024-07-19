@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 14:56:00 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/02 16:28:35 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/18 16:49:04 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,6 @@ void	prepare_builtins(t_data *data)
 			tmp->builtin = EXPORT;
 		else if (ft_memcmp("unset", tmp->content, ft_strlen(tmp->content)) == 0)
 			tmp->builtin = UNSET;
-		else if (ft_memcmp("env", tmp->content, ft_strlen(tmp->content)) == 0)
-			tmp->builtin = ENV;
 		else if (ft_memcmp("exit", tmp->content, ft_strlen(tmp->content)) == 0)
 			tmp->builtin = EXIT;
 		else
@@ -45,12 +43,24 @@ t_token	*handle_quotes_aux(t_token *tmp, t_token *keep)
 	char	*new_content;
 
 	new_content = ft_strjoin(tmp->content, tmp->next->content);
-	free(tmp->next->content);
-	tmp->next->content = new_content;
-	keep->next = tmp->next;
-	free(tmp->content);
-	free(tmp);
-	return (keep);
+	if (!tmp->next->next)
+	{
+		free(tmp->content);
+		tmp->content = new_content;
+		free(tmp->next->content);
+		free(tmp->next);
+		tmp->next = NULL;
+	}
+	else
+	{
+		free(tmp->next->content);
+		tmp->next->content = new_content;
+		keep->next = tmp->next;
+		free(tmp->content);
+		free(tmp);
+		tmp = keep->next;
+	}
+	return (tmp);
 }
 
 void	handle_first_quote(t_token *tmp, t_token *keep, int first_quote)
@@ -91,18 +101,18 @@ void	handle_quotes(t_data *data)
 	keep = tmp;
 	if (tmp->type == DQUOTES || tmp->type == SQUOTES)
 		first_quote = 1;
+	if (tmp->next && (tmp->next->type == DQUOTES || tmp->next->type == SQUOTES))
+		first_quote = 1;
 	while (tmp && tmp->next)
 	{
-		if (tmp->type != DQUOTES && tmp->type != SQUOTES)
-			keep = tmp;
-		if ((tmp->type == DQUOTES || tmp->type == SQUOTES)
-			&& (tmp->next->type != WHITE_SPACE))
-		{
-			if (first_quote == 1)
-				handle_first_quote(tmp, keep, first_quote);
-			else
+		if (tmp->next->type == WHITE_SPACE)
+			first_quote = 0;
+		if (first_quote == 1)
+			handle_first_quote(tmp, keep, first_quote);
+		else if((tmp->type == DQUOTES || tmp->type == SQUOTES
+			|| tmp->next->type == DQUOTES || tmp->next->type == SQUOTES)
+			&& (tmp->type != WHITE_SPACE) && (tmp->next->type != WHITE_SPACE))
 				tmp = handle_quotes_aux(tmp, keep);
-		}
 		else
 			tmp = tmp->next;
 	}
@@ -116,8 +126,42 @@ void	prepare_token(t_data *data)
 		if (data->head)
 		{
 			prepare_wildcards(data);
-			prepare_builtins(data);
 			handle_quotes(data);
+			prepare_builtins(data);
 		}
 	}
 }
+
+
+/*
+
+void	handle_quotes(t_data *data)
+{
+	t_token	*tmp;
+	t_token	*keep;
+	int		first_quote;
+
+	first_quote = 0;
+	tmp = data->head;
+	keep = tmp;
+	if (tmp->type == DQUOTES || tmp->type == SQUOTES
+			|| tmp->next->type == DQUOTES || tmp->next->type == SQUOTES)
+		first_quote = 1;
+	while (tmp && tmp->next)
+	{
+		if (tmp->type != DQUOTES && tmp->type != SQUOTES)
+			keep = tmp;
+		if (first_quote == 1)
+			handle_first_quote(tmp, keep, first_quote);
+		if ((tmp->type == DQUOTES || tmp->type == SQUOTES)
+			&& (tmp->next->type != WHITE_SPACE))
+		{
+			if (first_quote == 1)
+				handle_first_quote(tmp, keep, first_quote);
+			//else
+				tmp = handle_quotes_aux(tmp, keep);
+		}
+		else
+			tmp = tmp->next;
+	}
+}*/

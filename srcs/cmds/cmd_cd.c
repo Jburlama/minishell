@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 13:27:56 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/10 13:19:41 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/18 18:50:48 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,13 @@ char	*get_last_dir(char *pwd)
 	return (last_dir);
 }
 
-char	*get_home(char **env)
+char	*get_home(char **env, t_data *data, t_exec *node)
 {
 	int		i;
 	char	*home;
 
 	i = 0;
+	home = NULL;
 	if (!env)
 		return (NULL);
 	while (env[i])
@@ -54,6 +55,12 @@ char	*get_home(char **env)
 		if (ft_memcmp("HOME=", env[i], 5) == 0)
 			home = env[i] + 5;
 		i++;
+	}
+	if (home == NULL)
+	{
+		ft_printf("%s: %s\n", node->args[0],
+			"HOME not set");
+		data->builtin_fail = true;
 	}
 	return (home);
 }
@@ -65,22 +72,22 @@ void	cmd_cd(t_data *data, t_exec *node)
 	if (!node->args[1]
 		&& ft_memcmp("cd", node->args[0], ft_strlen(node->args[0])) == 0)
 	{
-		dir = get_home(data->env);
+		dir = get_home(data->env, data, node);
 		chdir(dir);
 	}
-	else if (ft_memcmp("..", node->args[1], ft_strlen(node->args[1])) == 0)
+	else if (ft_memcmp("..", node->args[1], 2) == 0)
 	{
 		dir = getcwd(NULL, 0);
 		dir = get_last_dir(dir);
 		chdir(dir);
 		free(dir);
 	}
-	else
+	else if (node->args[1])
 	{
-		if (chdir(node->args[1]) != 0)
+		if (*node->args[1] != '\0' && chdir(node->args[1]) != 0)
 		{
-			ft_printf("%s: %s: %s\n", node->args[0], node->args[1],
-				"No such file or directory");
+			write(2, "cd: ", 4);
+			perror(node->args[1]);
 			data->builtin_fail = true;
 		}
 	}

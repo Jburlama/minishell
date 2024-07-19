@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_list_quotes2.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 20:31:35 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/06/14 17:42:14 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/07/19 08:49:11 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	promp_quotes(char q)
 		line = readline(YELLOW"quote>"RESET);
 	if (line == NULL)
 	{
-		printf("exit\n");
+		ft_printf("exit\n");
 		exit(0);
 	}
 	free(line);
