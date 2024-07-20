@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 20:54:06 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/05/26 20:55:25 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/07/20 19:10:26 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+extern int	g_status_exit;
 
 void	handle_signal(void)
 {
@@ -29,6 +31,7 @@ void	signal_handler(int sig)
 {
 	if (sig == SIGINT)
 	{
+		g_status_exit = 2;
 		rl_replace_line("", 1);
 		write(1, "\n", 1);
 		rl_on_new_line();

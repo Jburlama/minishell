@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 09:45:29 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/19 11:35:56 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/20 18:18:09 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@
 # include <readline/readline.h>
 #include <dirent.h>
 
-extern int	status_exit;
+extern int	g_status_exit;
 
 enum e_blt
 {
@@ -121,6 +121,7 @@ typedef struct s_data
 	char	*path;
 	bool	builtin_fail;
 	int		exit_code;
+	int		print_exit_code;
 }	t_data;
 
 // execute.c
@@ -135,7 +136,7 @@ void	runpipe(t_pipe *root, t_data *data);
 int		runpipe_wait(int *wstatus, t_data *data);
 
 // here_doc.c
-char	*here_doc(t_redir *root, char *eof);
+char	*here_doc(t_redir *root, char *eof, t_data *data);
 char	*open_heredoc_for_write(int *fd);
 
 // logical.c
@@ -157,16 +158,16 @@ void	*construct_pipe(void *l, void *r);
 void	*construct_cond(void *l, void *r, enum e_type type);
 
 // construct_redir.c
-void	*construct_redir(void	*subnode, t_token **tokens);
-t_redir *redir_alloc(t_token **tokens);
+void	*construct_redir(void	*subnode, t_token **tokens, t_data *data);
+t_redir *redir_alloc(t_token **tokens, t_data *data);
 
 // parse_tree.c
-void	*parse_exec(t_token **tokens);
-void	*parse_block(t_token **tokens);
-void	*parse_redir(void *root, t_token **tokens);
-void	*parse_and(t_token **tokens);
-void	*parse_or(t_token **tokens);
-void	*parse_pipe(t_token **tokens);
+void	*parse_exec(t_token **tokens, t_data *data);
+void	*parse_block(t_token **tokens, t_data *data);
+void	*parse_redir(void *root, t_token **tokens, t_data *data);
+void	*parse_and(t_token **tokens, t_data *data);
+void	*parse_or(t_token **tokens, t_data *data);
+void	*parse_pipe(t_token **tokens, t_data *data);
 
 // token_list_quotes.c
 void	add_token_quotes(t_data *data, int *i, enum e_type type);
@@ -229,15 +230,17 @@ void	check_quotes(char *str, t_data *data);
 void	ft_exit(char *str);
 void	check_heredoc(char *str);
 
-// prepare_token.c
+// prepare_token.c && ...aux.c
 void	prepare_token(t_data *data);
 void	prepare_dollar(t_data *data);
 void	second_prepare_dollar(t_data *data);
 void	prepare_wildcards(t_data *data);
+void	find_block(t_data *data);
+void 	find_null(t_data *data);
 
 // prepare_dollar.c
 
-char	*dollar_number(char *content, char *tmp, size_t *dol);
+char	*dollar_number(char *content, char *tmp, t_data *data, size_t *dol);
 char	*expand_number(char *c, t_data *data, size_t *d);
 int		check_expand(char *content, int i, int type);
 int		check_content(t_token **tmp, t_token **keep, t_data *data);
@@ -245,6 +248,7 @@ char	*get_env_name(char *content, char *exp, size_t *dol, t_data *data);
 char	*expand(char *c, t_data *data, size_t *d, int type);
 void	second_prepare_dollar(t_data *data);
 void	prepare_dollar(t_data *data);
+char	*expand_exit(char *content, t_data *data);
 
 // prepare_wildcars.c and aux.c
 
@@ -301,7 +305,7 @@ void	cmd_pwd(t_data *data, t_exec *node);
 // EXIT cmd_exit.c && cmd_utils.c
 int		cmd_exit(t_data	*data, t_exec *node);
 void	many_args(t_data *data, t_exec *node);
-void	free_exit(t_data *data);
+int		free_exit(t_data *data);
 int		len_args(char **args);
 int		ft_exit_number(char *number, int *i);
 long	ft_atol(const char *str);

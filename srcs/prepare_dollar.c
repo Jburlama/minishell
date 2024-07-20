@@ -83,7 +83,7 @@ char	*expand(char *c, t_data *data, size_t *d, int type)
 		ft_strlcpy(tp + i + ft_strlen(e), c + (*d), ft_strlen(c) + 1 - (*d));
 	free(c);
 	free(e);
-	*d = i;
+	*d = i - 1;
 	return (tp);
 }
 
@@ -129,8 +129,8 @@ void	prepare_dollar(t_data *data)
 		dol = 0;
 		while (tmp->content[dol] && tmp->content[dol + 1])
 		{
-			if (((tmp->content[dol] == '$' && tmp->type != SQUOTES))
-				&& (tmp->content[dol + 1] >= 48 && tmp->content[dol + 1] <= 57))
+			if (((tmp->content[dol] == '$' && tmp->type != 4)) &&
+				(ft_isdigit(tmp->content[dol + 1]) || (tmp->content[dol + 1] == '?')))
 			{
 				dol++;
 				tmp->content = expand_number(tmp->content, data, &dol);

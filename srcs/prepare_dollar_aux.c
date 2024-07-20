@@ -6,13 +6,29 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 10:03:41 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/19 10:04:19 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/20 19:22:45 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	*dollar_number(char *content, char *tmp, size_t *dol)
+char	*expand_exit(char *content, t_data *data)
+{
+	char	*tmp;
+	int		i;
+
+	tmp = NULL;
+	i = 0;
+	while (content[i] && content[i + 1])
+	{
+		if (content[i] == '$' && content[i + 1] == '?')
+			tmp = ft_strdup(ft_itoa(data->print_exit_code));
+		i++;
+	}
+	return (tmp);
+}
+
+char	*dollar_number(char *content, char *tmp, t_data *data, size_t *dol)
 {
 	int		i;
 
@@ -36,6 +52,8 @@ char	*dollar_number(char *content, char *tmp, size_t *dol)
 		else
 			(*dol) = 0;
 	}
+	if (tmp == NULL)
+		tmp = expand_exit(content, data);
 	return (tmp);
 }
 
@@ -47,7 +65,7 @@ char	*expand_number(char *c, t_data *data, size_t *d)
 
 	e = NULL;
 	i = *d - 1;
-	e = dollar_number(c, e, d);
+	e = dollar_number(c, e, data, d);
 	if (e == NULL)
 	{
 		free(c);

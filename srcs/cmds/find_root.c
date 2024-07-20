@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 18:49:21 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/19 10:25:23 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/20 14:35:37 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	check_and(void *root, t_data *data)
 	else if ((check_root(((t_cond *)root)->left) == 2))
 	{
 		execute_builtins(((t_cond *)root)->left, data);
-		if (data->builtin_fail == false)
+		if (data->exit_code == 0)
 			find_root(((t_cond *)root)->right, data);
 	}
 	else
@@ -88,7 +88,7 @@ void	check_or(void *root, t_data *data)
 	else if ((check_root(((t_cond *)root)->left) == 2))
 	{
 		execute_builtins(((t_cond *)root)->left, data);
-		if (data->builtin_fail == true)
+		if (data->exit_code == 0)
 			find_root(((t_cond *)root)->right, data);
 	}
 	else

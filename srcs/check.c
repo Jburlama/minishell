@@ -6,17 +6,17 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 12:46:48 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/19 14:05:06 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/20 19:22:47 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int *jump_quotes(char *str, int *parentheses)
+int	*jump_quotes(char *str, int *parentheses)
 {
 	if ((str[parentheses[0]] == 34 || str[parentheses[0]] == 39))
 	{
-			parentheses[0]++;
+		parentheses[0]++;
 		while (str[parentheses[0]] != '\0')
 		{
 			if ((str[parentheses[0]] == 34 || str[parentheses[0]] == 39))
@@ -66,8 +66,8 @@ void	check_heredoc(char *str)
 
 void	ft_exit(char *str)
 {
-	printf("%s", RED"minishell: syntax error near unexpected token\n"RESET);
 	check_heredoc(str);
+	printf("%s", RED"minishell: syntax error near unexpected token\n"RESET);
 }
 
 void	check_redirect(char *str, t_data *data)
@@ -123,9 +123,4 @@ int	check(char *str, t_data *data)
 	}
 	return (0);
 }
-//tratar () erro
 //verificar " " apos >
-
-
-
-// erro demonio -> pwd && (echo 123 | echo 123) ls  && cd ..

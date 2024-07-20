@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 09:42:44 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/19 10:09:47 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/20 16:51:50 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,15 @@ void	execute(void *root, t_data *data)
 	}
 	waitpid(pid, &wstatus, 0);
 	if (WIFSIGNALED(wstatus))
+	{
 		if (WCOREDUMP(wstatus))
+		{
 			write(1, "Quit (core dumped)\n", 19);
+			data->exit_code = 131;
+		}
+	}
+	else 
+		data->exit_code = wstatus / 256;
 }
 
 void	runcmd(void *root, t_data *data)

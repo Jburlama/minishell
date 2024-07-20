@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 13:27:56 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/19 15:29:53 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/20 14:37:33 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ char	*get_home(char **env, t_data *data, t_exec *node)
 	{
 		ft_printf("%s: %s\n", node->args[0],
 			"HOME not set");
-		data->builtin_fail = true;
+		data->exit_code = 1;
 	}
 	return (home);
 }
@@ -88,7 +88,7 @@ void	cmd_cd(t_data *data, t_exec *node)
 		{
 			write(2, "cd: ", 4);
 			perror(node->args[1]);
-			data->builtin_fail = true;
+			data->exit_code = 1;
 		}
 	}
 }

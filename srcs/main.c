@@ -6,13 +6,13 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 09:42:11 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/19 14:03:19 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/20 19:17:44 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	status_exit;
+int	g_status_exit = 0;
 
 void	print_tree(void	*root);
 
@@ -25,18 +25,21 @@ int	main(int argc, char *argv[], char *env[])
 	start_data(&data, env);
 	while (42)
 	{
-		handle_signal();
 		get_line(&data);
 		if (check(rl_line_buffer, &data) != 2)
 		{
 			tokenize(&data);
 			prepare_token(&data);
-			create_tree(&data);
-			find_root(data.root, &data);
-			clear_tree(data.root);
+			if (data.exit_code != 2 && data.exit_code != 1)
+			{
+				create_tree(&data);
+				find_root(data.root, &data);
+				clear_tree(data.root);
+			}
 		}
-		else 
-			data.exit_code = 0;
+		data.print_exit_code = data.exit_code;
+		data.exit_code = 0;
+		g_status_exit = 0;
 	}
 	clear_args(data.env);
 	clear_args(data.export);

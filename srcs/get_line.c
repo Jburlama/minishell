@@ -6,11 +6,13 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:40:34 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/19 10:00:18 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/20 19:16:23 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+extern int	g_status_exit;
 
 char	*get_line(t_data *data)
 {
@@ -20,6 +22,10 @@ char	*get_line(t_data *data)
 	dup2(STDERR_FILENO, STDIN_FILENO);
 	dup2(STDERR_FILENO, STDOUT_FILENO);
 	line = readline(GREEN "Minishell: " RESET);
+	if (g_status_exit == 2)
+		data->exit_code = 130;
+	data->print_exit_code = data->exit_code;
+	data->exit_code = 0;
 	if (!line)
 	{
 		free(rl_line_buffer);

@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 14:56:00 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/19 15:29:52 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/20 15:58:11 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,9 +99,8 @@ void	handle_quotes(t_data *data)
 	first_quote = 0;
 	tmp = data->head;
 	keep = tmp;
-	if (tmp->type == DQUOTES || tmp->type == SQUOTES)
-		first_quote = 1;
-	if (tmp->next && (tmp->next->type == DQUOTES || tmp->next->type == SQUOTES))
+	if (((tmp->type == 3 || tmp->type == 4) && tmp->next->type != 2)
+		|| (tmp->next && (tmp->next->type == 3 || tmp->next->type == 4)))
 		first_quote = 1;
 	while (tmp && tmp->next)
 	{
@@ -111,28 +110,11 @@ void	handle_quotes(t_data *data)
 			handle_first_quote(tmp, keep, first_quote);
 		else if ((tmp->type == DQUOTES || tmp->type == SQUOTES
 				|| tmp->next->type == DQUOTES || tmp->next->type == SQUOTES)
-			&& (tmp->type != WHITE_SPACE) && (tmp->next->type != WHITE_SPACE))
+			&& (tmp->type != WHITE_SPACE) && (tmp->next->type != WHITE_SPACE)
+			&& (tmp->type != SPECIAL && tmp->next->type != SPECIAL))
 			tmp = handle_quotes_aux(tmp, keep);
 		else
 			tmp = tmp->next;
-	}
-}
-
-void 	find_null(t_data *data)
-{
-	t_token	*tmp;
-
-	tmp = data->head;
-	while (tmp)
-	{
-		if (tmp->type == REDIR)
-		{
-			while (tmp->next && tmp->type == WHITE_SPACE)
-				tmp = tmp->next;
-			if (tmp->type == REDIR || tmp->type == WHITE_SPACE)
-				perror(tmp->content);
-		}
-		tmp = tmp->next;
 	}
 }
 
@@ -146,6 +128,7 @@ void	prepare_token(t_data *data)
 			prepare_wildcards(data);
 			handle_quotes(data);
 			prepare_builtins(data);
+			find_null(data);
 		}
 	}
 }

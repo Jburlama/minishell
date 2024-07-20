@@ -3,21 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   construct_redir.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 15:30:27 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/07/17 15:38:37 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/07/20 18:15:50 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	*construct_redir(void	*root, t_token **tokens)
+void	*construct_redir(void	*root, t_token **tokens, t_data *data)
 {
 	t_redir	*ptr;
 	t_redir	*new;
 
-	new = redir_alloc(tokens);
+	new = redir_alloc(tokens, data);
 	if (((t_exec *)root)->type == EXEC)
 	{
 		new->down = root;
@@ -31,7 +31,7 @@ void	*construct_redir(void	*root, t_token **tokens)
 	return (root);
 }
 
-t_redir	*redir_alloc(t_token **tokens)
+t_redir	*redir_alloc(t_token **tokens, t_data *data)
 {
 	t_redir	*new;
 
@@ -46,7 +46,7 @@ t_redir	*redir_alloc(t_token **tokens)
 		new->file_type = (*tokens)->file;
 	}
 	if (new->file_type == HERE_DOC)
-		new->file = here_doc(new, (*tokens)->content);
+		new->file = here_doc(new, (*tokens)->content, data);
 	else
 		new->file = ft_strdup((*tokens)->content);
 	return (new);

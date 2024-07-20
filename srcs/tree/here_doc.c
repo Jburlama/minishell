@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 09:44:50 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/19 10:07:34 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/20 18:50:02 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,15 @@ char	*expand_here_doc(char *line, t_data *data)
 		{
 			dol++;
 			line = expand(line, data, &dol, 1);
+			if (line == NULL)
+				break ;
 		}
 		dol++;
 	}
 	return (line);
 }
 
-char	*here_doc(t_redir *root, char *eof)
+char	*here_doc(t_redir *root, char *eof, t_data *data)
 {
 	char	*line;
 	int		fd;
@@ -53,8 +55,12 @@ char	*here_doc(t_redir *root, char *eof)
 		if (!line
 			|| ft_memcmp(line, eof, ft_strlen(eof) + 1) == 0)
 			break ;
-		/*if (root->quote_type != SQUOTES && root->quote_type != DQUOTES)
-			line = expand_here_doc(line, data);*/
+		if (root->quote_type != SQUOTES && root->quote_type != DQUOTES)
+		{
+			line = expand_here_doc(line, data);
+			if (line == NULL)
+				line = ft_strdup("\n");
+		}
 		write(fd, line, ft_strlen(line));
 		write(fd, "\n", 1);
 	}
