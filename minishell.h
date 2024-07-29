@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/17 15:00:19 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/07/17 15:34:59 by Jburlama         ###   ########.fr       */
+/*   Created: 2024/07/19 09:45:29 by vbritto-          #+#    #+#             */
+/*   Updated: 2024/07/23 17:04:57 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,24 @@
 # include <stdlib.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+# include <limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
+# include <dirent.h>
 
-extern int	status_exit;
+extern int	g_status_exit;
+
+enum e_blt
+{
+	NO_B,
+	ECHO,
+	EXIT,
+	CD,
+	PWD,
+	EXPORT,
+	UNSET,
+	ENV,
+};
 
 enum e_type
 {
@@ -57,6 +71,7 @@ enum e_type
 typedef struct s_token
 {
 	enum e_type		type;
+	enum e_blt		builtin;
 	enum e_type		file;
 	char			*content;
 	struct s_token	*next;
@@ -64,6 +79,7 @@ typedef struct s_token
 
 typedef struct s_cond
 {
+	bool			is_block;
 	enum e_type		type;
 	void			*left;
 	void			*right;
@@ -71,6 +87,7 @@ typedef struct s_cond
 
 typedef struct s_pipe
 {
+	bool			is_block;
 	enum e_type		type;
 	void			*left;
 	void			*right;
@@ -78,6 +95,7 @@ typedef struct s_pipe
 
 typedef struct s_redir
 {
+	bool			is_block;
 	enum e_type		type;
 	enum e_type		file_type;
 	enum e_type		quote_type;
@@ -87,8 +105,10 @@ typedef struct s_redir
 
 typedef struct s_exec
 {
+	bool			is_block;
 	enum e_type		type;
 	char			**args;
+	enum e_blt		builtin;
 }	t_exec;
 
 typedef struct s_data
@@ -97,10 +117,16 @@ typedef struct s_data
 	t_token	*tail;
 	void	*root;
 	char	**env;
+	char	**export;
+	char	*path;
+	bool	builtin_fail;
+	int		exit_code;
+	int		print_exit_code;
 }	t_data;
 
 // execute.c
-void	execute(t_data *data);
+//void	execute(t_data *data);
+void	execute(void *root, t_data *data);
 void	runcmd(void *root, t_data *data);
 void	read_input(t_redir *root, t_data *data);
 void	runredir(t_redir *root, t_data *data);
@@ -110,7 +136,7 @@ void	runpipe(t_pipe *root, t_data *data);
 int		runpipe_wait(int *wstatus, t_data *data);
 
 // here_doc.c
-char	*here_doc(t_redir *root, char *eof);
+char	*here_doc(t_redir *root, char *eof, t_data *data);
 char	*open_heredoc_for_write(int *fd);
 
 // logical.c
@@ -132,16 +158,16 @@ void	*construct_pipe(void *l, void *r);
 void	*construct_cond(void *l, void *r, enum e_type type);
 
 // construct_redir.c
-void	*construct_redir(void	*subnode, t_token **tokens);
-t_redir *redir_alloc(t_token **tokens);
+void	*construct_redir(void	*subnode, t_token **tokens, t_data *data);
+t_redir	*redir_alloc(t_token **tokens, t_data *data);
 
 // parse_tree.c
-void	*parse_exec(t_token **tokens);
-void	*parse_block(t_token **tokens);
-void	*parse_redir(void *root, t_token **tokens);
-void	*parse_and(t_token **tokens);
-void	*parse_or(t_token **tokens);
-void	*parse_pipe(t_token **tokens);
+void	*parse_exec(t_token **tokens, t_data *data);
+void	*parse_block(t_token **tokens, t_data *data);
+void	*parse_redir(void *root, t_token **tokens, t_data *data);
+void	*parse_and(t_token **tokens, t_data *data);
+void	*parse_or(t_token **tokens, t_data *data);
+void	*parse_pipe(t_token **tokens, t_data *data);
 
 // token_list_quotes.c
 void	add_token_quotes(t_data *data, int *i, enum e_type type);
@@ -185,7 +211,7 @@ void	signal_handler_update(int sig);
 void	default_sig(void);
 
 // get_line.c
-char	*get_line(void);
+char	*get_line(t_data *data);
 bool	is_white_space(char c);
 
 // clear.c
@@ -198,14 +224,95 @@ void	clear_gate(void	*root);
 void	panic(char *msg, t_data *data);
 
 // check.c
-int		check(char *str);
-void	check_redirect(char *str);
-void	check_quotes(char *str);
-void	ft_exit(char *str);
-void	check_heredoc(char *str);
+int		check(char *str, t_data *data);
+void	check_redirect(char *str, t_data *data);
+void	check_quotes(char *str, t_data *data);
+void	ft_exit(char *str, t_data *data);
+void	check_heredoc(char *str, t_data *data);
+char	*find_eof(char *str, int *i, t_data *data);
+void	*here_doc_check(char *eof);
+void	check_parentheses(char *str, t_data *data);
+int		*jump_quotes(char *str, int *parentheses);
 
-// prepare_token.c
+// prepare_token.c && ...aux.c
 void	prepare_token(t_data *data);
-char	*expand(char *env_name, t_data *data);
+void	prepare_dollar(t_data *data);
+void	second_prepare_dollar(t_data *data);
+void	prepare_wildcards(t_data *data);
+void	find_block(t_data *data);
+void	find_null(t_data *data);
+
+// prepare_dollar.c
+
+char	*dollar_number(char *content, char *tmp, t_data *data, size_t *dol);
+char	*expand_number(char *c, t_data *data, size_t *d);
+int		check_expand(char *content, int i, int type);
+int		check_content(t_token **tmp, t_token **keep, t_data *data);
+char	*get_env_name(char *content, char *exp, size_t *dol, t_data *data);
+char	*expand(char *c, t_data *data, size_t *d, int type);
+void	second_prepare_dollar(t_data *data);
+void	prepare_dollar(t_data *data);
+char	*expand_exit(char *content, t_data *data);
+
+// prepare_wildcars.c and aux.c
+
+void	*exp_wildcards(t_token *wild_list, char *wild, t_data *data);
+t_token	*create_wild_node(char *name, char *wild, t_data *data);
+t_token	*create_wild_list(t_token *wild_list, t_token *wild_node);
+void	tokenize_wildcards(t_token *wildcards, t_token *before,
+			t_token *tmp, t_data *data);
+t_token	*ft_lasttoken(t_token *lst);
+bool	check_dot(char *wild, t_token *wild_node);
+
+// start_data.c
+void	start_data(t_data *data, char **env);
+char	**start_env(char **my_env, char **envp);
+
+// find_root.c
+void	execute_builtins(t_exec *node, t_data *data);
+void	check_or(void *root, t_data *data);
+void	check_and(void *root, t_data *data);
+int		check_root(void *root);
+void	execute_builtins(t_exec *node, t_data *data);
+
+void	find_root(void *root, t_data *data);
+
+// CD cmd_cd.c
+void	cmd_cd(t_data *data, t_exec *node);
+char	*get_home(char **env, t_data *data, t_exec *node);
+char	*get_last_dir(char *pwd);
+
+// ECHO cmd_echo.c
+void	cmd_echo(t_exec *node);
+bool	check_n(char *arg);
+
+// UNSET cmd_unset.c
+void	cmd_unset(t_data *data, t_exec *node);
+void	unset_env(t_data *data, t_exec *node);
+void	unset_export(t_data *data, t_exec *node);
+char	**u_export(t_data *data, char *args, int n);
+char	**u_env(t_data *data, char *args, int n);
+
+// EXPORT cmd_export.c && cmd_utils.c
+void	cmd_export(t_data *data, t_exec *node);
+char	**export(char **old_env, char *arg);
+int		equal_or_plus(char **old_env, char *arg);
+void	equal_or_plus_chg(char *arg, char **old_env, int i, int j);
+int		check_export(t_exec *node, char *args, int j);
+int		is_export(int c);
+int		just_export(t_data *data, t_exec *node);
+void	sort_export(char **export, int n);
+void	change_export(char **export, int i, int j);
+
+// PWD cmd_pwd.c
+void	cmd_pwd(t_data *data, t_exec *node);
+
+// EXIT cmd_exit.c && cmd_utils.c
+int		cmd_exit(t_data	*data, t_exec *node);
+void	many_args(t_data *data, t_exec *node);
+int		free_exit(t_data *data);
+int		len_args(char **args);
+int		ft_exit_number(char *number, int *i);
+long	ft_atol(const char *str);
 
 #endif

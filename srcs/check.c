@@ -6,107 +6,113 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 12:46:48 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/06/13 13:42:17 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/29 19:11:47 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	check_heredoc(char *str)
-{
-	int	i;
-
-	i = 0;
-	while(str[i] != '\0')
-	{
-		if(str[i] == '<' && str[i + 1] == '<')
-			//here_doc
-			break;
-		else
-			i++;
-	}
-}
-void	ft_exit(char *str)
-{
-	check_heredoc(str);
-	ft_printf("%s", RED"minishell: syntax error near unexpected token\n"RESET);
-}
-
-void	check_quotes(char *str)
+int	check_special(char *str)
 {
 	int	i;
 
 	i = 0;
 	while (str[i] != '\0')
 	{
-		if (str[i] == 34)
+		if (str[i] == 34 || str[i] == 39)
 		{
 			i++;
-			while (str[i] != '\0' && str[i] != 34)
+			while (str[i])
+			{
+				if (str[i] == 34 || str[i] == 39)
+					break ;
 				i++;
+			}
 			if (str[i] == '\0')
-				status_exit = 2;
+				return (1);
 		}
-		if (str[i] == 39)
+		if (str[i] == '!' || str[i] == '#' || str[i] == '&' || str[i] == '\\'
+			|| str[i] == '[' || str[i] == ']' || str[i] == '{' || str[i] == '}'
+			|| str[i] == ';')
+				return (0);
+		i++;
+	}
+	return (1);
+}
+
+void	ft_exit(char *str, t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] && str[i + 1] && str[i + 2])
+	{
+		if((str[i] == '>' && str[i + 1] == '>' && str[i + 2] == '>')
+			|| (str[i] == '<' && str[i + 1] == '<' && str[i + 2] == '<'))
 		{
-			i++;
-			while (str[i] != '\0' && str[i] != 39)
+			printf("%s", RED"minishell: syntax error near unexpected token\n"RESET);
+			return ;
+		}
+		i++;
+	}
+	check_heredoc(str, data);
+	printf("%s", RED"minishell: syntax error near unexpected token\n"RESET);
+}
+
+void	check_redirect(char *str, t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] != '\0')
+	{
+		if (str[i] == 60 || str[i] == 62)
+		{
+			if (str[i + 1] == 60 || str[i + 1] == 62)
+				;
+			else
 				i++;
+			while (str[i] != '\0')
+			{
+				if (str[i] != ' ')
+					break ;
+				i++;
+			}
 			if (str[i] == '\0')
-				status_exit = 2;
+			{
+				data->exit_code = 2;
+				i--;
+			}
 		}
 		i++;
 	}
 }
 
-void	check_redirect(char *str)
-{
-	int	i;
-	int	l;
-	int	r;
-
-	i = 0;
-	l = 0;
-	r = 0;
-	while (str[i] != '\0')
-	{
-		if (str[i] >= 20 && str[i] <= 127)
-		{
-			if (str[i] == 60)
-				l++;
-			if (str[i] == 62)
-				r++;
-			if (l > 3 || r > 2)
-				status_exit = 2;
-			i++;
-		}
-		else
-			status_exit = 2;
-	}
-}
-
-int	check(char *str)
+int	check(char *str, t_data *data)
 {
 	int	i;
 
 	i = 0;
-	check_quotes(str);
-	if (str[0] == 60 || str[0] == 62)
-		check_redirect(str);
+	check_parentheses(str, data);
+	check_redirect(str, data);
+	if (!check_special(str))
+		data->exit_code = 2;
 	while (str[i] != '\0')
 	{
 		if ((str[i] == '<' && str[i + 1] == '|')
 			|| (str[i] == '<' && str[i + 1] == '\0')
 			|| (str[i] == '>' && str[i + 1] == '\0')
-			|| (str[i] == '>' && str[i + 1] == '|')
-			|| (str[i] == '|' && str[i + 1] == '\0'))
-			status_exit = 2;
+			|| (str[i] == '>' && str[i + 1] == '>' && str[i + 2] == '|')
+			|| (str[i] == '<' && str[i + 1] == '<' && str[i + 2] == '\0')
+			|| (str[i] == '|' && str[i + 1] == '\0')
+			|| (str[i] == '$' && str[i + 1] == '$'))
+			data->exit_code = 2;
 		i++;
 	}
-	if (status_exit == 2)
+	if (data->exit_code == 2)
 	{
-		ft_exit(str);
-		return (status_exit);
+		ft_exit(str, data);
+		return (data->exit_code);
 	}
 	return (0);
 }

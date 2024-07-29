@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   runexec.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 16:04:55 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/06/14 18:22:45 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/07/19 09:56:31 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +16,29 @@ void	runexec(t_exec *node, t_data *data)
 {
 	char	*pathname;
 
-	if (node->args[0])
+	if (node->builtin != NO_B)
 	{
-		pathname = get_pathname(node->args[0], data->env);
-		if (pathname == NULL)
-			perror(node->args[0]);
+		execute_builtins(node, data);
 	}
 	else
-		pathname = NULL;
-	if (pathname)
 	{
-		execve(pathname, node->args, data->env);
-		free(pathname);
-		perror(node->args[0]);
+		if (node->args[0])
+		{
+			pathname = get_pathname(node->args[0], data->env);
+			if (pathname == NULL && data->env)
+				perror(node->args[0]);
+		}
+		else
+			pathname = NULL;
+		if (pathname)
+		{
+			execve(pathname, node->args, data->env);
+			free(pathname);
+			perror(node->args[0]);
+		}
+		clear_tree(data->root);
+		exit(errno);
 	}
-	clear_tree(data->root);
-	exit(errno);
 }
 
 char	*get_pathname(char	*name, char **env)
@@ -69,6 +76,7 @@ char	**get_paths(char **env)
 	char	**paths_arr;
 
 	i = 0;
+	paths = NULL;
 	if (!env)
 		return (NULL);
 	while (env[i])
@@ -76,6 +84,11 @@ char	**get_paths(char **env)
 		if (ft_memcmp("PATH=", env[i], 5) == 0)
 			paths = env[i] + 5;
 		i++;
+	}
+	if (paths == NULL)
+	{
+		write(2, "env: command not found\n", 23);
+		exit(127);
 	}
 	paths_arr = ft_split(paths, ':');
 	return (paths_arr);

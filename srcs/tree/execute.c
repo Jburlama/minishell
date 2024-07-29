@@ -3,16 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/12 17:54:50 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/07/17 15:44:06 by Jburlama         ###   ########.fr       */
+/*   Created: 2024/07/19 09:42:44 by vbritto-          #+#    #+#             */
+/*   Updated: 2024/07/25 08:39:00 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	execute(t_data *data)
+void	default_sig_mini(void *root)
+{
+	struct sigaction	sig;
+
+	if (((t_exec *)root)->args[0][0] == '.')
+		handle_signal();
+	else
+	{
+		ft_memset(&sig, 0, sizeof(sig));
+		sig.sa_handler = SIG_DFL;
+		sigaction(SIGQUIT, &sig, NULL);
+		sigaction(SIGINT, &sig, NULL);
+	}
+}
+
+void	execute(void *root, t_data *data)
 {
 	int	pid;
 	int	wstatus;
@@ -22,15 +37,22 @@ void	execute(t_data *data)
 	wstatus = 0;
 	if (pid == 0)
 	{
-		default_sig();
-		if (data->root)
-			runcmd(data->root, data);
+		default_sig_mini(root);
+		if (root)
+			runcmd(root, data);
 		exit(errno);
 	}
 	waitpid(pid, &wstatus, 0);
 	if (WIFSIGNALED(wstatus))
+	{
 		if (WCOREDUMP(wstatus))
+		{
 			write(1, "Quit (core dumped)\n", 19);
+			data->exit_code = 131;
+		}
+	}
+	else
+		data->exit_code = wstatus / 256;
 }
 
 void	runcmd(void *root, t_data *data)
@@ -85,3 +107,5 @@ void	read_input(t_redir *root, t_data *data)
 		exit(errno);
 	}
 }
+
+//// VIDE EXECUTE

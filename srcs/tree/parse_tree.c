@@ -3,22 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   parse_tree.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 20:20:43 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/06/14 17:19:07 by Jburlama         ###   ########.fr       */
+/*   Updated: 2024/07/20 18:16:17 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	*parse_exec(t_token **tokens)
+void	*parse_exec(t_token **tokens, t_data *data)
 {
 	t_exec	*exec;
 	void	*root;
 
 	if ((*tokens) && (*tokens)->type == SPECIAL && *(*tokens)->content == '(')
-		return (parse_block(tokens));
+		return (parse_block(tokens, data));
 	exec = construct_exec();
 	if (exec == NULL)
 		return (NULL);
@@ -26,11 +26,14 @@ void	*parse_exec(t_token **tokens)
 	while ((*tokens) && *(*tokens)->content != '|' && *(*tokens)->content != '&'
 		&& *(*tokens)->content != ')')
 	{
-		root = parse_redir(root, tokens);
+		root = parse_redir(root, tokens, data);
 		if (!(*tokens) || root == NULL || *(*tokens)->content == '|'
 			|| *(*tokens)->content == '&' || *(*tokens)->content == ')')
 			break ;
 		exec->args = add_to_args(exec->args, (*tokens)->content);
+		if (ft_memcmp((*tokens)->content, exec->args[0],
+				ft_strlen(exec->args[0]) + 1) == 0)
+			exec->builtin = (*tokens)->builtin;
 		if (exec->args == NULL)
 			return (NULL);
 		(*tokens) = (*tokens)->next;
@@ -38,7 +41,7 @@ void	*parse_exec(t_token **tokens)
 	return (root);
 }
 
-void	*parse_redir(void *root, t_token **tokens)
+void	*parse_redir(void *root, t_token **tokens, t_data *data)
 {
 	void	*ret;
 
@@ -51,7 +54,7 @@ void	*parse_redir(void *root, t_token **tokens)
 		(*tokens) = (*tokens)->next;
 		if (*tokens)
 		{
-			ret = construct_redir(ret, tokens);
+			ret = construct_redir(ret, tokens, data);
 			(*tokens) = (*tokens)->next;
 		}
 		if (ret == NULL)
@@ -64,12 +67,12 @@ void	*parse_redir(void *root, t_token **tokens)
 	return (ret);
 }
 
-void	*parse_block(t_token **tokens)
+void	*parse_block(t_token **tokens, t_data *data)
 {
 	void	*root;
 
 	(*tokens) = (*tokens)->next;
-	root = parse_and(tokens);
+	root = parse_and(tokens, data);
 	if (root == NULL)
 		return (NULL);
 	(*tokens) = (*tokens)->next;
@@ -77,23 +80,24 @@ void	*parse_block(t_token **tokens)
 	{
 		while ((*tokens) && (*tokens)->type == WHITE_SPACE)
 			(*tokens) = (*tokens)->next;
-		root = parse_redir(root, tokens);
+		root = parse_redir(root, tokens, data);
 	}
+	((t_exec *)root)->is_block = true;
 	return (root);
 }
 
-void	*parse_pipe(t_token **tokens)
+void	*parse_pipe(t_token **tokens, t_data *data)
 {
 	void	*root;
 
-	root = parse_exec(tokens);
+	root = parse_exec(tokens, data);
 	if (root == NULL)
 		return (NULL);
 	if (*tokens && *(*tokens)->content == '|'
 		&& ft_strlen((*tokens)->content) == 1)
 	{
 		(*tokens) = (*tokens)->next;
-		root = construct_pipe(root, parse_pipe(tokens));
+		root = construct_pipe(root, parse_pipe(tokens, data));
 		if (root == NULL)
 			return (NULL);
 	}

@@ -3,16 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Jburlama <Jburlama@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/17 15:00:35 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/07/17 15:31:03 by Jburlama         ###   ########.fr       */
+/*   Created: 2024/07/19 09:42:11 by vbritto-          #+#    #+#             */
+/*   Updated: 2024/07/29 19:28:28 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+
+
 #include "../minishell.h"
 
-int	status_exit;
+int	g_status_exit = 0;
 
 void	print_tree(void	*root);
 
@@ -22,26 +24,74 @@ int	main(int argc, char *argv[], char *env[])
 
 	(void)argc;
 	(void)argv;
-	ft_memset(&data, 0, sizeof(data));
-	data.env = env;
+	start_data(&data, env);
 	while (42)
 	{
-		get_line();
-		// if(check(rl_line_buffer) == 2) 
-		// 	continue;
-		tokenize(&data);
-		// prepare_token(&data);
-		// for (t_token *ptr = data.head; ptr; ptr = ptr->next)
-		// 	printf("content: %s | type %i | file %i\n",
-		//   		ptr->content, ptr->type, ptr->file);
-		// clear_list(&data);
-		// continue ;
-		create_tree(&data);
-		// print_tree(data.root);
-		execute(&data);
-		clear_tree(data.root);
+		get_line(&data);
+		if (check(rl_line_buffer, &data) != 2)
+		{
+			tokenize(&data);
+			prepare_token(&data);
+			if (data.exit_code != 2 && data.exit_code != 1)
+			{
+				create_tree(&data);
+				find_root(data.root, &data);
+				clear_tree(data.root);
+			}
+		}
+		data.print_exit_code = data.exit_code;
+		data.exit_code = 0;
+		g_status_exit = 0;
 	}
+	clear_args(data.env);
+	clear_args(data.export);
+	free(rl_line_buffer);
 }
+
+/*
+int	main(int argc, char *argv[], char *env[])
+{
+	t_data	data;
+
+	(void)argc;
+	(void)argv;
+	start_data(&data, env);
+	while (42)
+	{
+		handle_signal();
+		get_line(&data);
+		if (check(rl_line_buffer, &data) == 2)
+		{
+			status_exit = 0;
+			continue ;
+		}
+		tokenize(&data);
+		prepare_token(&data);
+		for (t_token *ptr = data.head; ptr; ptr = ptr->next)
+			printf("content: %s | type %i\n", ptr->content, ptr->type);
+		clear_list(&data.head);
+		continue ;
+		create_tree(&data);
+		//print_tree(data.root);
+		//continue ;
+		//execute(data.root, &data);
+		//print_tree(data.root);
+		find_root(data.root, &data);
+		clear_tree(data.root);
+		if (find_root(data.root, &data) == 0)
+		{
+			if (save_fork(&data) == 0)
+				execute(&data);
+			wait(NULL);
+		// print_tree(data.root);
+		}
+	}
+	clear_args(data.env);
+	clear_args(data.export);
+	free(rl_line_buffer);
+}*/
+
+
 
 void	print_tree(void	*root)
 {
@@ -55,6 +105,7 @@ void	print_tree(void	*root)
 	else if (((t_exec *)root)->type == EXEC)
 	{
 		exec = root;
+		printf("is block: %i | ", exec->is_block);
 		printf("type: %i | args: ", exec->type);
 		int i = 0;
 		while (exec->args[i])
@@ -63,7 +114,7 @@ void	print_tree(void	*root)
 			i++;
 		}
 		printf("\n");
-			return ;
+		return ;
 	}
 	else if (((t_redir *)root)->type == REDIR)
 	{
@@ -75,15 +126,28 @@ void	print_tree(void	*root)
 	else if (((t_redir *)root)->type == PIPE)
 	{
 		pipe = root;
+		printf("is block: %i | ", pipe->is_block);
 		printf("type: %i\n", pipe->type);
+		printf("\n");
+		printf("LEFT\n");
 		print_tree(pipe->left);
+		printf("\n");
+		printf("RIGHT\n");
 		print_tree(pipe->right);
 	}
 	else if (((t_cond *)root)->type == OR || ((t_cond *)root)->type == AND)
 	{
 		cont = root;
+		printf("is block: %i | ", cont->is_block);
 		printf("type: %i\n", cont->type);
+		printf("\n");
+		printf("LEFT\n");
 		print_tree(cont->left);
+		printf("\n");
+		printf("RIGHT\n");
 		print_tree(cont->right);
 	}
 }
+
+
+
