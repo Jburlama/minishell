@@ -50,17 +50,16 @@ char	*get_pathname(char	*name, char **env)
 	while (paths[++i])
 	{
 		temp = ft_strjoin(paths[i], "/");
-		pathname = ft_strjoin(temp, name);
+		if (name[0])
+			pathname = ft_strjoin(temp, name);
+		else
+			pathname = ft_strjoin(temp, " ");
 		free(temp);
 		if (access(pathname, X_OK) == 0)
-		{
-			clear_args(paths);
-			return (pathname);
-		}
+			return (clear_args(paths), pathname);
 		free(pathname);
 	}
-	clear_args(paths);
-	return (NULL);
+	return (clear_args(paths), NULL);
 }
 
 char	**get_paths(char **env)
