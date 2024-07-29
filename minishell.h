@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 09:45:29 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/20 18:18:09 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/23 17:04:57 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@
 # include <stdlib.h>
 # include <sys/types.h>
 # include <sys/wait.h>
-#include <limits.h>
+# include <limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
-#include <dirent.h>
+# include <dirent.h>
 
 extern int	g_status_exit;
 
@@ -159,7 +159,7 @@ void	*construct_cond(void *l, void *r, enum e_type type);
 
 // construct_redir.c
 void	*construct_redir(void	*subnode, t_token **tokens, t_data *data);
-t_redir *redir_alloc(t_token **tokens, t_data *data);
+t_redir	*redir_alloc(t_token **tokens, t_data *data);
 
 // parse_tree.c
 void	*parse_exec(t_token **tokens, t_data *data);
@@ -224,11 +224,15 @@ void	clear_gate(void	*root);
 void	panic(char *msg, t_data *data);
 
 // check.c
-int		check(char *str,  t_data *data);
-void	check_redirect(char *str,  t_data *data);
+int		check(char *str, t_data *data);
+void	check_redirect(char *str, t_data *data);
 void	check_quotes(char *str, t_data *data);
-void	ft_exit(char *str);
-void	check_heredoc(char *str);
+void	ft_exit(char *str, t_data *data);
+void	check_heredoc(char *str, t_data *data);
+char	*find_eof(char *str, int *i, t_data *data);
+void	*here_doc_check(char *eof);
+void	check_parentheses(char *str, t_data *data);
+int		*jump_quotes(char *str, int *parentheses);
 
 // prepare_token.c && ...aux.c
 void	prepare_token(t_data *data);
@@ -236,7 +240,7 @@ void	prepare_dollar(t_data *data);
 void	second_prepare_dollar(t_data *data);
 void	prepare_wildcards(t_data *data);
 void	find_block(t_data *data);
-void 	find_null(t_data *data);
+void	find_null(t_data *data);
 
 // prepare_dollar.c
 
@@ -255,7 +259,8 @@ char	*expand_exit(char *content, t_data *data);
 void	*exp_wildcards(t_token *wild_list, char *wild, t_data *data);
 t_token	*create_wild_node(char *name, char *wild, t_data *data);
 t_token	*create_wild_list(t_token *wild_list, t_token *wild_node);
-void	tokenize_wildcards(t_token *wildcards, t_token *before, t_token *tmp, t_data *data);
+void	tokenize_wildcards(t_token *wildcards, t_token *before,
+			t_token *tmp, t_data *data);
 t_token	*ft_lasttoken(t_token *lst);
 bool	check_dot(char *wild, t_token *wild_node);
 
@@ -311,5 +316,3 @@ int		ft_exit_number(char *number, int *i);
 long	ft_atol(const char *str);
 
 #endif
-
-

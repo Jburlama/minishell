@@ -6,9 +6,11 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 09:42:11 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/20 19:17:44 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/29 19:28:28 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+
 
 #include "../minishell.h"
 
@@ -147,17 +149,5 @@ void	print_tree(void	*root)
 	}
 }
 
-
-
-//espace antes de qualquer comando
-// ls > "" ou ls > $1 ou ls >""
-// ls >>| g
-
-
-//env PATH             = env: ‘PATH’: No such file or directory OK
-//cd .                 = nao faz nada               OK
-//unset                = free(): invalid pointer    OK
-//cd (unset HOME)      = cd: HOME not set           OK
-//export			   = decalre -x variaveis
 
 

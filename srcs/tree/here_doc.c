@@ -6,12 +6,13 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 09:44:50 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/20 18:50:02 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/23 13:24:24 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
+/*
 char	*expand_here_doc(char *line, t_data *data)
 {
 	size_t	dol;
@@ -40,6 +41,31 @@ char	*expand_here_doc(char *line, t_data *data)
 		dol++;
 	}
 	return (line);
+}*/
+
+char	*expand_here_doc(char *line, t_data *data)
+{
+	size_t	dol;
+
+	dol = 0;
+	while (line[dol] && line[dol + 1])
+	{
+		if ((line[dol] == '$')
+			&& (line[dol + 1] >= 48 && line[dol + 1] <= 57))
+		{
+			dol++;
+			line = expand_number(line, data, &dol);
+		}
+		else if (line[dol] == '$')
+		{
+			dol++;
+			line = expand(line, data, &dol, 1);
+			if (line == NULL)
+				break ;
+		}
+		dol++;
+	}
+	return (line);
 }
 
 char	*here_doc(t_redir *root, char *eof, t_data *data)
@@ -58,8 +84,8 @@ char	*here_doc(t_redir *root, char *eof, t_data *data)
 		if (root->quote_type != SQUOTES && root->quote_type != DQUOTES)
 		{
 			line = expand_here_doc(line, data);
-			if (line == NULL)
-				line = ft_strdup("\n");
+			/*if (line == NULL)
+				line = ft_strdup("\n");*/
 		}
 		write(fd, line, ft_strlen(line));
 		write(fd, "\n", 1);

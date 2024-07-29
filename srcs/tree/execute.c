@@ -6,11 +6,26 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 09:42:44 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/20 16:51:50 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/25 08:39:00 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+
+void	default_sig_mini(void *root)
+{
+	struct sigaction	sig;
+
+	if (((t_exec *)root)->args[0][0] == '.')
+		handle_signal();
+	else
+	{
+		ft_memset(&sig, 0, sizeof(sig));
+		sig.sa_handler = SIG_DFL;
+		sigaction(SIGQUIT, &sig, NULL);
+		sigaction(SIGINT, &sig, NULL);
+	}
+}
 
 void	execute(void *root, t_data *data)
 {
@@ -22,7 +37,7 @@ void	execute(void *root, t_data *data)
 	wstatus = 0;
 	if (pid == 0)
 	{
-		default_sig();
+		default_sig_mini(root);
 		if (root)
 			runcmd(root, data);
 		exit(errno);
@@ -36,7 +51,7 @@ void	execute(void *root, t_data *data)
 			data->exit_code = 131;
 		}
 	}
-	else 
+	else
 		data->exit_code = wstatus / 256;
 }
 
