@@ -44,14 +44,8 @@ void	update_signals(void)
 	struct sigaction	sig;
 
 	ft_memset(&sig, 0, sizeof(sig));
-	sig.sa_handler = signal_handler_update;
+	sig.sa_handler = SIG_IGN;
 	sigaction(SIGINT, &sig, NULL);
-}
-
-void	signal_handler_update(int sig)
-{
-	if (sig == SIGINT)
-		write(1, "\n", 1);
 }
 
 void	default_sig(void)

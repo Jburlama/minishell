@@ -12,37 +12,27 @@
 
 #include "../../minishell.h"
 
-void	default_sig_mini(void *root)
-{
-	struct sigaction	sig;
-
-	if (((t_exec *)root)->args[0][0] == '.')
-		handle_signal();
-	else
-	{
-		ft_memset(&sig, 0, sizeof(sig));
-		sig.sa_handler = SIG_DFL;
-		sigaction(SIGQUIT, &sig, NULL);
-		sigaction(SIGINT, &sig, NULL);
-	}
-}
-
 void	execute(void *root, t_data *data)
 {
 	int	pid;
 	int	wstatus;
 
-	update_signals();
 	pid = save_fork(data);
 	wstatus = 0;
 	if (pid == 0)
 	{
-		default_sig_mini(root);
+		default_sig();
 		if (root)
 			runcmd(root, data);
 		exit(errno);
 	}
+	update_signals();
 	waitpid(pid, &wstatus, 0);
+	wait_child(wstatus, data);
+}
+
+void	wait_child(int wstatus, t_data *data)
+{
 	if (WIFSIGNALED(wstatus))
 	{
 		if (WCOREDUMP(wstatus))
@@ -50,6 +40,8 @@ void	execute(void *root, t_data *data)
 			write(1, "Quit (core dumped)\n", 19);
 			data->exit_code = 131;
 		}
+		else if (WTERMSIG(wstatus) == SIGINT)
+			write(1, "\n", 1);
 	}
 	else
 		data->exit_code = wstatus / 256;

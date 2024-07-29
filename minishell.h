@@ -127,6 +127,7 @@ typedef struct s_data
 // execute.c
 //void	execute(t_data *data);
 void	execute(void *root, t_data *data);
+void	wait_child(int wstatus, t_data *data);
 void	runcmd(void *root, t_data *data);
 void	read_input(t_redir *root, t_data *data);
 void	runredir(t_redir *root, t_data *data);
@@ -207,7 +208,6 @@ bool	is_quote(char c);
 void	handle_signal(void);
 void	signal_handler(int sig);
 void	update_signals(void);
-void	signal_handler_update(int sig);
 void	default_sig(void);
 
 // get_line.c
