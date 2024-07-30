@@ -30,6 +30,7 @@ char	*get_line(t_data *data)
 	{
 		free(rl_line_buffer);
 		clear_args(data->env);
+		clear_args(data->export);
 		printf("exit\n");
 		exit(0);
 	}

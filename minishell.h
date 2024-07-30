@@ -146,6 +146,7 @@ void	runand(t_cond *root, t_data *data);
 
 // rumexrc.c
 void	runexec(t_exec *node, t_data *data);
+void	clear_end_run_exec(t_data *data);
 char	*get_pathname(char	*name, char **env);
 char	**get_paths(char **env);
 
