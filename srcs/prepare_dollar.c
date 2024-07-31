@@ -30,8 +30,11 @@ char	*get_my_env(t_data *data, char *env_name)
 				break ;
 			i++;
 		}
-		if (ft_memcmp(data->env[j], env_name, i) == 0)
-			exp = ft_strdup(data->env[j] + i + 1);
+		if (env_name[i] == '\0')
+		{
+			if (ft_memcmp(data->env[j], env_name, i) == 0)
+				exp = ft_strdup(data->env[j] + i + 1);
+		}
 		j++;
 	}
 	return (exp);
@@ -129,8 +132,8 @@ void	prepare_dollar(t_data *data)
 		dol = 0;
 		while (tmp->content[dol] && tmp->content[dol + 1])
 		{
-			if (((tmp->content[dol] == '$' && tmp->type != 4)) &&
-				(ft_isdigit(tmp->content[dol + 1]) || (tmp->content[dol + 1] == '?')))
+			if (((tmp->content[dol] == '$' && tmp->type != 4))
+				&& (ft_isexp(tmp->content[dol + 1])))
 			{
 				dol++;
 				tmp->content = expand_number(tmp->content, data, &dol);

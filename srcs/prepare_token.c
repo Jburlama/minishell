@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 14:56:00 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/29 19:23:31 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/31 18:59:59 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ void	handle_quotes(t_data *data)
 void	prepare_token(t_data *data)
 {
 	if (data->head->content[0] == '\0')
-			return ;
+		return ;
 	if (data->head)
 	{
 		prepare_dollar(data);

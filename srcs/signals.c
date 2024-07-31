@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 20:54:06 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/07/25 08:39:53 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/31 18:59:46 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,4 +57,3 @@ void	default_sig(void)
 	sigaction(SIGQUIT, &sig, NULL);
 	sigaction(SIGINT, &sig, NULL);
 }
-

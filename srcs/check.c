@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 12:46:48 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/29 19:11:47 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/31 19:02:37 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	check_special(char *str)
 		if (str[i] == '!' || str[i] == '#' || str[i] == '&' || str[i] == '\\'
 			|| str[i] == '[' || str[i] == ']' || str[i] == '{' || str[i] == '}'
 			|| str[i] == ';')
-				return (0);
+			return (0);
 		i++;
 	}
 	return (1);
@@ -47,10 +47,11 @@ void	ft_exit(char *str, t_data *data)
 	i = 0;
 	while (str[i] && str[i + 1] && str[i + 2])
 	{
-		if((str[i] == '>' && str[i + 1] == '>' && str[i + 2] == '>')
+		if ((str[i] == '>' && str[i + 1] == '>' && str[i + 2] == '>')
 			|| (str[i] == '<' && str[i + 1] == '<' && str[i + 2] == '<'))
 		{
-			printf("%s", RED"minishell: syntax error near unexpected token\n"RESET);
+			printf
+			("%s", RED"minishell: syntax error near unexpected token\n"RESET);
 			return ;
 		}
 		i++;

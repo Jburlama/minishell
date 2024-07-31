@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 09:45:29 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/23 17:04:57 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/31 19:05:10 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -254,6 +254,7 @@ char	*expand(char *c, t_data *data, size_t *d, int type);
 void	second_prepare_dollar(t_data *data);
 void	prepare_dollar(t_data *data);
 char	*expand_exit(char *content, t_data *data);
+int		ft_isexp(int c);
 
 // prepare_wildcars.c and aux.c
 

@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 14:29:11 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/20 18:26:02 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/07/31 19:11:06 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	find_null(t_data *data)
 	{
 		if (tmp->content[0] == '>' || tmp->content[0] == '<')
 		{
-				tmp = tmp->next;
+			tmp = tmp->next;
 			while (tmp->next && tmp->type == WHITE_SPACE)
 				tmp = tmp->next;
 			if ((tmp->content[0] == '>' || tmp->content[0] == '<')
@@ -60,4 +60,12 @@ void	find_null(t_data *data)
 		tmp = tmp->next;
 	}
 	find_block(data);
+}
+
+int	ft_isexp(int c)
+{
+	if ((c >= '0' && c <= '9') || (c == '?'))
+		return (2048);
+	else
+		return (0);
 }
