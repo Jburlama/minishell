@@ -45,11 +45,13 @@ int	runpipe_wait(int *wstatus, t_data *data)
 {
 	int	exit_code;
 
+	clear_args(data->env);
+	clear_args(data->export);
+	clear_tree(data->root);
 	while (waitpid(-1, wstatus, 0) > 0)
 	{
 		if (WIFEXITED(*wstatus))
 			exit_code = WEXITSTATUS(*wstatus);
 	}
-	clear_tree(data->root);
 	return (exit_code);
 }
