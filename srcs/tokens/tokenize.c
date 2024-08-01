@@ -17,7 +17,7 @@ void	tokenize(t_data *data)
 	int	i;
 
 	i = 0;
-	while (rl_line_buffer[i] <= 32)
+	while (rl_line_buffer[i] <= 32 && rl_line_buffer[i] != '\0')
 		i++;
 	while (rl_line_buffer[i] && rl_line_buffer[i] != '#')
 	{

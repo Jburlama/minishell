@@ -50,6 +50,9 @@ ${OBJS_DIR}%.o: %.c
 ${LIBFT}: libft
 	@make -s -C libft
 
+valgrind: ${NAME}
+	@valgrind --suppressions=.ignore_readline ./minishell
+
 clean:
 	rm -rf ${OBJS}
 	rm -rf ${OBJS_DIR}
