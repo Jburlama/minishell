@@ -120,7 +120,7 @@ void	handle_quotes(t_data *data)
 
 void	prepare_token(t_data *data)
 {
-	if (data->head->content[0] == '\0')
+	if (data->head && data->head->content[0] == '\0')
 		return ;
 	if (data->head)
 	{
