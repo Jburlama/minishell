@@ -37,7 +37,7 @@ void	runexec(t_exec *node, t_data *data)
 			perror(node->args[0]);
 		}
 		clear_end_run_exec(data);
-		exit(errno);
+		exit(127);
 	}
 }
 
