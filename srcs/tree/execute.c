@@ -41,7 +41,10 @@ void	wait_child(int wstatus, t_data *data)
 			data->exit_code = 131;
 		}
 		else if (WTERMSIG(wstatus) == SIGINT)
+		{
 			write(1, "\n", 1);
+			data->exit_code = 130;
+		}
 	}
 	else
 		data->exit_code = wstatus / 256;
