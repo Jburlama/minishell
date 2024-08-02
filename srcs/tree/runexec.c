@@ -37,7 +37,6 @@ void	runexec(t_exec *node, t_data *data)
 			perror(node->args[0]);
 		}
 		clear_end_run_exec(data);
-		exit(127);
 	}
 }
 
@@ -46,6 +45,7 @@ void	clear_end_run_exec(t_data *data)
 	clear_args(data->env);
 	clear_args(data->export);
 	clear_tree(data->root);
+	exit(127);
 }
 
 char	*get_pathname(char	*name, char **env)

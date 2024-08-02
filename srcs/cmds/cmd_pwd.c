@@ -46,7 +46,6 @@ int	ft_find_len(char *str)
 	{
 		if (str[i] == '=')
 		{
-			i--;
 			break ;
 		}
 		i++;
