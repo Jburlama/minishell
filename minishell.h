@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 09:45:29 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/31 19:05:10 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/08/02 20:11:25 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -276,7 +276,6 @@ void	check_or(void *root, t_data *data);
 void	check_and(void *root, t_data *data);
 int		check_root(void *root);
 void	execute_builtins(t_exec *node, t_data *data);
-
 void	find_root(void *root, t_data *data);
 
 // CD cmd_cd.c
@@ -308,6 +307,7 @@ void	change_export(char **export, int i, int j);
 
 // PWD cmd_pwd.c
 void	cmd_pwd(t_data *data, t_exec *node);
+int		ft_find_len(char *str);
 
 // EXIT cmd_exit.c && cmd_utils.c
 int		cmd_exit(t_data	*data, t_exec *node);

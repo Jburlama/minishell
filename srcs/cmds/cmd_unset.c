@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 17:23:04 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/19 09:32:44 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/08/02 20:15:09 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	**u_env(t_data *data, char *args, int n)
 	while (data->env[j] != NULL)
 	{
 		if (ft_memcmp(data->env[j], args,
-				ft_strlen(args)) != 0)
+				ft_find_len(data->env[j])) != 0)
 		{
 			tmp[n] = ft_strdup(data->env[j]);
 			j++;
@@ -52,7 +52,7 @@ char	**u_export(t_data *data, char *args, int n)
 	while (data->export[j] != NULL)
 	{
 		if (ft_memcmp(data->export[j], args,
-				ft_strlen(args)) != 0)
+				ft_find_len(data->export[j])) != 0)
 		{
 			tmp[n] = ft_strdup(data->export[j]);
 			j++;
@@ -83,7 +83,7 @@ void	unset_export(t_data *data, t_exec *node)
 		while (data->env[j])
 		{
 			if (ft_memcmp(data->export[j], node->args[i],
-					ft_strlen(node->args[i])) == 0)
+					ft_find_len(data->export[j])) == 0)
 			{
 				data->export = u_export(data, node->args[i], n);
 			}
@@ -110,7 +110,7 @@ void	unset_env(t_data *data, t_exec *node)
 		while (data->env[j])
 		{
 			if (ft_memcmp(data->env[j], node->args[i],
-					ft_strlen(node->args[i])) == 0)
+					ft_find_len(data->env[j])) == 0)
 			{
 				data->env = u_env(data, node->args[i], n);
 			}
