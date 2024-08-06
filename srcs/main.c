@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 09:42:11 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/08/06 09:25:57 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/08/06 10:19:18 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,3 @@ int	main(int argc, char *argv[], char *env[])
 	clear_args(data.export);
 	free(rl_line_buffer);
 }
-
-

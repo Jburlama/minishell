@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 12:41:35 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/18 16:42:03 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/08/06 10:19:10 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,13 @@ bool	check_n(char *arg)
 {
 	int	i;
 
-	i = 1;
-	while (arg[i] == 'n')
+	i = 0;
+	if (arg[i] == '-')
+	{
 		i++;
+		while (arg[i] == 'n')
+			i++;
+	}
 	if (arg[i] == '\0')
 		return (true);
 	else
