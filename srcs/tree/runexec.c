@@ -45,6 +45,8 @@ void	clear_end_run_exec(t_data *data)
 	clear_args(data->env);
 	clear_args(data->export);
 	clear_tree(data->root);
+	if (errno == 13)
+		exit(126);
 	exit(127);
 }
 
