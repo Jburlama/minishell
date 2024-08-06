@@ -30,7 +30,7 @@ char	*get_my_env(t_data *data, char *env_name)
 				break ;
 			i++;
 		}
-		if (env_name[i] == '\0')
+		if (i == (int)ft_strlen(env_name))
 		{
 			if (ft_memcmp(data->env[j], env_name, i) == 0)
 				exp = ft_strdup(data->env[j] + i + 1);
