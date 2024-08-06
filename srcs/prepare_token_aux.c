@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 14:29:11 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/08/06 12:01:05 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/08/06 12:45:42 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	find_block(t_data *data)
 		if ((tmp->content[i - 1] == ')')
 			&& (tmp->type != SQUOTES && tmp->type != DQUOTES))
 		{
-			if (tmp->next->next && tmp->next->next->type != SPECIAL)
+			if (tmp->next && tmp->next->type != SPECIAL)
 			{
 				write (2, "minishell: ambiguous redirect\n", 30);
 				data->exit_code = 1;

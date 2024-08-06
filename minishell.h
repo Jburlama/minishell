@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 09:45:29 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/08/06 09:35:26 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/08/06 12:20:21 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -277,6 +277,7 @@ void	check_and(void *root, t_data *data);
 int		check_root(void *root);
 void	execute_builtins(t_exec *node, t_data *data);
 void	find_root(void *root, t_data *data);
+void	check_and_aux(void *root, t_data *data);
 
 // CD cmd_cd.c
 void	cmd_cd(t_data *data, t_exec *node);
