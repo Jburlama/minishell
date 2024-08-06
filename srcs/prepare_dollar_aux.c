@@ -6,23 +6,27 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 10:03:41 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/31 19:10:55 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/08/06 09:38:23 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	*expand_exit(char *content, t_data *data)
+char	*expand_exit(char *tmp, char *content, t_data *data)
 {
-	char	*tmp;
 	int		i;
+	char	*tmp_exit;
 
-	tmp = NULL;
+	tmp_exit = NULL;
 	i = 0;
 	while (content[i] && content[i + 1])
 	{
 		if (content[i] == '$' && content[i + 1] == '?')
-			tmp = ft_strdup(ft_itoa(data->print_exit_code));
+		{
+			tmp_exit = ft_itoa(data->print_exit_code);
+			tmp = ft_strdup(tmp_exit);
+			free (tmp_exit);
+		}
 		i++;
 	}
 	return (tmp);
@@ -53,7 +57,7 @@ char	*dollar_number(char *content, char *tmp, t_data *data, size_t *dol)
 			(*dol) = 0;
 	}
 	if (tmp == NULL)
-		tmp = expand_exit(content, data);
+		tmp = expand_exit(tmp, content, data);
 	return (tmp);
 }
 

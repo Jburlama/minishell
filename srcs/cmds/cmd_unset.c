@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 17:23:04 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/08/02 20:15:09 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/08/05 12:59:24 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ void	unset_env(t_data *data, t_exec *node)
 	while (node->args[i] != NULL)
 	{
 		j = 0;
-		while (data->env[j])
+		while (data->env && data->env[j])
 		{
 			if (ft_memcmp(data->env[j], node->args[i],
 					ft_find_len(data->env[j])) == 0)
