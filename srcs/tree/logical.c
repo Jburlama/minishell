@@ -23,6 +23,8 @@ void	runor(t_cond *root, t_data *data)
 	waitpid(pid, &wstatus, 0);
 	if (WEXITSTATUS(wstatus) == 0)
 	{
+		clear_args(data->env);
+		clear_args(data->export);
 		clear_tree(data->root);
 		exit(0);
 	}
@@ -30,6 +32,8 @@ void	runor(t_cond *root, t_data *data)
 	if (pid == 0)
 		runcmd(root->right, data);
 	waitpid(pid, &wstatus, 0);
+	clear_args(data->env);
+	clear_args(data->export);
 	clear_tree(data->root);
 	exit(0);
 }
@@ -45,6 +49,8 @@ void	runand(t_cond *root, t_data *data)
 	waitpid(pid, &wstatus, 0);
 	if (WEXITSTATUS(wstatus) != 0)
 	{
+		clear_args(data->env);
+		clear_args(data->export);
 		clear_tree(data->root);
 		exit(1);
 	}
@@ -52,6 +58,8 @@ void	runand(t_cond *root, t_data *data)
 	if (pid == 0)
 		runcmd(root->right, data);
 	waitpid(pid, &wstatus, 0);
+	clear_args(data->env);
+	clear_args(data->export);
 	clear_tree(data->root);
 	exit(0);
 }
