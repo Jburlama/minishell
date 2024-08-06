@@ -48,5 +48,3 @@ int	main(int argc, char *argv[], char *env[])
 	clear_args(data.export);
 	free(rl_line_buffer);
 }
-
-
