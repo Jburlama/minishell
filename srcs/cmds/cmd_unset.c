@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 17:23:04 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/08/05 12:59:24 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/08/06 11:08:31 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ void	unset_export(t_data *data, t_exec *node)
 					ft_find_len(data->export[j])) == 0)
 			{
 				data->export = u_export(data, node->args[i], n);
+				j = 0;
 			}
 			j++;
 		}
@@ -107,12 +108,13 @@ void	unset_env(t_data *data, t_exec *node)
 	while (node->args[i] != NULL)
 	{
 		j = 0;
-		while (data->env && data->env[j])
+		while (data->env[j])
 		{
 			if (ft_memcmp(data->env[j], node->args[i],
 					ft_find_len(data->env[j])) == 0)
 			{
 				data->env = u_env(data, node->args[i], n);
+				j = 0;
 			}
 			j++;
 		}
