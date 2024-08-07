@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 09:45:29 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/08/07 10:43:24 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/08/07 11:15:15 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,7 +247,7 @@ void	find_null(t_data *data);
 
 char	*dollar_number(char *content, char *tmp, t_data *data, size_t *dol);
 char	*expand_number(char *c, t_data *data, size_t *d);
-int		check_expand(char **content, int i, int type);
+int	check_expand(char **content, int i, int type, size_t *dol);
 int		check_content(t_token **tmp, t_token **keep, t_data *data);
 char	*get_env_name(char *content, char *exp, size_t *dol, t_data *data);
 char	*expand(char **c, t_data *data, size_t *d, int type);

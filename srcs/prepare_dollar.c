@@ -71,7 +71,7 @@ char	*expand(char **c, t_data *data, size_t *d, int type)
 
 	e = NULL;
 	i = *d - 1;
-	if (!check_expand(c, i, type))
+	if (!check_expand(c, i, type, d))
 		return (*c);
 	e = get_env_name(*c, e, d, data);
 	if (!e && ((*c)[*d]) == '\0')
@@ -109,7 +109,7 @@ void	second_prepare_dollar(t_data *data)
 				tmp->content = expand(&tmp->content, data, &dol, tmp->type);
 				if (tmp->content == NULL)
 					dol = -1;
-				if (!check_content(&tmp, &keep, data) || tmp->content[dol] == '\0')
+				if (!check_content(&tmp, &keep, data))
 					return ;
 			}
 			dol++;
