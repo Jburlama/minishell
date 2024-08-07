@@ -33,7 +33,7 @@ int	check_special(char *str)
 		}
 		if (str[i] == '!' || str[i] == '#' || str[i] == '\\'
 			|| str[i] == '[' || str[i] == ']' || str[i] == '{' || str[i] == '}'
-			|| str[i] == ';')
+			|| str[i] == ';' || (str[i] == '&' && str[i + 1] != '&'))
 			return (0);
 		i++;
 	}
