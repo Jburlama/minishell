@@ -63,7 +63,7 @@ char	*get_env_name(char *content, char *exp,
 // d = dol
 // e = exp
 
-char	*expand(char **c, t_data *data, size_t *d, int type)
+char	*expand(char *c, t_data *data, size_t *d, int type)
 {
 	char	*e;
 	char	*tp;
@@ -72,19 +72,19 @@ char	*expand(char **c, t_data *data, size_t *d, int type)
 	e = NULL;
 	i = *d - 1;
 	if (!check_expand(c, i, type, d))
-		return (*c);
-	e = get_env_name(*c, e, d, data);
-	if (!e && ((*c)[*d]) == '\0')
-		return (free(*c), NULL);
-	tp = ft_calloc((ft_strlen(*c) + ft_strlen(e) - (*d - i) + 1), sizeof(char));
+		return (c);
+	e = get_env_name(c, e, d, data);
+	if (!e && (c[*d]) == '\0')
+		return (free(c), NULL);
+	tp = ft_calloc((ft_strlen(c) + ft_strlen(e) - (*d - i) + 1), sizeof(char));
 	if (!tp)
 		panic("calloc_fail", data);
-	ft_strlcpy(tp, *c, i + 1);
+	ft_strlcpy(tp, c, i + 1);
 	if (e)
 		ft_strlcpy(tp + i, e, ft_strlen(e) + 1);
-	if ((*c)[*d] != '\0')
-		ft_strlcpy(tp + i + ft_strlen(e), (*c) + (*d), ft_strlen(*c) + 1 - (*d));
-	free(*c);
+	if (c[*d] != '\0')
+		ft_strlcpy(tp + i + ft_strlen(e), c + (*d), ft_strlen(c) + 1 - (*d));
+	free(c);
 	free(e);
 	*d = i - 1;
 	return (tp);
@@ -106,7 +106,7 @@ void	second_prepare_dollar(t_data *data)
 			if (tmp->content[dol] == '$' && tmp->type != SQUOTES)
 			{
 				dol++;
-				tmp->content = expand(&tmp->content, data, &dol, tmp->type);
+				tmp->content = expand(tmp->content, data, &dol, tmp->type);
 				if (tmp->content == NULL)
 					dol = -1;
 				if (!check_content(&tmp, &keep, data))

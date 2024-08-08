@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 09:44:50 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/08/07 10:45:07 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/08/08 11:20:26 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char	*expand_here_doc(char *line, t_data *data)
 		else if (line[dol] == '$')
 		{
 			dol++;
-			line = expand(&line, data, &dol, 1);
+			line = expand(line, data, &dol, 1);
 			if (line == NULL)
 				break ;
 		}

@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 09:45:29 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/08/07 11:15:15 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/08/08 12:01:43 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,10 +247,10 @@ void	find_null(t_data *data);
 
 char	*dollar_number(char *content, char *tmp, t_data *data, size_t *dol);
 char	*expand_number(char *c, t_data *data, size_t *d);
-int	check_expand(char **content, int i, int type, size_t *dol);
+int		check_expand(char *content, int i, int type, size_t *dol);
 int		check_content(t_token **tmp, t_token **keep, t_data *data);
 char	*get_env_name(char *content, char *exp, size_t *dol, t_data *data);
-char	*expand(char **c, t_data *data, size_t *d, int type);
+char	*expand(char *c, t_data *data, size_t *d, int type);
 void	second_prepare_dollar(t_data *data);
 void	prepare_dollar(t_data *data);
 char	*expand_exit(char *tmp, char *content, t_data *data);
@@ -282,7 +282,12 @@ void	check_and_aux(void *root, t_data *data);
 // CD cmd_cd.c
 void	cmd_cd(t_data *data, t_exec *node);
 char	*get_home(char **env, t_data *data, t_exec *node);
-char	*get_last_dir(char *pwd);
+char	*get_last_dir(char *pwd, t_data *data);
+void	update_pwd(char *pwd, t_data *data);
+void	update_env_relative(char *pwd, t_data *data);
+void	update_env_pwd(char *pwd, char **data_env);
+char	*get_dir(char *pwd, t_data *data);
+void	update_relative_pwd(char *pwd, char **data_env, int i, char *old_pwd);
 
 // ECHO cmd_echo.c
 void	cmd_echo(t_exec *node);
