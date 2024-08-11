@@ -17,7 +17,8 @@ CFILES = main.c get_line.c signals.c panic.c tokenize.c  \
 		 logical.c find_root.c cmd_echo.c cmd_export.c cmd_unset.c find_root_aux.c\
 		 cmd_env.c cmd_pwd.c cmd_cd.c cmd_exit.c cmd_utils.c start_data.c \
 		 prepare_wildcards.c prepare_wildcards_aux.c here_doc.c pipe_execute.c \
-		 construct_redir.c prepare_dollar_aux.c prepare_token_aux.c check_utils.c
+		 construct_redir.c prepare_dollar_aux.c prepare_token_aux.c check_utils.c \
+		 cmd_cd_aux.c
 RM = rm -f
 OBJS_DIR = ./objs/
 SRC_DIR = ./srcs/

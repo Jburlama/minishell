@@ -6,17 +6,11 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 13:27:56 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/08/08 13:00:45 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/08/11 12:17:36 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-
-void	update_pwd(char *pwd, t_data *data)
-{
-	update_env_pwd(pwd, data->env);
-	update_env_pwd(pwd, data->export);
-}
 
 void	update_env_pwd(char *pwd, char **data_env)
 {
@@ -148,12 +142,7 @@ void	cmd_cd(t_data *data, t_exec *node)
 	}
 	else if (node->args[1])
 	{
-		if (*node->args[1] != '\0' && chdir(node->args[1]) != 0)
-		{
-			write(2, "cd: ", 4);
-			perror(node->args[1]);
-			data->exit_code = 1;
-		}
+		cd_relative(data, node);
 		update_env_relative(node->args[1], data);
 	}
 }
