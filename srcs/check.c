@@ -6,11 +6,28 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 12:46:48 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/08/06 11:51:47 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/08/11 14:06:23 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int	check_special_quotes(char *str, int *i)
+{
+	if (str[*i] == 34 || str[*i] == 39)
+	{
+		(*i)++;
+		while (str[*i])
+		{
+			if (str[*i] == 34 || str[*i] == 39)
+				break ;
+			(*i)++;
+		}
+		if (str[*i] == '\0')
+			return (1);
+	}
+	return (0);
+}
 
 int	check_special(char *str)
 {
@@ -19,22 +36,18 @@ int	check_special(char *str)
 	i = 0;
 	while (str[i] != '\0')
 	{
-		if (str[i] == 34 || str[i] == 39)
-		{
-			i++;
-			while (str[i])
-			{
-				if (str[i] == 34 || str[i] == 39)
-					break ;
-				i++;
-			}
-			if (str[i] == '\0')
-				return (1);
-		}
+		if (check_special_quotes(str, &i) == 1)
+			return (1);
 		if (str[i] == '!' || str[i] == '#' || str[i] == '\\'
 			|| str[i] == '[' || str[i] == ']' || str[i] == '{' || str[i] == '}'
 			|| str[i] == ';' || (str[i] == '&' && str[i + 1] != '&'))
 			return (0);
+		if (str[i] == '&' && str[i + 1] == '&')
+		{
+			i++;
+			if (str[i + 1] == '\0')
+				return (0);
+		}
 		i++;
 	}
 	return (1);
