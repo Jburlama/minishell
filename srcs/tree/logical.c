@@ -20,7 +20,8 @@ void	runor(t_cond *root, t_data *data)
 	pid = save_fork(data);
 	if (pid == 0)
 		runcmd(root->left, data);
-	waitpid(pid, &wstatus, 0);
+	while (waitpid(-1, &wstatus, 0) > 0)
+		;
 	if (WEXITSTATUS(wstatus) == 0)
 	{
 		clear_args(data->env);
@@ -31,10 +32,11 @@ void	runor(t_cond *root, t_data *data)
 	pid = save_fork(data);
 	if (pid == 0)
 		runcmd(root->right, data);
-	waitpid(pid, &wstatus, 0);
 	clear_args(data->env);
 	clear_args(data->export);
 	clear_tree(data->root);
+	while (waitpid(-1, &wstatus, 0) > 0)
+		;
 	exit(0);
 }
 
@@ -46,7 +48,8 @@ void	runand(t_cond *root, t_data *data)
 	pid = save_fork(data);
 	if (pid == 0)
 		runcmd(root->left, data);
-	waitpid(pid, &wstatus, 0);
+	while (waitpid(-1, &wstatus, 0) > 0)
+		;
 	if (WEXITSTATUS(wstatus) != 0)
 	{
 		clear_args(data->env);
@@ -57,10 +60,11 @@ void	runand(t_cond *root, t_data *data)
 	pid = save_fork(data);
 	if (pid == 0)
 		runcmd(root->right, data);
-	waitpid(pid, &wstatus, 0);
 	clear_args(data->env);
 	clear_args(data->export);
 	clear_tree(data->root);
+	while (waitpid(-1, &wstatus, 0) > 0)
+		;
 	exit(0);
 }
 

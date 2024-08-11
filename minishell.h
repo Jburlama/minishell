@@ -165,6 +165,7 @@ t_redir	*redir_alloc(t_token **tokens, t_data *data);
 
 // parse_tree.c
 void	*parse_exec(t_token **tokens, t_data *data);
+int		leave_loop(t_token **tokens);
 void	*parse_block(t_token **tokens, t_data *data);
 void	*parse_redir(void *root, t_token **tokens, t_data *data);
 void	*parse_and(t_token **tokens, t_data *data);

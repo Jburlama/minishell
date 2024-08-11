@@ -27,8 +27,7 @@ void	*parse_exec(t_token **tokens, t_data *data)
 		&& *(*tokens)->content != ')')
 	{
 		root = parse_redir(root, tokens, data);
-		if (!(*tokens) || root == NULL || *(*tokens)->content == '|'
-			|| *(*tokens)->content == '&' || *(*tokens)->content == ')')
+		if (root == NULL || leave_loop(tokens) == 1)
 			break ;
 		exec->args = add_to_args(exec->args, (*tokens)->content);
 		if (ft_memcmp((*tokens)->content, exec->args[0],
@@ -39,6 +38,26 @@ void	*parse_exec(t_token **tokens, t_data *data)
 		(*tokens) = (*tokens)->next;
 	}
 	return (root);
+}
+
+int	leave_loop(t_token **tokens)
+{
+	if (!(*tokens) || *(*tokens)->content == '|'
+		|| *(*tokens)->content == '&' || *(*tokens)->content == ')')
+	{
+		if (*(*tokens)->content == '|' || *(*tokens)->content == '&')
+		{
+			if (ft_strlen((*tokens)->content) == 1)
+				return (1);
+			if (ft_strlen((*tokens)->content) == 2
+				&& ((*((*tokens)->content + 1) == '|')
+					|| (*((*tokens)->content + 1) == '&')))
+				return (1);
+		}
+		if (*(*tokens)->content == ')')
+			return (1);
+	}
+	return (0);
 }
 
 void	*parse_redir(void *root, t_token **tokens, t_data *data)
@@ -75,7 +94,8 @@ void	*parse_block(t_token **tokens, t_data *data)
 	root = parse_and(tokens, data);
 	if (root == NULL)
 		return (NULL);
-	(*tokens) = (*tokens)->next;
+	if (*tokens)
+		(*tokens) = (*tokens)->next;
 	if (*tokens)
 	{
 		while ((*tokens) && (*tokens)->type == WHITE_SPACE)
