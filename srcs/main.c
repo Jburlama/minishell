@@ -12,8 +12,6 @@
 
 #include "../minishell.h"
 
-void	print_tree(void *root);
-
 int	g_status_exit = 0;
 
 void	update_exit_code(t_data	*data)
@@ -37,12 +35,9 @@ int	main(int argc, char *argv[], char *env[])
 		{
 			tokenize(&data);
 			prepare_token(&data);
-			// for (t_token *ptr = data.head; ptr; ptr = ptr->next)
-			// 	printf("%s\n", ptr->content);
 			if (data.exit_code != 2 && data.exit_code != 1)
 			{
 				create_tree(&data);
-				// print_tree(data.root);
 				find_root(data.root, &data);
 				clear_tree(data.root);
 			}
@@ -52,34 +47,4 @@ int	main(int argc, char *argv[], char *env[])
 	clear_args(data.env);
 	clear_args(data.export);
 	free(rl_line_buffer);
-}
-
-void	print_tree(void *root)
-{
-	if (((t_exec *)root)->type == EXEC)
-	{
-		printf("node exec\n");
-		for (int i = 0; ((t_exec *)root)->args[i]; i++)
-			printf("%s / ", ((t_exec *)root)->args[i]);
-		printf("\n");
-		return ;
-	}
-	else if (((t_cond *)root)->type == AND)
-	{
-		printf("node and\n");
-		print_tree(((t_cond *)root)->left);
-		print_tree(((t_cond *)root)->right);
-	}
-	else if (((t_cond *)root)->type == OR)
-	{
-		printf("node or\n");
-		print_tree(((t_cond *)root)->left);
-		print_tree(((t_cond *)root)->right);
-	}
-	else if (((t_cond *)root)->type == PIPE)
-	{
-		printf("node pipe\n");
-		print_tree(((t_cond *)root)->left);
-		print_tree(((t_cond *)root)->right);
-	}
 }
