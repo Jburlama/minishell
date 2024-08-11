@@ -42,7 +42,7 @@ int	main(int argc, char *argv[], char *env[])
 			if (data.exit_code != 2 && data.exit_code != 1)
 			{
 				create_tree(&data);
-				print_tree(data.root);
+				// print_tree(data.root);
 				find_root(data.root, &data);
 				clear_tree(data.root);
 			}
