@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 12:16:54 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/04 16:55:08 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/08/11 17:30:57 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void	prepare_wildcards(t_data *data)
 		{
 			wildcards = NULL;
 			wildcards = exp_wildcards(wildcards, tmp->content, data);
-			if (!wildcards->content)
+			if (wildcards && !wildcards->content)
 			{
 				free(wildcards);
 				return ;
@@ -101,6 +101,7 @@ void	prepare_wildcards(t_data *data)
 			tmp = wildcards;
 		}
 		before = tmp;
-		tmp = tmp->next;
+		if (tmp)
+			tmp = tmp->next;
 	}
 }

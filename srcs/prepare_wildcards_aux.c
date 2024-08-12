@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 13:50:15 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/07/09 12:23:06 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/08/12 12:39:07 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,22 +15,15 @@
 bool	check_dot(char *wild, t_token *wild_node)
 {
 	int	i;
+	int	j;
 
-	i = 0;
-	if (wild[1] && wild[1] == '.')
+	i = ft_strlen(wild_node->content);
+	if (wild)
 	{
-		while (wild_node->content[i] != '\0')
-		{
-			if (wild_node->content[i] == '.')
-				break ;
-			i++;
-		}
-		if (wild_node->content[i] == '\0' || wild_node->content[i] == '.')
-		{
-			if (ft_memcmp(wild + 1, wild_node->content + i,
-					ft_strlen(wild) - 1) != 0)
-				return (false);
-		}
+		j = ft_strlen(wild) - 1;
+		if (i >= j && ft_memcmp(wild + 1, wild_node->content + (i - j),
+				j) != 0)
+			return (false);
 	}
 	return (true);
 }
@@ -53,13 +46,19 @@ void	tokenize_wildcards(t_token *wildcards, t_token *before, t_token *tmp,
 	t_token	*last_wild;
 
 	last_wild = ft_lasttoken(wildcards);
-	if (before == data->head)
-		data->head = wildcards;
-	else
+	if (last_wild)
 	{
-		last_wild->next = before->next->next;
-		before->next = wildcards;
+		if (before == data->head)
+			data->head = wildcards;
+		else
+		{
+			if (before->next->next)
+				last_wild->next = before->next->next;
+			else
+				last_wild->next = NULL;
+			before->next = wildcards;
+		}
+		free(tmp->content);
+		free(tmp);
 	}
-	free(tmp->content);
-	free(tmp);
 }
