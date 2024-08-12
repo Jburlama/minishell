@@ -21,7 +21,7 @@ char	*get_line(t_data *data)
 	handle_signal();
 	dup2(STDERR_FILENO, STDIN_FILENO);
 	dup2(STDERR_FILENO, STDOUT_FILENO);
-	line = readline(GREEN "Minishell: " RESET);
+	line = readline("Minishell: ");
 	if (g_status_exit == 2)
 	{
 		data->exit_code = 130;
