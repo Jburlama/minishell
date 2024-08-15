@@ -42,16 +42,20 @@ void	*parse_exec(t_token **tokens, t_data *data)
 
 int	leave_loop(t_token **tokens)
 {
-	if (!(*tokens) || *(*tokens)->content == '|'
+	if (!(*tokens))
+		return (1);
+	if (*(*tokens)->content == '|'
 		|| *(*tokens)->content == '&' || *(*tokens)->content == ')')
 	{
+		if ((*tokens)->type != SPECIAL)
+			return (0);
 		if (*(*tokens)->content == '|' || *(*tokens)->content == '&')
 		{
 			if (ft_strlen((*tokens)->content) == 1)
 				return (1);
 			if (ft_strlen((*tokens)->content) == 2
 				&& ((*((*tokens)->content + 1) == '|')
-					|| (*((*tokens)->content + 1) == '&')))
+				|| (*((*tokens)->content + 1) == '&')))
 				return (1);
 		}
 		if (*(*tokens)->content == ')')
@@ -67,7 +71,7 @@ void	*parse_redir(void *root, t_token **tokens, t_data *data)
 	ret = root;
 	while ((*tokens) && (*tokens)->type == WHITE_SPACE)
 		(*tokens) = (*tokens)->next;
-	while ((*tokens)
+	while ((*tokens) && (*tokens)->type == SPECIAL
 		&& (*(*tokens)->content == '<' || *(*tokens)->content == '>'))
 	{
 		(*tokens) = (*tokens)->next;
