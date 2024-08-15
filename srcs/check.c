@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 12:46:48 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/08/15 16:25:16 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/08/15 18:18:07 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ int	check_special(char *str)
 			|| str[i] == ';' || (str[i] == '&' && str[i + 1] != '&')
 			|| (str[i] == '|' && str[i + 1] == ' ' && str[i + 2] == '|')
 			|| (str[i] == '<' && str[i + 1] == ' ' && str[i + 2] == '<')
-			|| (str[i] == '>' && str[i + 1] == ' ' && str[i + 2] == '>'))
+			|| (str[i] == '>' && str[i + 1] == ' ' && str[i + 2] == '>')
+			|| (str[i] == '$' && str[i + 1] == '$'))
 			return (0);
 		if (str[i] == '&' && str[i + 1] == '&')
 		{
@@ -119,6 +120,7 @@ int	check(char *str, t_data *data)
 	i = 0;
 	check_parentheses(str, data);
 	check_redirect(str, data);
+	check_quotes(str, data);
 	if (!check_special(str))
 		data->exit_code = 2;
 	while (str[i] != '\0')
@@ -128,15 +130,11 @@ int	check(char *str, t_data *data)
 			|| (str[i] == '>' && str[i + 1] == '\0')
 			|| (str[i] == '>' && str[i + 1] == '>' && str[i + 2] == '|')
 			|| (str[i] == '<' && str[i + 1] == '<' && str[i + 2] == '\0')
-			|| (str[i] == '|' && str[i + 1] == '\0')
-			|| (str[i] == '$' && str[i + 1] == '$'))
+			|| (str[i] == '|' && str[i + 1] == '\0'))
 			data->exit_code = 2;
 		i++;
 	}
 	if (data->exit_code == 2)
-	{
 		ft_exit(str, data);
-		return (data->exit_code);
-	}
-	return (0);
+	return (data->exit_code);
 }

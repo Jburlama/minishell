@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 10:03:41 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/08/08 11:18:56 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/08/15 17:32:03 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,9 @@ int	check_expand(char *content, int i, int type, size_t *dol)
 {
 	if ((((content)[i + 1] == '\0') || ((content)[i + 1] == ' ')
 		|| ((content)[i + 1] == 34) || ((content)[i + 1] == 39))
-		|| ((content)[0] == '$' && ft_strlen(content) == 1 && type == 1))
+		|| ((content)[0] == '$' && ft_strlen(content) == 1 && type == 1)
+		|| ((content)[0] == '$' && content[1] && content[1] == '$')
+		)
 	{
 		(*dol)--;
 		return (0);

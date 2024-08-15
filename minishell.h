@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 09:45:29 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/08/11 12:26:45 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/08/15 18:18:22 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -235,6 +235,7 @@ char	*find_eof(char *str, int *i, t_data *data);
 void	*here_doc_check(char *eof);
 void	check_parentheses(char *str, t_data *data);
 int		*jump_quotes(char *str, int *parentheses);
+void	check_quotes(char *str, t_data *data);
 
 // prepare_token.c && ...aux.c
 void	prepare_token(t_data *data);

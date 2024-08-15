@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 09:42:11 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/08/15 16:26:14 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/08/15 18:32:27 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	update_exit_code(t_data	*data)
 	data->exit_code = 0;
 	g_status_exit = 0;
 }
+
 int	main(int argc, char *argv[], char *env[])
 {
 	t_data	data;

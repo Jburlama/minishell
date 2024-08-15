@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 13:27:56 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/08/11 12:17:36 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/08/15 17:58:35 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,7 @@ char	*get_home(char **env, t_data *data, t_exec *node)
 		ft_printf("%s: %s\n", node->args[0],
 			"HOME not set");
 		data->exit_code = 1;
+		return (home);
 	}
 	update_pwd(home, data);
 	return (home);

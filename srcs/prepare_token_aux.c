@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 14:29:11 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/08/15 17:00:37 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/08/15 18:31:55 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,9 @@ void	find_null(t_data *data)
 	tmp = data->head;
 	while (tmp)
 	{
-		if ((tmp->content[0] == '>' && tmp->content[1] == '\0')
-			|| (tmp->content[0] == '<' && tmp->content[1] == '\0'))
+		if (tmp->type == 2
+			&& ((tmp->content[0] == '>' && tmp->content[1] == '\0')
+				|| (tmp->content[0] == '<' && tmp->content[1] == '\0')))
 		{
 			tmp = tmp->next;
 			while (tmp && tmp->next && tmp->type == WHITE_SPACE)
@@ -69,4 +70,58 @@ int	ft_isexp(int c)
 		return (2048);
 	else
 		return (0);
+}
+
+void	check_dquotes(char *str, t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] != '\0')
+	{
+		if (str[i] == 39)
+		{
+			i++;
+			while (str[i] != '\0')
+			{
+				if (str[i] == 39)
+					break ;
+				i++;
+			}
+			if (str[i] == '\0')
+			{
+				data->exit_code = 2;
+				i--;
+			}
+			check_quotes(str + i, data);
+		}
+		i++;
+	}
+}
+
+void	check_quotes(char *str, t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] != '\0')
+	{
+		if (str[i] == 34)
+		{
+			i++;
+			while (str[i] != '\0')
+			{
+				if (str[i] == 34)
+					break ;
+				i++;
+			}
+			if (str[i] == '\0')
+			{
+				data->exit_code = 2;
+				i--;
+			}
+			check_dquotes(str + i, data);
+		}
+		i++;
+	}
 }
