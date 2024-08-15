@@ -77,7 +77,7 @@ void	ft_exit(char *str, t_data *data)
 		|| (str[i] == '<' && str[i + 1] == '<'))
 		printf("%s", RED"minishell: syntax error near unexpected token\n"RESET);
 	else
-	{	
+	{
 		check_heredoc(str, data);
 		printf("%s", RED"minishell: syntax error near unexpected token\n"RESET);
 	}
