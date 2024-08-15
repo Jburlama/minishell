@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 14:29:11 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/08/11 12:26:12 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/08/15 16:07:29 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,7 @@ void	find_null(t_data *data)
 			tmp = tmp->next;
 			while (tmp && tmp->next && tmp->type == WHITE_SPACE)
 				tmp = tmp->next;
-			if (tmp && ((tmp->content[0] == '>' || tmp->content[0] == '<')
-					|| tmp->type == WHITE_SPACE))
+			if (!tmp)
 			{
 				write (2, "minishell: ambiguous redirect\n", 30);
 				data->exit_code = 1;

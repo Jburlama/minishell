@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 19:02:06 by Jburlama          #+#    #+#             */
-/*   Updated: 2024/06/22 16:32:58 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/08/15 15:36:10 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	tokenize(t_data *data)
 	i = 0;
 	while (rl_line_buffer[i] <= 32 && rl_line_buffer[i] != '\0')
 		i++;
-	while (rl_line_buffer[i] && rl_line_buffer[i] != '#')
+	while (rl_line_buffer[i])
 	{
 		if (rl_line_buffer[i] == 34)
 			add_token(data, &i, DQUOTES);
