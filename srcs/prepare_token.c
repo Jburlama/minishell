@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 14:56:00 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/08/15 15:57:45 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/08/15 17:06:06 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ void	handle_quotes(t_data *data)
 	{
 		if (tmp->next->type == WHITE_SPACE)
 			first_quote = 0;
-		if (first_quote == 1)
+		if (first_quote == 1 && tmp->type != 2)
 			handle_first_quote(tmp, keep, first_quote);
 		else if ((tmp->type == DQUOTES || tmp->type == SQUOTES
 				|| tmp->next->type == DQUOTES || tmp->next->type == SQUOTES)
