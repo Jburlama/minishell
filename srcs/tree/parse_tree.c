@@ -55,7 +55,7 @@ int	leave_loop(t_token **tokens)
 				return (1);
 			if (ft_strlen((*tokens)->content) == 2
 				&& ((*((*tokens)->content + 1) == '|')
-				|| (*((*tokens)->content + 1) == '&')))
+					|| (*((*tokens)->content + 1) == '&')))
 				return (1);
 		}
 		if (*(*tokens)->content == ')')
