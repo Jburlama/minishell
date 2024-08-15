@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 18:49:21 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/08/06 12:19:41 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/08/15 14:49:52 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,31 +30,29 @@ void	execute_builtins(t_exec *node, t_data *data)
 
 int	check_root(void *root)
 {
-	if (((t_cond *)root)->type == AND && ((t_cond *)root)->is_block == true)
+	if ((((t_cond *)root)->type == AND || ((t_cond *)root)->type == OR)
+		&& ((t_cond *)root)->is_block == true)
 		return (1);
 	else if ((((t_exec *)root)->builtin != NO_B)
 		&& ((t_cond *)root)->type == OR)
 		return (4);
 	else if ((((t_exec *)root)->builtin != NO_B))
 		return (2);
-	else if (((t_cond *)root)->type == OR)
-		return (3);
 	return (0);
 }
 
 void	check_and(void *root, t_data *data)
 {
-	int	pid;
-	int	wstatus;
-
 	if (check_root(((t_cond *)root)->left) == 1)
 	{
-		pid = save_fork(data);
-		if (pid == 0)
-			execute(((t_cond *)root)->left, data);
-		waitpid(pid, &wstatus, 0);
-		if (WEXITSTATUS(wstatus) == 0)
-			find_root(((t_cond *)root)->right, data);
+		find_root(((t_cond *)root)->left, data);
+		if (data->exit_code == 0)
+		{
+			if (check_root(((t_cond *)root)->right) == 2)
+				execute_builtins(((t_cond *)root)->right, data);
+			else
+				find_root(((t_cond *)root)->right, data);
+		}
 	}
 	else if ((check_root(((t_cond *)root)->left) == 2))
 	{
@@ -63,22 +61,25 @@ void	check_and(void *root, t_data *data)
 			find_root(((t_cond *)root)->right, data);
 	}
 	else
-		check_and_aux(root, data);
+	{
+		execute(((t_cond *)root)->left, data);
+		if (data->exit_code == 0)
+			find_root(((t_cond *)root)->right, data);
+	}
 }
 
 void	check_or(void *root, t_data *data)
 {
-	int	pid;
-	int	wstatus;
-
-	if (check_root(((t_cond *)root)->left) == 3)
+	if (check_root(((t_cond *)root)->left) == 1)
 	{
-		pid = save_fork(data);
-		if (pid == 0)
-			execute(((t_cond *)root)->left, data);
-		waitpid(pid, &wstatus, 0);
-		if (WEXITSTATUS(wstatus) != 0)
-			find_root(((t_cond *)root)->right, data);
+		find_root(((t_cond *)root)->left, data);
+		if (data->exit_code != 0)
+		{
+			if (check_root(((t_cond *)root)->right) == 2)
+				execute_builtins(((t_cond *)root)->right, data);
+			else
+				find_root(((t_cond *)root)->right, data);
+		}
 	}
 	else if ((check_root(((t_cond *)root)->left) == 2))
 	{
@@ -87,7 +88,11 @@ void	check_or(void *root, t_data *data)
 			find_root(((t_cond *)root)->right, data);
 	}
 	else
-		execute(((t_cond *)root), data);
+	{
+		execute(((t_cond *)root)->left, data);
+		if (data->exit_code != 0)
+			find_root(((t_cond *)root)->right, data);
+	}
 }
 
 void	find_root(void *root, t_data *data)
