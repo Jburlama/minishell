@@ -19,7 +19,7 @@ void	tokenize(t_data *data)
 	i = 0;
 	while (rl_line_buffer[i] <= 32 && rl_line_buffer[i] != '\0')
 		i++;
-	while (rl_line_buffer[i] && rl_line_buffer[i] != '#')
+	while (rl_line_buffer[i])
 	{
 		if (rl_line_buffer[i] == 34)
 			add_token(data, &i, DQUOTES);
