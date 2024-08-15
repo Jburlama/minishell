@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 14:29:11 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/08/15 18:31:55 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/08/15 18:59:14 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,55 +72,29 @@ int	ft_isexp(int c)
 		return (0);
 }
 
-void	check_dquotes(char *str, t_data *data)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] != '\0')
-	{
-		if (str[i] == 39)
-		{
-			i++;
-			while (str[i] != '\0')
-			{
-				if (str[i] == 39)
-					break ;
-				i++;
-			}
-			if (str[i] == '\0')
-			{
-				data->exit_code = 2;
-				i--;
-			}
-			check_quotes(str + i, data);
-		}
-		i++;
-	}
-}
-
 void	check_quotes(char *str, t_data *data)
 {
-	int	i;
+	int		i;
+	char	quotes;
 
 	i = 0;
 	while (str[i] != '\0')
 	{
-		if (str[i] == 34)
+		if (str[i] == 39 || str[i] == 34)
 		{
+			quotes = str[i];
 			i++;
 			while (str[i] != '\0')
 			{
-				if (str[i] == 34)
+				if (str[i] == quotes)
 					break ;
 				i++;
 			}
 			if (str[i] == '\0')
 			{
 				data->exit_code = 2;
-				i--;
+				return ;
 			}
-			check_dquotes(str + i, data);
 		}
 		i++;
 	}
