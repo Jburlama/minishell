@@ -2,6 +2,3 @@
 
 
 This is an unfinished project, even though it is working and functional still has some bugs to fix, and improvements to make.
-
-
-
