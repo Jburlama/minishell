@@ -16,7 +16,7 @@
 • Redirections:
 
    - < redirect input.
-  
+   
    - > redirect output.
   
    - >> redirect output in append mode.
