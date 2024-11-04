@@ -17,11 +17,11 @@
 
    - < redirect input.
   
-  - > redirect output.
+   - > redirect output.
   
-  - >> redirect output in append mode.
+   - >> redirect output in append mode.
 
-  - << heardoc.
+   - << heardoc.
 
 • Pipes (| character).
 
