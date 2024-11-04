@@ -3,25 +3,50 @@
 
 # This project is about creating a command-line shell, that mimics the behavior of bash.
 
-## We implement the following builtins:
-◦ **echo with option -n**
+# Our shell does:
 
-◦ **cd**
+• Displays a prompt when waiting for a new command.
 
-◦ **pwd**
+• Has a working history.
 
-◦ **export**
+• Can search and launch the right executable (based on the PATH variable or using a relative or an absolute path).
 
-◦ **unset**
+• Handles ’ (single quote) and  " (double quote)
 
-◦ **env**
+• Redirections:
 
-◦ **exit**
+  ◦ < redirect input.
+  
+  ◦ > redirect output.
+  
+  ◦ >> redirect output in append mode.
 
-## The following signal behaves like in bash:
+  ◦ << heardoc.
 
-◦ **ctrl-C**
+• Pipes (| character).
 
-◦ **ctrl-D**
+• Environment variables ($ followed by a sequence of characters).
 
-◦ **ctrl-\\**
+• $?, expand to the exit status of the most recently executed foreground pipeline.
+
+• **ctrl-C**, **ctrl-D**,  **ctrl-\\**
+
+• The following builtins:
+ 
+  ◦ **echo with option -n**
+
+  ◦ **cd**
+
+  ◦ **pwd**
+
+  ◦ **export**
+
+  ◦ **unset**
+
+  ◦ **env**
+
+  ◦ **exit**
+
+• && and || with parenthesis for priorities.
+
+• Wildcards *.
