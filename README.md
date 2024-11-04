@@ -4,7 +4,7 @@
 # This project is about creating a command-line shell, that mimics the behavior of bash.
 
 ## We implement the following builtins:
-◦ echo with option -n
+◦ **echo with option -n**
 ◦ **cd**
 ◦ **pwd**
 ◦ **export**
