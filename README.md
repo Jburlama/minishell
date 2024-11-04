@@ -50,3 +50,11 @@
 • && and || with parenthesis for priorities.
 
 • Wildcards *.
+
+
+
+For more information about the project [subject](https://cdn.intra.42.fr/pdf/pdf/138331/en.subject.pdf)
+
+**Minishell** must conform to the [42 Norm](https://cdn.intra.42.fr/pdf/pdf/96987/en.norm.pdf).
+
+**Install** [norminette](https://github.com/42School/norminette).
