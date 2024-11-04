@@ -60,7 +60,7 @@ For more information about the project [subject](https://cdn.intra.42.fr/pdf/pdf
 **Install** [norminette](https://github.com/42School/norminette).
 
 
-If you wish to try the program for yourself `git clone` the repo, run `make` inside then `./minishell`. If you don't have it already, you'll need to install the readline library.
+If you wish to try the program for yourself `git clone` the repo, run `make` inside then `./minishell`. If you don't have it already, you'll need to install the readline library `sudo apt -y install readline-common`.
 
 This project was made in partnership with:
 [victtorm](https://github.com/victtorm)
