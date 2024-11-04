@@ -5,9 +5,15 @@
 
 ## We implement the following builtins:
 ◦ **echo with option -n**
+
 ◦ **cd**
+
 ◦ **pwd**
+
 ◦ **export**
+
 ◦ **unset**
+
 ◦ **env**
+
 ◦ **exit**
