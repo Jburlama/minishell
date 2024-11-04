@@ -15,13 +15,13 @@
 
 • Redirections:
 
-   - < redirect input.
+   - **<** redirect input.
    
    - **>** redirect output.
   
-   - >> redirect output in append mode.
+   - **>>** redirect output in append mode.
 
-   - << heardoc.
+   - **<<** heardoc.
 
 • Pipes (| character).
 
@@ -32,20 +32,20 @@
 • **ctrl-C**, **ctrl-D**,  **ctrl-\\**
 
 • The following builtins:
- 
-  ◦ **echo with option -n**
 
-  ◦ **cd**
+   - **echo with option -n**
 
-  ◦ **pwd**
+   - **cd**
 
-  ◦ **export**
+   - **pwd**
 
-  ◦ **unset**
+   - **export**
 
-  ◦ **env**
+   - **unset**
 
-  ◦ **exit**
+   - **env**
+
+   - **exit**
 
 • && and || with parenthesis for priorities.
 
