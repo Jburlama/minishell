@@ -17,3 +17,11 @@
 ◦ **env**
 
 ◦ **exit**
+
+## The following signal behaves like in bash:
+
+◦ **ctrl-C**
+
+◦ **ctrl-D**
+
+◦ **ctrl-\**
