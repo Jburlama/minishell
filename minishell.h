@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 09:45:29 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/08/15 18:18:22 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/08/20 11:38:35 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -287,10 +287,12 @@ char	*get_home(char **env, t_data *data, t_exec *node);
 char	*get_last_dir(char *pwd, t_data *data);
 void	update_pwd(char *pwd, t_data *data);
 void	update_env_relative(char *pwd, t_data *data);
-void	update_env_pwd(char *pwd, char **data_env);
+char	**update_env_pwd(char *pwd, char **data_env, int i);
+char	**update_env_oldpwd(char *old_pwd, char **data_env, int i);
 char	*get_dir(char *pwd, t_data *data);
 void	cd_relative(t_data *data, t_exec *node);
-void	update_relative_pwd(char *pwd, char **data_env, int i, char *old_pwd);
+char	**update_relative_pwd(char *pwd, char **data_env, int i);
+char	**update_relative_oldpwd(char *old_pwd, char **data_env, int i);
 
 // ECHO cmd_echo.c
 void	cmd_echo(t_exec *node);

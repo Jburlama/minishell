@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 14:56:00 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/08/15 17:06:06 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/08/20 13:12:33 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,12 +100,12 @@ void	handle_quotes(t_data *data)
 	tmp = data->head;
 	keep = tmp;
 	if (((tmp->type == 3 || tmp->type == 4) && tmp->next
-			&& tmp->next->type != 2)
-		|| (tmp->next && (tmp->next->type == 3 || tmp->next->type == 4)))
+			&& tmp->next->type != 2) || (tmp->next && (tmp->type != 2
+				&& (tmp->next->type == 3 || tmp->next->type == 4))))
 		first_quote = 1;
 	while (tmp && tmp->next)
 	{
-		if (tmp->next->type == WHITE_SPACE)
+		if (tmp->next->type && tmp->next->type == WHITE_SPACE)
 			first_quote = 0;
 		if (first_quote == 1 && tmp->type != 2)
 			handle_first_quote(tmp, keep, first_quote);

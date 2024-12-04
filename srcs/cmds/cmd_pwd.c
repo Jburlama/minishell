@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 15:01:44 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/08/11 12:15:55 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/08/20 12:07:45 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,52 @@ int	ft_find_len(char *str)
 		i++;
 	}
 	return (i);
+}
+
+char	**update_env_oldpwd(char *old_pwd, char **data_env, int i)
+{
+	char	*tmp;
+
+	while (data_env[i])
+	{
+		if (ft_memcmp(data_env[i], "OLDPWD=", 7) == 0)
+		{
+			free(data_env[i]);
+			break ;
+		}
+		i++;
+	}
+	if (data_env[i] == NULL)
+	{
+		tmp = ft_strjoin("OLDPWD=", old_pwd);
+		data_env = export(data_env, old_pwd);
+		free(tmp);
+	}
+	else
+		data_env[i] = ft_strjoin("OLDPWD=", old_pwd);
+	return (data_env);
+}
+
+char	**update_env_pwd(char *pwd, char **data_env, int i)
+{
+	char	*tmp;
+
+	while (data_env[i])
+	{
+		if (ft_memcmp(data_env[i], "PWD=", 4) == 0)
+		{
+			free(data_env[i]);
+			break ;
+		}
+		i++;
+	}
+	if (data_env[i] == NULL)
+	{
+		tmp = ft_strjoin("PWD=", pwd);
+		data_env = export(data_env, tmp);
+		free(tmp);
+	}
+	else
+		data_env[i] = ft_strjoin("PWD=", pwd);
+	return (data_env);
 }

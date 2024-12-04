@@ -6,40 +6,11 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 13:27:56 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/08/15 17:58:35 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/08/24 13:11:02 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-
-void	update_env_pwd(char *pwd, char **data_env)
-{
-	int		i;
-	char	*tmp;
-
-	i = 0;
-	while (data_env[i])
-	{
-		if (ft_memcmp(data_env[i], "PWD=", 4) == 0)
-		{
-			tmp = ft_strdup(data_env[i] + 4);
-			free(data_env[i]);
-			data_env[i] = ft_strjoin("PWD=", pwd);
-		}
-		i++;
-	}
-	i = 0;
-	while (data_env[i])
-	{
-		if (ft_memcmp(data_env[i], "OLDPWD=", 7) == 0)
-		{
-			free(data_env[i]);
-			data_env[i] = ft_strjoin("OLDPWD=", tmp);
-			free(tmp);
-		}
-		i++;
-	}
-}
 
 char	*get_last_dir(char *pwd, t_data *data)
 {
@@ -123,10 +94,30 @@ char	*get_home(char **env, t_data *data, t_exec *node)
 	return (home);
 }
 
+int	check_cd_args(t_exec *node, t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (node->args[i])
+		i++;
+	if (i <= 2)
+		return (1);
+	else
+	{
+		ft_printf("%s: %s\n", node->args[0], "too many arguments");
+		data->exit_code = 1;
+		return (0);
+	}
+}
+
 void	cmd_cd(t_data *data, t_exec *node)
 {
+	char	*pwd;
 	char	*dir;
 
+	if (!check_cd_args(node, data))
+		return ;
 	if (!node->args[1]
 		&& ft_memcmp("cd", node->args[0], ft_strlen(node->args[0])) == 0)
 	{
@@ -135,8 +126,9 @@ void	cmd_cd(t_data *data, t_exec *node)
 	}
 	else if (ft_memcmp("..", node->args[1], 2) == 0)
 	{
-		dir = getcwd(NULL, 0);
-		dir = get_last_dir(dir, data);
+		pwd = getcwd(NULL, 0);
+		dir = get_last_dir(pwd, data);
+		free(pwd);
 		if (dir)
 			chdir(dir);
 		free(dir);

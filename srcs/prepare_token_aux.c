@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 14:29:11 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/08/15 18:59:14 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/08/20 13:01:40 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ void	find_block(t_data *data)
 	while (tmp)
 	{
 		i = ft_strlen(tmp->content);
-		if ((tmp->content[i - 1] == ')')
-			&& (tmp->type != SQUOTES && tmp->type != DQUOTES))
+		if ((tmp->type != SQUOTES && tmp->type != DQUOTES)
+			&& (tmp->content && tmp->content[i - 1] == ')'))
 		{
 			if (tmp->next && tmp->next->type != SPECIAL)
 			{

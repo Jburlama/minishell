@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 12:46:48 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/08/15 18:18:07 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/08/20 12:52:20 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	check_special(char *str)
 	}
 	return (1);
 }
-
+/*
 void	ft_exit(char *str, t_data *data)
 {
 	int	i;
@@ -82,7 +82,7 @@ void	ft_exit(char *str, t_data *data)
 		check_heredoc(str, data);
 		printf("%s", RED"minishell: syntax error near unexpected token\n"RESET);
 	}
-}
+}*/
 
 void	check_redirect(char *str, t_data *data)
 {
@@ -135,6 +135,6 @@ int	check(char *str, t_data *data)
 		i++;
 	}
 	if (data->exit_code == 2)
-		ft_exit(str, data);
+		printf("%s", RED"minishell: syntax error near unexpected token\n"RESET);
 	return (data->exit_code);
 }

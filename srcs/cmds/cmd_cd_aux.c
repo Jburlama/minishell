@@ -6,7 +6,7 @@
 /*   By: vbritto- <vbritto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 12:09:47 by vbritto-          #+#    #+#             */
-/*   Updated: 2024/08/15 21:15:13 by vbritto-         ###   ########.fr       */
+/*   Updated: 2024/08/20 11:49:31 by vbritto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,16 @@
 
 void	update_pwd(char *pwd, t_data *data)
 {
-	update_env_pwd(pwd, data->env);
-	update_env_pwd(pwd, data->export);
+	int		i;
+	char	*old_pwd;
+
+	i = 0;
+	old_pwd = getcwd(NULL, 0);
+	data->env = update_env_pwd(pwd, data->env, i);
+	data->export = update_env_pwd(pwd, data->export, i);
+	data->env = update_env_oldpwd(old_pwd, data->env, i);
+	data->export = update_env_oldpwd(old_pwd, data->export, i);
+	free(old_pwd);
 }
 
 void	update_env_relative(char *pwd, t_data *data)
@@ -23,37 +31,67 @@ void	update_env_relative(char *pwd, t_data *data)
 	int		i;
 	char	*old_pwd;
 
-	i = 0;
-	old_pwd = NULL;
+	i = ft_strlen(pwd);
 	pwd = getcwd(NULL, 0);
-	update_relative_pwd(pwd, data->env, i, old_pwd);
-	update_relative_pwd(pwd, data->export, i, old_pwd);
+	old_pwd = ft_calloc(ft_strlen(pwd) - i + 1, sizeof(char *));
+	if (!old_pwd)
+		panic("calloc_fail", data);
+	ft_strlcpy(old_pwd, pwd, (ft_strlen(pwd) - i + 1));
+	i = 0;
+	data->env = update_relative_pwd(pwd, data->env, i);
+	data->export = update_relative_pwd(pwd, data->export, i);
+	data->env = update_relative_oldpwd(old_pwd, data->env, i);
+	data->export = update_relative_oldpwd(old_pwd, data->export, i);
+	free(old_pwd);
 	free(pwd);
 }
 
-void	update_relative_pwd(char *pwd, char **data_env, int i, char *old_pwd)
+char	**update_relative_pwd(char *pwd, char **data_env, int i)
 {
+	char	*tmp;
+
 	while (data_env[i])
 	{
 		if (ft_memcmp(data_env[i], "PWD=", 4) == 0)
 		{
-			old_pwd = ft_strdup(data_env[i] + 4);
 			free(data_env[i]);
-			data_env[i] = ft_strjoin("PWD=", pwd);
+			break ;
 		}
 		i++;
 	}
-	i = 0;
+	if (data_env[i] == NULL)
+	{
+		tmp = ft_strjoin("PWD=", pwd);
+		data_env = export(data_env, tmp);
+		free(tmp);
+	}
+	else
+		data_env[i] = ft_strjoin("PWD=", pwd);
+	return (data_env);
+}
+
+char	**update_relative_oldpwd(char *old_pwd, char **data_env, int i)
+{
+	char	*tmp;
+
 	while (data_env[i])
 	{
 		if (ft_memcmp(data_env[i], "OLDPWD=", 7) == 0)
 		{
 			free(data_env[i]);
-			data_env[i] = ft_strjoin("OLDPWD=", old_pwd);
-			free(old_pwd);
+			break ;
 		}
 		i++;
 	}
+	if (data_env[i] == NULL)
+	{
+		tmp = ft_strjoin("OLDPWD=", old_pwd);
+		data_env = export(data_env, tmp);
+		free(tmp);
+	}
+	else
+		data_env[i] = ft_strjoin("OLDPWD=", old_pwd);
+	return (data_env);
 }
 
 void	cd_relative(t_data *data, t_exec *node)
